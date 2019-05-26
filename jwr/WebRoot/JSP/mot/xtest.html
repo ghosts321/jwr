@@ -1,0 +1,23 @@
+<div border="false" region="center" split="false"
+	style="padding: 20px; width: 1063px; height: 184px; "
+	class="layout-body panel-body panel-body-noheader panel-body-noborder"
+	title="">
+	<h1>选择交通运输企业下发整改通知</h1>
+	<form action="/c/esp/refine-doc/en" id="fm1" method="get"
+		target="_blank">
+		<div class="eui-info">
+			<div class="eui-tip icon-tip"></div>
+			<div>以下输入框提供自动完成功能，请输入交通运输企业名称或证书号关键字，并选定列表中的一个交通运输企业。</div>
+		</div>
+		<label>证书号：</label><input id="in"
+			style="width: 500px; display: none; " type="text" value=""
+			class="combobox-f combo-f" comboname="in">
+			<span class="combo">
+			<input type="text" class="combo-text validatebox-text" autocomplete="off" style="width: 498px; "><span><span class="combo-arrow"
+				style="display: none; "></span></span>
+				<input type="hidden" class="combo-value" name="in" value="1"></span><br>
+		<br>
+		<a class="easyui-linkbutton l-btn" href="#"
+			onclick="$('#fm1').submit()" id="undefined"><span
+			class="l-btn-left"><span class="l-btn-text">查 询</span></span></a>
+	</form>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.CheckLoginInterval">
+
+
+    <!-- 查询需要提醒的用户列表-->
+	<select id="getWarnUserList" parameterType="int" resultType="com.wr4.domain.User">
+		select * from userregister where USER_ID in 
+		(select userid from (select * from (select * from syslog order by CREATEDATE desc) a group by a.userid )
+		 b where b.createdate not BETWEEN DATE_ADD(now(),INTERVAL -#{num} day) and now());
+	</select>
+	
+	
+	
+</mapper>
+

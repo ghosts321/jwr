@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.PnTrain">
+	<!-- domain字段与表字段的对应 <resultMap type="com.wr4.domain.User" id="userResult"> 
+		<result property="id" column="id" jdbcType="INTEGER" javaType="java.lang.Integer" 
+		/> <result property="username" column="user_id" /> <result property="password" 
+		column="user_pass" /> </resultMap> -->
+	<select id="selectPnTrain" parameterType="com.wr4.domain.PnTrain"
+		resultType="com.wr4.domain.PnTrain">
+		select * from pn_train 
+		<!-- where 
+		pn_id=#{bianhao} -->
+		where 1=1
+		<if test="name != null">
+			and name like #{name}
+		</if>
+		<if test="type != null">
+			and type like #{type}
+		</if>
+		<if test="train_id != null">
+			and train_id like #{train_id}
+		</if>
+		<if test="pn_id != null">
+			and pn_id = #{pn_id} and (del is null or del='0')
+		</if> 
+	</select>
+		<insert id="pnApplyInsert"  parameterType="com.wr4.domain.PnApply" >
+			insert into pn_apply 
+			(
+			adminmot,adminmot2,pid,fromaddress,from2,photo,org,title,address,pcode,tel,fax,
+			mobile,email,edu,major,prof,begindate,bussinestype,train,workdoc,perf,
+			perf2,proof,proof2,proof3,prooforg,pnname,userid,applytype,createdate,resp_reg,perf1,
+			proofb,edu2,city
+			)
+			values
+			(
+			#{adminmot,jdbcType=VARCHAR},#{adminmot2,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},
+			#{fromaddress,jdbcType=VARCHAR},#{from2,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR},
+			#{org,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+			#{pcode,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},
+			#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{edu,jdbcType=VARCHAR},
+			#{major,jdbcType=VARCHAR},#{prof,jdbcType=VARCHAR},#{begindate,jdbcType=VARCHAR},
+			#{bussinestype,jdbcType=VARCHAR},#{train,jdbcType=VARCHAR},#{workdoc,jdbcType=VARCHAR},
+			#{perf,jdbcType=VARCHAR},#{perf2,jdbcType=VARCHAR},#{proof,jdbcType=VARCHAR},
+			#{proof2,jdbcType=VARCHAR},#{proof3,jdbcType=VARCHAR},#{prooforg,jdbcType=VARCHAR}, 
+			#{pnname,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},1,#{createdate,jdbcType=VARCHAR},
+			#{resp_reg,jdbcType=VARCHAR},#{perf1,jdbcType=VARCHAR},#{proofb,jdbcType=VARCHAR},
+			#{edu2,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
+			)
+			
+		</insert>
+		<insert id="examInsert"  parameterType="com.wr4.domain.Examine" >
+			insert into EXAMINE 
+			(
+			userid,usertype,status,advice,auditdate,pid,bustype,auditer_mot,applyid,auditer,handletype,results
+			)
+			values
+			(
+			#{userid,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},#{advice,jdbcType=VARCHAR},#{auditdate,jdbcType=VARCHAR},
+			#{pid,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},
+			#{auditerMot,jdbcType=VARCHAR},#{applyId,jdbcType=VARCHAR},#{auditer,jdbcType=VARCHAR},
+			#{handletype,jdbcType=VARCHAR},#{results,jdbcType=VARCHAR}
+			)
+		</insert>
+	<!-- <select id="findUserById" parameterType="int" resultMap="userResult"> 
+		select * from user where id=#{id} </select> <insert id="insertUser" parameterType="user"> 
+		<![CDATA[ insert into user(username,password) values(#{username},#{password}) 
+		]]> </insert> <update id="updateUser" parameterType="user"> update user set 
+		username=#{username},password=#{password} where id=#{id} </update> <delete 
+		id="deleteUser" parameterType="int"> delete from user where id=#{id} </delete> -->
+		<select id="pnApplyList" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.PnApply">
+			select a.* from pn_apply a  where a.applytype='1' and (a.del !='1' or a.del is null ) and a.userid=#{userid} 
+		</select>
+		<select id="pnApplyListIsBol" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.PnApply">
+			select a.* from pn_apply a  where a.applytype='1' and (a.del !='1' or a.del is null ) and a.userid=#{userid} 
+			and a.bussinestype=#{bussinestype}
+			and (a.auditresp ='1' or a.auditresp is null)
+		</select>
+		<select id="selectByUserId" parameterType="java.util.HashMap"
+		resultType="string">
+			select count(*) num from pn_apply a,cert b where a.userid = b.userid and a.applytype='2' and b.certstatus='1' and a.userid = #{userid}
+		</select>
+		<!-- 更新申请表数据 -->
+		<!-- 现有流程 在审批同意时 直接向 流程表 插入 待发证 -->
+			
+		<insert id="insertPnExam" parameterType="com.wr4.domain.Examine">
+		 	insert into EXAMINE
+		 	(
+		 		userid,usertype,status,advice,auditdate,pid,bustype,auditer_mot,applyid,auditer,handletype,results
+		 	)
+		 	values
+		 	(
+		 		#{userid,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},
+				#{status,jdbcType=VARCHAR},#{advice,jdbcType=VARCHAR},#{auditdate,jdbcType=VARCHAR},
+				#{pid,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},
+				#{auditerMot,jdbcType=VARCHAR},#{applyId,jdbcType=VARCHAR},#{auditer,jdbcType=VARCHAR},
+				#{handletype,jdbcType=VARCHAR},#{results,jdbcType=VARCHAR}
+		 	)
+		</insert>
+		<update id="updateExam" parameterType="com.wr4.domain.Examine">
+		update EXAMINE set advice=#{advice},auditdate=#{auditdate},
+							results=#{results},status=#{oldStatus} 
+			<if test="auditername!=null  ">
+			 ,auditername=#{auditername}
+			</if>				
+			<if test="auditerdate!=null  ">
+			 ,auditerdate=#{auditerdate}
+			</if>
+		where applyid=#{applyId} and status=#{nextStatus}
+		</update>
+		 
+		 <update id="updateApply" parameterType="com.wr4.domain.Examine">
+			update pn_Apply set   auditresp=#{results},auditer=#{userid} ,advice=#{advice},
+			auditdate=#{auditdate}
+			<if test="directjon!=null  ">
+			 ,DIRECTJOB=#{directjon},
+			</if>
+			<if test="directname!= null   ">
+			 DIRECTNAME=#{directname}
+			</if>
+			<if test="pass_direct!= null">
+			  ,PASS_DIRECT=#{pass_direct} 
+			</if>
+			  where id=#{applyId}   
+		</update>
+		 <update id="updateChangeApply" parameterType="com.wr4.domain.Examine">
+			update pn_Apply set 
+			advice=#{advice}, 
+			auditresp=#{results},
+			auditer=#{auditer} ,
+			auditdate=#{auditdate},
+			changedate=#{auditdate},
+			changeresault=#{results},
+			changereason=#{advice}
+			<if test="results == 0">
+			, del = '1'
+			</if>
+			  where userid=#{userid}  and bussinestype=#{bustype} and
+			  <if test="results != null ">
+			    id= #{applyId}
+			  </if>
+		</update>
+		<!-- 换证同意时更新原申请数据为已删除 -->
+		 <update id="updateOldPnApply" parameterType="com.wr4.domain.Examine">
+		  update pn_apply s set 
+	      s.del='1'
+	        where
+	          s.applytype='1'
+	          and 
+          s.cid = (select c.cid from pn_apply c  where c.id=#{applyId})   
+		</update>
+		 <update id="updateChangeCert" parameterType="com.wr4.domain.Examine">
+			update cert set 
+			CERTSTATUS='2'
+			<if test="results == 0">
+			, del = '1'
+			</if>
+			  where userid=#{userid}  and CERTTYPE=#{bustype}
+		</update>
+		<update id="updateApplyCert" parameterType="com.wr4.domain.Examine">
+			update cert set 
+			CERTSTATUS='1'
+			  where userid=#{userid}  and CERTTYPE=#{bustype}
+		</update>
+		<update id="updateOrgApply" parameterType="java.util.HashMap">
+			update org_apply t set t.resp=#{resp},t.respdate=#{respdate},t.advice=#{advice} where t.id=#{applyid} 
+		</update>
+		<update id="updateCert" parameterType="java.util.HashMap">
+			update cert t set t.del='1' where t.id=#{applyid} 
+		</update>
+		<select id="selectBycertUserId" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnRegInfo">
+			select * from pn_reg b where b.userid = #{userid} and (b.del!='1' or b.del is null)  and b.regresp='1' limit 1
+		</select>
+		<select id="isTwoCert" parameterType="string" resultType="int">
+			select count(t.cid) i  from pn_apply t  
+			where t.pid=#{pid}  and t.cid  is not null 
+			and (t.applytype != '2' or t.applytype is null) and (t.del !='1' or t.del is null)
+		</select>
+		
+		<update id="enApplyUpdate" parameterType="com.wr4.domain.Examine" >
+			update en_apply en set en.orgid1=#{auditer} ,en.advice=#{advice},en.resp=#{results}
+			<if test="examType!=null">
+			,en.resp_review=#{results}
+			</if>
+			 where en.id=#{applyId}
+		</update>
+		<select id="selectmot" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotRegInfo">
+			select * from mot_reg m where m.userid=#{userid} and m.userpass=#{md5Pass} and m.cpid=#{code}
+		</select>
+		<select id="selecten" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnRegInfo">
+			select * from en_reg e where e.userid=#{userid} and e.userpass=#{md5Pass} and e.cpid=#{code}
+		</select>
+		<select id="selectorg" parameterType="java.util.HashMap" resultType="com.wr4.domain.OrgRegInfo">
+			select * from org_reg o where o.userid=#{userid} and o.userpass=#{md5Pass} and o.cpid=#{code}
+		</select>
+		<select id="selectpn" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnRegInfo">
+			select * from pn_reg p where p.userid=#{userid} and p.userpass=#{md5Pass} and p.pid=#{code}
+		</select>
+</mapper>
+
+

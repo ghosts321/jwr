@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statistics">
+	<select id="getByNameOrNum" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="com.wr4.domain.PnApply">
+		select  d.*
+		  from (select *
+          	from (select p.*
+              from pn_apply p,
+                   (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+             where p.adminmot = b.motcode and (p.del != '1' or p.del is null)
+              and (p.applytype !='2' or p.applytype is null)  ) a 
+         where a.cid is not null
+         <if test="admin != null">  
+	        and a.adminmot = #{admin}
+	     </if>  
+         <if test="pnname != null">  
+	        and a.pnname like CONCAT('%',#{pnname},'%')
+	     </if>  
+         
+	      
+	  
+         <if test="bustype != null">  
+	        and a.bussinestype =  #{bustype}
+	     </if>  
+	     ) d
+	</select>
+	<select id="detial" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="com.wr4.domain.PnApply">
+	</select>
+	<select id="statisticsByBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, c.bussinestype dimension
+		  from (select * 
+		          from pn_apply a,
+		               (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		         where a.adminmot = b.motcode) c 
+		 where  (c.del is null or c.del!='1')
+		       and (c.applytype is null or c.applytype!='2')
+		   and c.bussinestype is not null
+		 group by c.bussinestype
+	</select>
+	<select id="statisticsByMot" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, c.adminmot dimension ,c.motname dimensname
+	       from (select a.*,m.motname
+	               from pn_apply a 
+	               join 
+	                    (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b on a.adminmot = b.motcode
+	                        join mot m on m.motcode =a.adminmot
+	                      ) c where 1=1
+	           and (c.del is null or c.del!='1')
+		       and (c.applytype is null or c.applytype!='2')
+	      group by c.adminmot ,c.motname
+	</select>
+	<select id="statisticsByEdu" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, c.edu dimension
+	      from (select *
+	              from pn_apply a,
+	                   (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+	             where a.adminmot = b.motcode) c 
+	           
+	     where  (c.del is null or c.del!='1')
+		       and (c.applytype is null or c.applytype!='2')
+	     group by c.edu
+	</select>
+	<select id="statisticsPntrain" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, substr(a.exam_date,1,7) dimension
+         from pn_train a
+         join pn_apply pn on a.pn_id=pn.id
+        where a.train_hour >= 24
+          and (pn.applytype !='2' or pn.applytype is null)
+          and (pn.del !='1' or pn.del is null)
+          and (a.del is null or a.del != '1')
+          and a.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+        group by substr(a.exam_date,1,7)
+        order by substr(a.exam_date,1,7)
+	</select>
+	<select id="statisticsPntrainLine" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, a.exam_score dimension
+		      from pn_train a,
+		      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		      where a.adminmot = b.motcode 
+		      and (a.del is null or a.del != '1')
+	     group by a.exam_score
+	</select>
+	<select id="enStatisticsByBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, a.bustype dimension
+		  from en_apply a,
+		       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where a.adminmot = b.motcode
+		 and (a.del !='1' or a.del is null)
+		 and (a.applytype != '2' or a.applytype is null)
+		 group by a.bustype
+	</select>
+	<select id="enStatisticsByMot" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total,a.adminmot dimension from en_apply a ,
+		    (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		    where a.adminmot = b.motcode
+		    and (a.del is null or a.del != '1')
+		    and (a.applytype != '2' or a.applytype is null)
+	     group by a.adminmot
+	</select>
+	<select id="enStatisticsByGrade" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total,a.grade dimension from en_apply a ,
+		    (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		    where a.adminmot = b.motcode 
+		    and (a.del != '1' or a.del is null)
+		    and (a.applytype != '2' or a.applytype is null)
+	    group by a.grade
+	</select>
+	<select id="queryEnInfos" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="com.wr4.domain.EnInfo">
+	 select p.*,mo.motname
+          from en_apply p
+          join mot mo on mo.motcode=p.adminmot 
+         where 
+         p.cid is not null and (p.del!='1' or p.del is null) and (p.applytype!='2' or p.applytype is null)
+         <if test="admin != null">  
+	        and p.adminmot = #{admin}
+	     </if>  
+         <if test="pnname != null">  
+	        <!--  and (p.enname like CONCAT('%',#{pnname},'%')     or  p.cid like CONCAT('%',#{pnname},'%')  ) -->
+	        and p.enname like CONCAT('%',#{pnname},'%')
+	     </if>  
+         
+         <if test="bustype != null">  
+	        and p.bustype =  #{bustype}
+	     </if>
+	      <if test="grade != null">  
+	        and p.grade =  #{grade}
+	     </if>
+	     and p.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) limit #{start},#{pagesize}
+	</select>
+	
+	<select id="queryEnInfosCount" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="int">
+		select count(*) count from (
+		 select p.*,mo.motname
+           from en_apply p
+          join mot mo on mo.motcode=p.adminmot 
+         where  p.cid is not null and (p.del!='1' or p.del is null) and (p.applytype!='2' or p.applytype is null)
+         <if test="admin != null">  
+	        and p.adminmot = #{admin}
+	     </if>  
+         <if test="pnname != null">  
+	         and p.enname like CONCAT('%',#{pnname},'%')
+	     </if>  
+         
+         <if test="bustype != null">  
+	        and p.bustype =  #{bustype}
+	     </if>
+	      <if test="grade != null">  
+	        and p.grade =  #{grade}
+	     </if>
+	     and p.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	     ) ttab
+	</select>
+	
+	<select id="queryOrgInfos" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="com.wr4.domain.OrgInfo">
+		 select distinct p.adminmot,
+		               p.orgname,
+		               p.bustype,
+		               p.grade,
+		               p.id,
+		               p.cid,
+                   m.motname
+		          from org_apply p,mot m
+		         where p.cid is not null 
+		         and (p.del!='1' or p.del is null) and (p.applytype!='2' or p.applytype is null) 
+		          and p.adminmot=m.motcode
+		         <if test="admin != null">  
+			        and p.adminmot   = #{admin} 
+			     </if>  
+		         <if test="pnname != null">  
+			         and p.orgname like CONCAT('%',#{pnname},'%')
+			     </if>  
+		  
+		         <if test="bustype != null">  
+			        and p.bustype =  #{bustype}
+			     </if>
+			      <if test="grade != null">  
+			        and p.grade =  #{grade}
+			     </if>
+	</select>
+	
+	<select id="queryOrgInfosCount" parameterType="com.wr4.domain.StatisticsQueryInfo" resultType="com.wr4.domain.OrgInfo">
+		select count(*) id from (
+		 select distinct p.adminmot,
+		               p.orgname,
+		               p.bustype,
+		               p.grade,
+		               p.id,
+		               p.cid,
+                   m.motname
+		          from org_apply p,mot m
+		         where p.cid is not null 
+		         and (p.del!='1' or p.del is null) and (p.applytype!='2' or p.applytype is null) 
+		          and p.adminmot=m.motcode
+		         <if test="admin != null">  
+			        and p.adminmot   = #{admin} 
+			     </if>  
+		         <if test="pnname != null">  
+			         and p.orgname like CONCAT('%',#{pnname},'%')
+			     </if>  
+		  
+		         <if test="bustype != null">  
+			        and p.bustype =  #{bustype}
+			     </if>
+			      <if test="grade != null">  
+			        and p.grade =  #{grade}
+			     </if>
+			     ) ttab
+	</select>
+	
+	<select id="orgStatisticsByBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, a.bustype dimension
+		  from org_apply a,
+		       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where a.adminmot = b.motcode
+		  and (a.del != '1' or a.del is null)
+		  and (a.applytype != '2' or a.applytype is null)
+		 group by a.bustype
+	</select>
+	
+	<select id="orgStatisticsByMot" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, c.adminmot dimension ,c.motname dimensname
+         from (select a.*,m.motname
+                 from org_apply a 
+                 join 
+                      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b on a.adminmot = b.motcode
+                          join mot m on m.motcode =a.adminmot
+                        ) c where 1=1
+             and (c.del is null or c.del!='1')
+           and (c.applytype is null or c.applytype!='2')
+        group by c.adminmot ,c.motname
+	</select>
+	
+	<select id="orgStatisticsByGrade" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, a.grade dimension
+		  from org_apply a,
+		       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where a.adminmot = b.motcode
+		 and (a.del != '1' or a.del is null)
+		 and (a.applytype != '2' or a.applytype is null)
+		 group by a.grade
+	</select>
+	
+	<select id="getLowerList" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfoList">
+		select   CONCAT(ens.adminmot,':',ens.filetext) dimension, ens.total,ens.motname
+from(
+select 		 e.bustype,v.filetext,m.motname,e.adminmot,count(e.grade) total
+ from en_apply e
+		  left join valuetext v on e.bustype = v.fileid
+		  left join mot m on e.adminmot=m.motcode
+		 where   (e.del != '1' or e.del is null)
+		 		  and (e.applytype != '2' or e.applytype is null)
+		 		  and e.adminmot like CONCAT(#{adminmot},'%')
+		 group by  e.bustype,v.filetext,m.motname,e.adminmot,e.grade
+		 order by m.motname )ens
+	</select> 
+	
+	<select id="getLowerGradeList" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfoList">
+		  select   CONCAT(ens.adminmot, ':' ,ens.grade) dimension, ens.total 
+from(
+select    e.grade,e.adminmot,
+       count(e.grade) total 
+  from en_apply e
+ where (e.del != '1' or e.del is null)
+   and (e.applytype != '2' or e.applytype is null)
+   and e.adminmot like CONCAT(#{adminmot},'%')
+ group by e.grade, e.adminmot
+ order by e.adminmot)ens
+	</select> 
+	
+	<select id="enPandectCountList" resultType="com.wr4.domain.EnPandect">
+		select m.MOTCODE,m.MOTNAME,
+		case WHEN a.yzc is null  then 0 ELSE a.yzc END as yzc,
+		case WHEN b.ysl is null  then 0 ELSE b.ysl END as ysl,
+		case WHEN b.ysh is null  then 0 ELSE b.ysh END as ysh,
+		case WHEN c.ykp is null  then 0 ELSE c.ykp END as ykp 
+		from mot m 
+		left JOIN (select ADMINMOT,count(*) as yzc  from en_reg a  GROUP BY ADMINMOT) a on m.MOTCODE=a.ADMINMOT 
+		left JOIN (select ADMINMOT,count(resp) as ysl,count(RESP_REVIEW) as ysh  from en_apply where DEL is NULL group by ADMINMOT) b on m.MOTCODE=b.ADMINMOT 
+		left JOIN (select ADMINMOT,count(*) as ykp from examine e,en_apply a where e.APPLYID=a.ID  and a.DEL is null  and e.STATUS='已考评'  group by ADMINMOT) c on m.MOTCODE=c.ADMINMOT
+		where LENGTH(m.MOTCODE)>2 order by m.MOTCODE asc
+	</select>
+	
+	<select id="orgStatisticsByLowerBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select concat( concat(e.adminmot,':'),v.filetext) dimension, count(e.grade) total
+		  from en_apply e
+		  left join valuetext v on e.bustype = v.fileid
+		  left join mot m on e.adminmot=m.motcode
+		 where m.motname=#{busname}
+               and e.bustype is not null
+                and e.adminmot=#{motPara}
+                   and (e.del != '1' or e.del is null)
+			and (e.applytype != '2' or e.applytype is null)
+			and e.adminmot  like CONCAT(#{mot},'%')
+		 group by  e.bustype,v.filetext,e.adminmot
+
+	</select>
+
+	<select id="orgStatisticsByLowerGrade" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select concat( concat(e.adminmot,':'),e.grade) dimension, count(e.grade) total 
+		  from en_apply e
+		 where (e.del != '1' or e.del is null)
+			  and (e.applytype != '2' or e.applytype is null)
+              and e.adminmot=#{motPara}
+              and e.adminmot in (SELECT motcode
+		                        FROM mot
+		                       where del != '1'
+		                          or del is null
+		                       and motcode like CONCAT(#{mot},'%')) 
+     group by  e.grade,e.adminmot
+     order by e.adminmot
+	</select>
+	
+	<select id="getLowerListCount" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+			select concat(concat(p.adminmot,':'),p.motname) adminmot, sum(col) total
+			  from (select 1 as col,m.motname,
+			               concat(concat(e.adminmot, ':'), v.filetext) dimension,
+			               sum(e.grade) total,
+			               e.adminmot
+			          from en_apply e
+			          left join valuetext v on e.bustype = v.fileid
+			          left join mot m on m.motcode=e.adminmot
+			         where e.adminmot in
+			               (SELECT motcode
+			                  FROM mot
+			                 where del != '1'
+			                    or del is null
+			                 and motcode like CONCAT(#{adminmot},'%'))
+			              and (e.del != '1' or e.del is null)
+		 						and (e.applytype != '2' or e.applytype is null)
+			         group by e.bustype, v.filetext, e.adminmot,m.motname
+			         order by e.adminmot) p
+			 group by p.adminmot,p.motname
+			 order by p.adminmot
+
+	</select>
+	
+	<select id="getLowerListFiletext" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		 select ifnull(m.filetext,'无') filetext
+		  from en_apply e
+		 left join valuetext m on e.bustype=m.fileid
+		 where  1=1  and (e.del != '1' or e.del is null)
+		 						and (e.applytype != '2' or e.applytype is null)
+		  group by m.filetext
+	</select>
+	
+	<select id="getLowerGradeListFiletext" parameterType="java.util.HashMap" resultType="com.wr4.domain.StatisticsInfo">
+		select ifnull(e.grade,'无') filetext
+		  from en_apply e 
+		 where  1=1  and (e.del != '1' or e.del is null)
+		 						and (e.applytype != '2' or e.applytype is null)
+		  group by e.grade
+	</select>
+	
+	
+	<select id="orgStatisticsGetMotName" parameterType="java.util.HashMap" resultType="String">
+		 select motname from mot where motcode=#{motcode} limit 1
+
+	</select>
+</mapper>		

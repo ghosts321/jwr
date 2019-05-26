@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.YearReport">
+ <resultMap id="yearReport" type="com.wr4.domain.YearReport">
+ 		<result property="id" column="ID" />
+		<result property="fReport" column="FREPORT" />
+		<result property="userId" column="USERID" />
+		<result property="year" column="YEAR" />
+		<result property="createDate" column="CREATEDATE" />
+		<result property="createDate" column="CREATEDATE" />
+	</resultMap>
+	<select id="getYearReport" parameterType="com.wr4.domain.YearReport" resultMap="yearReport">
+		select distinct ye.id s,ye.*,en.enname
+		  from EN_APPLY en
+		  join org_report ye on ye.userid = en.userid
+		where en.adminmot like CONCAT(#{adminmot},'%') limit #{start},#{pagesize}
+                         
+
+	</select>
+	<select id="getYearReportCount" parameterType="com.wr4.domain.YearReport" resultType="int">
+	select count(1) count from (
+		select distinct ye.id s,ye.*,en.enname
+		  from EN_APPLY en
+		  join org_report ye on ye.userid = en.userid
+		where en.adminmot like CONCAT(#{adminmot},'%')
+                         
+	) ttab
+	</select>
+	<select id="getYearReportByUserId" parameterType="com.wr4.domain.YearReport" resultMap="yearReport">
+		select distinct ye.id s,ye.*,en.enname
+		  from EN_APPLY en
+		  join org_report ye on ye.userid = en.userid
+		where en.userid=#{userId} order by ye.createdate desc limit #{start},#{pagesize}
+	</select>
+	<select id="getYearReportByUserIdCount" parameterType="com.wr4.domain.YearReport" resultType="int">
+	select count(1) count from(
+		select distinct ye.id s,ye.*,en.enname
+		  from EN_APPLY en
+		  join org_report ye on ye.userid = en.userid
+		where en.userid=#{userId}
+		) ttab
+	</select>
+	
+	<insert id="saveYearReport" parameterType="com.wr4.domain.YearReport">
+	insert into EN_REPORT(FREPORT,USERID,YEAR,CREATEDATE)values(#{fReport,jdbcType=VARCHAR },#{userId,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR})
+	</insert>
+</mapper>

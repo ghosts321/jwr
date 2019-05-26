@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.PnInfo">
+	<select id="selectAll" parameterType="com.wr4.domain.PnInfo"
+		resultType="com.wr4.domain.PnApply">
+		select  v.*
+      from (select distinct a.* ,c.fzdate
+              from (select p.*
+                      from pn_apply p
+                     where 1=1
+                       and p.cid is not null
+                    and( p.del is null or p.del!='1')
+                    <if test="admin != null">
+						and p.adminmot = #{admin}
+					</if>
+					<if test="pnname != null">
+						and p.pnname like CONCAT('%',#{pnname},'%')
+					</if>
+					<if test="bustype != null">
+						and p.bussinestype = #{bustype}
+					</if>
+					<if test="cid != null">
+						and p.cid like CONCAT('%',#{cid},'%')
+					</if>
+                    and (p.applytype is null or p.applytype != '2')
+            and p.adminmot in
+                           (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))) a
+          join cert c on a.cid = c.CERTNUMBER
+                      and a.bussinestype=c.certtype
+                      
+          ) v limit #{start},#{pagesize}
+          
+
+	</select>
+	<!-- 导出考评员列表 -->
+	<select id="selectAll1" parameterType="com.wr4.domain.PnInfo" resultType="com.wr4.domain.PnApply">
+		select l.cid cid,l.org org ,l.pnname pnname ,v.filetext bussinestype ,m.motname adminmot 
+	from (select distinct a.*, c.fzdate 
+          from (select p.*
+                  from pn_apply p
+                 where p.adminmot in
+                       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+                   and p.cid is not null
+                   and (p.del is null or p.del != '1') 
+                   and (p.applytype is null or p.applytype != '2')) a
+          join cert c on a.cid = c.CERTNUMBER
+                     and a.bussinestype = c.certtype)l
+          join valuetext v on v.fileid=l.bussinestype
+          join mot m on m.motcode=l.adminmot
+		
+	</select>
+	<select id="selectAllCount" parameterType="com.wr4.domain.PnInfo"
+		resultType="int">
+		select  count(*) count
+      from (select distinct a.* ,c.fzdate
+              from (select p.*
+                      from pn_apply p
+                     where 1=1
+                       and p.cid is not null
+                    and( p.del is null or p.del!='1')
+                    <if test="admin != null">
+						and p.adminmot = #{admin}
+					</if>
+					<if test="pnname != null">
+						and p.pnname like CONCAT('%',#{pnname},'%')
+					</if>
+					<if test="bustype != null">
+						and p.bussinestype = #{bustype}
+					</if>
+					<if test="cid != null">
+						and p.cid like CONCAT('%',#{cid},'%')
+					</if>
+                    and (p.applytype is null or p.applytype != '2')
+             and p.adminmot in
+                           (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))) a
+          join cert c on a.cid = c.CERTNUMBER
+                      and a.bussinestype=c.certtype
+          
+          ) v
+	</select>
+	<select id="selectOne" parameterType="java.lang.String"
+		resultType="com.wr4.domain.PnInfo">
+		select distinct t.cid f, t.*,pt.*,c.fzdate
+			 from pn_apply t
+			  join cert c on t.cid = c.certnumber
+			  left join pn_train pt on t.id=pt.pn_id
+			 where t.cid = #{certnumber}
+		   and (t.del is null or t.del != '1')
+		  and (t.applytype = '1'or t.applytype is null)
+	</select>
+	<update id="updatePnRegByUserIdAndBusType" parameterType="java.util.HashMap">
+		update pn_reg a set a.changereason = #{changereason} where a.userid = #{userid} and a.type = #{bustype}
+	</update>
+	<insert id="insertPnApply" parameterType="java.util.HashMap">
+		insert into pn_apply(BEGINFILE,
+			WORKDOC,FROMADDRESS,CREATEDATE,ADMINMOT2,PCODE,PROOF,EDU,PID,
+			PNNAME,TRAIN,PROOFMOBILE,PROF,ORG,PHOTO,TITLE,IMPORT_DATE,BEGINDATE,PERF        ,TITLEFILE   ,
+			PROOF2      ,PERF2       ,PROOF3      ,EMAIL       ,BUSSINESTYPE,FAX         ,MAJOR       ,PROOFORG    ,ADDRESS     ,MOBILE      ,FROM2       ,PROOFNAME   ,
+			ADMINMOT    ,TEL         ,USERID      ,ATTRORG     ,EMPLOYDATE  ,UNEMPLOYDATE,PARTTIME    ,APPLYTYPE   ,PROOFB,RENEW,cid,CITY
+		) values(
+			#{beginfile,jdbcType=VARCHAR},#{workdoc,jdbcType=VARCHAR},#{fromaddress,jdbcType=VARCHAR},#{createdate,jdbcType=VARCHAR},#{adminmot2,jdbcType=VARCHAR},#{pcode,jdbcType=VARCHAR},#{proof,jdbcType=VARCHAR},
+			#{edu},#{pid,jdbcType=VARCHAR},#{pnname,jdbcType=VARCHAR},#{train,jdbcType=VARCHAR},
+			#{proofmobile,jdbcType=VARCHAR},
+			#{prof,jdbcType=VARCHAR},
+			#{org,jdbcType=VARCHAR},
+			#{photo,jdbcType=VARCHAR},
+			#{title,jdbcType=VARCHAR},
+			#{import_date,jdbcType=VARCHAR},
+			#{begindate,jdbcType=VARCHAR},
+			#{perf,jdbcType=VARCHAR},
+			#{titlefile,jdbcType=VARCHAR},
+			#{proof2,jdbcType=VARCHAR},
+			#{perf2,jdbcType=VARCHAR},
+			#{proof3,jdbcType=VARCHAR},
+			#{email,jdbcType=VARCHAR},
+			#{bussinestype,jdbcType=VARCHAR},
+			#{fax,jdbcType=VARCHAR},
+			#{major,jdbcType=VARCHAR},
+			#{prooforg,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{mobile,jdbcType=VARCHAR},
+			#{from2,jdbcType=VARCHAR},
+			#{proofname,jdbcType=VARCHAR},
+			#{adminmot,jdbcType=VARCHAR},
+			#{tel,jdbcType=VARCHAR},
+			#{userid,jdbcType=VARCHAR},
+			#{attrorg,jdbcType=VARCHAR},
+			#{employdate,jdbcType=VARCHAR},
+			#{unemploydate,jdbcType=VARCHAR},
+			#{parttime,jdbcType=VARCHAR},
+			#{applytype,jdbcType=VARCHAR},
+			#{proofb,jdbcType=VARCHAR},
+			#{renew,jdbcType=VARCHAR},
+			#{cid,jdbcType=VARCHAR},
+			#{city,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="updateEnRegByUserIdAndBusType" parameterType="java.util.HashMap">
+		update en_apply a set a.renew = #{changereason} where a.userid = #{userid} and a.bustype = #{bustype}
+	</update>
+	<select id="selectAllInOrg" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.PnApply">
+		select a.*
+		  from pn_apply a
+		 where a.cid is not null
+		   and (a.del != '1' or a.del is null)
+		   and a.applytype='1'
+		   and (a.attrorg is null or a.attrorg=#{orgid})
+		   and (a.del !='1' or a.del is null)
+               and (a.applytype !='2' or a.applytype is null)
+    
+		<if test="cid != null">
+			and a.cid = #{cid}
+		</if>
+	 	limit #{start},#{pagesize}
+	</select>
+	<select id="selectAllInOrgCount" parameterType="java.util.HashMap"
+		resultType="int">
+	select count(1) count from(
+		select a.*
+		  from pn_apply a
+		 where a.cid is not null
+		   and (a.del != '1' or a.del is null)
+		   and a.applytype='1'
+		   and (a.attrorg is null or a.attrorg=#{orgid})
+		   and (a.del !='1' or a.del is null)
+               and (a.applytype !='2' or a.applytype is null)
+    
+		<if test="cid != null">
+			and a.cid = #{cid}
+		</if>
+	 ) ttab
+	</select>
+	<select id="pnApplyAccept" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_apply c where 
+		   c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+          <if test="adminmot != null">
+         	and c.adminmot = #{adminmot}
+         </if>
+         <if test="pnname != null">
+         	and c.pnname like CONCAT('%',#{pnname},'%')
+         </if>
+         <if test="pid != null">
+         	and c.pid like CONCAT('%',#{pid},'%')
+         </if>
+         <if test="resp !=null and resp != 0">
+         	and c.auditresp = #{resp}
+         </if>
+         <if test="resp ==0">
+         	and c.auditresp is null
+         </if>
+         and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) limit #{start},#{pagesize}
+         
+	</select>
+	
+	<!-- 总数 -->
+	<select id="pnApplyAcceptCount" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+		select * from pn_apply c where 
+		   c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+          <if test="adminmot != null">
+         	and c.adminmot = #{adminmot}
+         </if>
+         <if test="pnname != null">
+         	and c.pnname like CONCAT('%',#{pnname},'%')
+         </if>
+         <if test="pid != null">
+         	and c.pid like CONCAT('%',#{pid},'%')
+         </if>
+         <if test="resp !=null and resp != 0">
+         	and c.auditresp = #{resp}
+         </if>
+         <if test="resp ==0">
+         	and c.auditresp is null
+         </if>
+         and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+         
+         ) ttab
+	</select>
+	<select id="applyChange" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_apply c 
+		         where  c.cid is not null and c.applytype='2'   
+		         <if test="adminmot != null">
+		         	and c.adminmot = #{adminmot}
+		         </if>
+		         <if test="pnname != null">
+		         	and c.pnname like CONCAT('%',#{pnname},'%')
+		         </if>
+		         <if test="pid != null">
+		         	and c.pid like CONCAT('%',#{pid},'%')
+		         </if>
+		         <if test="resp !=null and resp != 2">
+		         	and c.auditresp = #{resp}
+		         </if>
+		         <if test="resp ==2">
+		         	and c.auditresp is null
+		         </if>
+		          and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) limit #{start},#{pagesize}
+	</select>
+	<select id="applyChangeCount" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+		select * from pn_apply c 
+		         where  c.cid is not null and c.applytype='2'   
+		         <if test="adminmot != null">
+		         	and c.adminmot = #{adminmot}
+		         </if>
+		         <if test="pnname != null">
+		         	and c.pnname like CONCAT('%',#{pnname},'%')
+		         </if>
+		         <if test="pid != null">
+		         	and c.pid like CONCAT('%',#{pid},'%')
+		         </if>
+		         <if test="resp !=null and resp != 2">
+		         	and c.auditresp = #{resp}
+		         </if>
+		         <if test="resp ==2">
+		         	and c.auditresp is null
+		         </if>
+		          and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	         ) ttab
+	</select>
+	
+	<select id="isPwd" resultType="java.util.HashMap">
+		select t.* from userregister t  where  t.user_id=#{username} and t.user_pass=#{pwd}
+	</select>
+	
+	<update id="resetPwd" parameterType="java.util.HashMap" >
+		update userregister t set t.user_pass=#{pwd} where t.user_id=#{username}
+	</update>
+	<update id="resetPwd2" parameterType="java.util.HashMap" >
+		<!-- update pn_reg p set p.userpass=#{pwd} where p.userid=#{username} -->
+		update 
+				<if test="usertype != null and usertype =='pn' ">
+		         	pn_reg
+		         </if>
+		         <if test="usertype != null and usertype =='en' ">
+		         	en_reg 
+		         </if>
+		         <if test="usertype != null and usertype =='org' ">
+		         	org_reg 
+		         </if>
+		         <if test="usertype != null and usertype =='mot' ">
+		         	mot_reg 
+		         </if>
+		          p set p.userpass=#{pwd} where p.userid=#{username}
+	</update>
+</mapper>

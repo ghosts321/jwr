@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>交通运输企业安全生产标准化系统</title>
+<link href="/jwr/css/style.css" rel="stylesheet" type="text/css" />
+<script src="/jwr/js/jquery-1.4a2.min.js" type="text/javascript"></script>
+<script src="/jwr/js/jquery.KinSlideshow-1.1.js" type="text/javascript"></script>
+
+  
+<script type="text/javascript">
+if (window != top) {
+				
+                top.location.href = "http://localhost:8080/jwr"; 
+      }
+  var a = "";
+ $(function(){
+	$("#KinSlideshow").KinSlideshow();
+	 $.ajax({
+		    type:"POST",
+		    async:false,
+		    url:"/jwr/motControl/getIndexListFromTypeAction.action",
+		    success:function(returnValue){
+		   // alert(returnValue)
+		   		a=eval("("+returnValue+")");
+		   		a=a.Rows;
+		   	}
+		    });
+		    var ss1="";
+		    var ss2="";
+		    var ss3="";
+		     var ss4="";
+		      var ss5="";
+		    var n1=0;
+		     var n2=0;
+		      var n3=0;
+		      var n4=0;
+		        var n5=0;
+			for(var i=0;i<a.length;i++){
+				var title=a[i].ptitle;
+				var linkh=a[i].linkhref;
+				var text=a[i].contenttext;
+				var id =a[i].id;
+				var fileName=a[i].filename;
+				if(a[i].ptype == '1'&& n1<5){
+					ss1+="<li>";
+					if(a[i].linkhref !=""){
+						ss1+="<a href='javascript:void(0);' onclick=\"toContent('"+id+"');\">"+a[i].ptitle+"</a>"
+					}else{
+						ss1+="<a href='javascript:void(0);' onclick=\"bm('"+id+","+text+","+fileName+"');\">"+title+"</a>";
+					}
+					ss1+="</li>";
+					n1++;
+				}else if(a[i].ptype == '2'&& n2<5){
+					ss2+="<li>";
+					if(a[i].linkhref !=""){
+						ss2+="<a href='javascript:void(0);' onclick=\"toContent('"+id+"');\">"+a[i].ptitle+"</a>"
+					}else{
+						ss2+="<a href='javascript:void(0);' onclick=\"bm('"+id+"','"+text+"','"+fileName+"');\">"+title+"</a>";
+					}
+					ss2+="</li>";
+					n2++;
+				}else if(a[i].ptype == '3'&& n3<5){
+					ss3+="<li>";
+					if(a[i].linkhref !=""){
+						ss3+="<a href='javascript:void(0);' onclick=\"toContent('"+id+"');\">"+a[i].ptitle+"</a>"
+					}else{
+						ss3+="<a href='javascript:void(0);' onclick=\"bm('"+id+"','"+text+"','"+fileName+"');\">"+title+"</a>";
+					}
+					ss3+="</li>";
+					n3++;
+				}else if(a[i].ptype == '4'&& n4<5){
+					ss4+="<li>";
+					if(a[i].linkhref !=""){
+						ss4+="<a href='javascript:void(0);' onclick=\"toContent('"+id+"');\">"+a[i].ptitle+"</a>"
+					}else{
+						ss4+="<a href='javascript:void(0);' onclick=\"bm('"+id+"','"+text+"','"+fileName+"');\">"+title+"</a>";
+					}
+					ss4+="</li>";
+					n4++;
+				}else if(a[i].ptype == '5'&& n5<2){
+					ss5+="<li>";
+					if(a[i].linkhref !=""){
+						//ss5+="<a href='javascript:void(0);' onclick=\"toContent('"+id+"');\">"+a[i].ptitle+"</a>";
+						ss5+="<a href='javascript:void(0);' onclick=\"bm('"+id+"','"+text+"','"+fileName+"');\">"+title+"</a>";
+					}else{
+						ss5+="<a href='images/"+fileName+"' >"+title+"</a>";
+					}
+					ss5+="</li>";
+					n5++;
+				}
+			}
+		 $("#zcfg").html(ss1);
+	     $("#tpxw").html(ss2);
+		 $("#gzdt").html(ss3);
+		 $("#gggs").html(ss4);
+		 $("#xgxz").html(ss5);
+
+          });  
+	  
+	  
+	  function bm(id,text,fileName){
+	  		  var url="";
+			  if(text!=""){
+			  	 url="/jwr/updown/downloadFileAction?file="+fileName;
+			  }else{
+			  	url="synrDetail.jsp?id="+id; 
+			  }
+				 window.open(url);
+		}
+		var stid;
+		var imgnames;
+		//去查看内容页面
+		function toContent(id){
+			 window.open("/jwr/JSP/mot/content.jsp?id="+id);
+		}
+</script>
+
+</head>
+<body>
+	<div
+		style="z-index:10;line-height:18px; width:170px; height:18px;position: fixed;  padding:6px; left:0px; top:10px; background-color:yellow; font-weight:bold; font-size:14px; font-family:微软雅黑">
+		<a href="./guide.html" target="_blank">查看系统使用帮助</a>(<a
+			href="./guide.doc">下载</a>)
+	</div>
+	<div
+		style="z-index:10;line-height:18px; width:170px; height:18px;position: fixed;  padding:6px; left:0px; top:50px; background-color:yellow; font-weight:bold; font-size:14px; font-family:微软雅黑">
+		<a href="JSP/mot/en/enFirstPublicity.jsp" target="_blank">查看企业公示公告名单</a>
+			
+	</div>
+    <div class="banner">
+    <div class="banner_img"></div>
+    </div>
+    <div class="main">
+     <div class="main-left"></div>
+     <div class="main-content">
+     <div class="button_area">
+     <ul class="list_area">
+     <li class="title_list">
+       <p>&nbsp;&nbsp;</p>
+       <p>快速通道</p></li>
+     <li>
+        <p><a href="/jwr/login.jsp?usertype='mot'"><img src="esp/images/icon_1.png"></img></a></p>
+        <p><a href="/jwr/login.jsp?usertype='mot'">主管机关用户登陆</a></p>
+     </li>
+     <li>
+      <p><a href="/jwr/login.jsp?usertype='en'"><img src="esp/images/icon_2.png"></img></a> </p>
+        <p><a href="/jwr/login.jsp?usertype='en'">&nbsp;&nbsp;企业用户登录</a></p></li>
+     <li>
+      <p><a href="/jwr/login.jsp?usertype='org'"><img src="esp/images/icon_3.png"></img></a> </p>
+        <p><a href="/jwr/login.jsp?usertype='org'">考评机构用户登录</a></p></li>
+     <li>
+      <p><a href="/jwr/login.jsp?usertype='pn'"><img src="esp/images/icon_4.png"></img></a> </p>
+        <p><a href="/jwr/login.jsp?usertype='pn'">&nbsp;&nbsp;考评员登录</a></p></li>
+     <li class="last_list">
+      <p><a href="/jwr/JSP/mot/nameReportAdd.jsp"><img src="esp/images/icon_5.png"></img></a> </p>
+        <p><a href="/jwr/JSP/mot/nameReportAdd.jsp">&nbsp;&nbsp;&nbsp;实名举报</a></p></li>
+     </ul>
+     </div>
+     <div class="main_content_area">
+     <div class="left-area">
+	     <div class="img_change" id="KinSlideshow" style="visibility:hidden;">
+	     	<a href="#"><img id="img1" src="uploadimg/lunbo_img_01.jpg"  width="346" height="263"/></a>
+	        <a href="#"><img id="img2" src="uploadimg/lunbo_img_02.jpg" width="346" height="263"/></a>
+	        <a href="#" ><img id="img3" src="uploadimg/lunbo_img_03.jpg"  width="346" height="263"/></a>     
+	     </div>
+     <div class="img_news">
+     <div class="tp-news">&nbsp;图片新闻
+     <span><a href="indexMore.jsp?type=2" target="_blank">更多>></a></span>
+	</div>
+     <div class="list-content">
+     <ul id="tpxw"></ul>
+     </div>
+     </div> </div>
+     
+     <div class="center_area">
+      <div class="law">
+      <div class="tp-news">&nbsp;政策法规 <span><a href="indexMore.jsp?type=1" target="_blank">更多>></a></span></div>
+       <div class="list-content">
+       <ul id="zcfg"></ul>
+      </div>
+      </div>
+      
+      <div class="active">
+       <div class="tp-news">&nbsp;工作动态<span><a href="indexMore.jsp?type=3" target="_blank">更多</a></span></div>
+     <div class="list-content">
+     <ul id="gzdt">
+     </ul>
+     </div></div> 
+     </div>
+     <div class="right-area"> 
+      <div class="notice">
+       <div class="tp-news">&nbsp;公示公告<span><a href="indexMore.jsp?type=4" target="_blank">更多</a></span></div>
+     <div class="list-content">
+     <ul id="gggs"></ul>
+     </div>
+     </div>
+      <div class="download">
+     <ul>
+     <li><a href="/jwr/JSP/pn/chayan.jsp" style="font-size:14px; color: #7a3a00;font-weight:bold" target="_blank">查验 企业/考评员/考评机构</a><span><img src="esp/images/more_blue_01.png"/></span></li>
+     <li style="font-size:14px; color:#414242; font-weight: bold;">相关下载:
+     <span style="margin-left: 100px"><a href="indexMore.jsp?type=5" style="font-family:宋体;color:#800" target="_blank">更多>></a></span></li>
+     <li id="xgxz"></li>
+<!--     <li><span><a href="indexMore.jsp?type=5" style="font-family:宋体;color:#800" target="_blank">更多>></a></span></li>-->
+     </ul>
+     </div></div>
+     </div>
+     <div class="bottom-area">&nbsp;相关链接：
+<a href="http://www.mot.gov.cn" target="_blank">中华人民共和国交通运输部</a>     |   <a href="http://www.mot.gov.cn/zizhan/siju/anquanjiandusi" target="_blank">中华人民共和国交通运输部安全监督司</a>  |   <a href="#">省级系统连接（暂无）</a> </div>
+  </div>
+ 
+   <div class="main-right"></div>
+   
+   </div> 
+   <div class="footer">
+			<a href='http://202.96.42.100/esp/' target='_blank'>交通部交通运输企业安全生产标准化系统</a>
+		</div>  
+	
+</body>
+</html>

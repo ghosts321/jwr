@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+ 	<package name="enControl" namespace="/enControl" extends="struts-base">
+		<action name="*Action" class="enInfoAction" method="{1}">
+		<result name="success" >/JSP/mot/en/{1}.jsp</result>
+		<result name="goDbZp">/JSP/mot/en/enDbzp.jsp</result>
+		<result name="enDbzpAdd">/JSP/mot/en/enDbzpAdd.jsp</result>
+		<result name="orgDbzpAdd">/JSP/org/resp/enDbzpAdd.jsp</result>
+		<result name="apply">/JSP/mot/en/enApplyList.jsp</result>
+		<result name="audit">/JSP/mot/en/enResultAudit.jsp</result>
+		<result name="enApplyUpdate">/JSP/mot/en/enUpdateApply.jsp</result>
+		</action>
+	</package>
+	<package name="yearReport" namespace="/yearReport" extends="struts-base">
+		<action name="*Action" class="enYearReportAction" method="{1}">
+			<result name="enYearPort">/JSP/mot/en/enyearport.jsp</result>
+		</action>
+	</package>
+	<package name="problemRecAction" namespace="/problemRecAction" extends="struts-base">
+		<action name="*Action" class="problemRecAction" method="{1}">
+		<result name="save" type="redirectAction">getRecInfosAction</result>
+		</action>
+	</package>
+</struts> 

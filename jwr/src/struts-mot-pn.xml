@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+    <!-- 考评员列表 -->
+	<package name="mot_pn" namespace="/motpn" extends="struts-base">
+		<action name="*Action" class="pnListAction" method="{1}">
+			<!-- result name="success" >/JSP/pn/{1}.jsp</result-->
+		</action>
+	</package>
+    <!-- 考评员登录===菜单 -->
+	<package name="pn" namespace="/pn" extends="struts-base">
+		<action name="*Action" class="pnPageAction" method="{1}">
+			<result name="success" >/JSP/pn/{1}.jsp</result>
+			<result name="error" >/JSP/pn/{1}.jsp</result>
+			<result name="motRegInfo" >/JSP/updatemotreg.jsp</result>
+			<result name="enRegInfo" >/JSP/updateenreg.jsp</result>
+			<result name="pnRegInfo" >/JSP/updatepnreg.jsp</result>
+			<result name="orgRegInfo" >/JSP/updateorgreg.jsp</result>
+		</action>
+	</package>
+	<!-- 资格证书制发 -->
+	<package name="mot_cert" namespace="/motcert" extends="struts-base">
+		<action name="*Action" class="certificateAction" method="{1}">
+		<result name="success" >/JSP/mot/en/certChangeAudit.jsp</result>
+		</action>
+	</package>
+	<!-- 培训考试 -->
+	<package name="mot_train" namespace="/mottrain" extends="struts-base">
+		<action name="*Action" class="pnTrainAction" method="{1}">
+		</action>
+	</package>
+	<!-- 资格撤销 -->
+	<package name="mot_certrevocation" namespace="/certrevocation" extends="struts-base">
+		<action name="*Action" class="certrevocationAction" method="{1}">
+		</action>
+	</package>
+	<!-- 统计查询 -->
+	<package name="mot_statistics" namespace="/statistics" extends="struts-base">
+		<action name="*Action" class="statisticsAction" method="{1}">
+			<result name="en" >/JSP/mot/en/statistics.jsp</result>
+			<result name="org" >/JSP/mot/org/statistics.jsp</result>
+		</action>
+	</package>
+	<package name="mot_exchangecert" namespace="/exchangecert" extends="struts-base">
+		<action name="*Action" class="exchangeCertAction" method="{1}">
+		</action>
+	</package>
+	<!-- 考评员申请受理 -->
+	<package name="pnApplyAccep" namespace="/pnApplyAccep" extends="struts-base">
+		<action name="*Action" class="pnApplyAccepAction" method="{1}">
+			 <result name="applyChangeSend" >/JSP/pn/applyAcceptChange.jsp</result>
+			  <result name="applyAcceptChangeDetail" >/JSP/pn/applyAcceptChangedetail.jsp</result>
+			 
+		</action>
+	</package>
+</struts>    

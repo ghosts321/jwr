@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.TaskAssignation">
+<!-- 查询专业树 -->
+	<select id="getAllValueText" parameterType="java.util.HashMap" resultType="com.wr4.domain.ValueTextBustype">
+		select * from valuetext t where t.filetype = #{filetype1} or t.filetype=#{filetype2}
+	</select>
+	
+	<select id="getOneValueText" parameterType="java.util.HashMap" resultType="com.wr4.domain.ValueTextBustype">
+		select * from task_tbl t where t.motcode=#{mot}
+		<if test="areacode != null">
+       	   and t.areacode = #{city}
+        </if>
+	</select>
+	
+	<select id="getFileId" parameterType="java.util.HashMap" resultType="com.wr4.domain.TaskAssignation">
+		select * from task_tbl t where t.motcode = #{motcode}
+	</select>
+	
+	<select id="getMotByType" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		<!-- select m.* from mot m,task_tbl t where t.motcode = m.motcode and t.areacode=#{areaCode} and t.fileid like '%' || #{type} || '%' order by m.motcode desc -->
+		select m.*,t.fileid from mot m, task_tbl t where t.motcode = m.motcode and t.areacode=#{areaCode}  order by m.motcode desc
+	</select>
+	<select id="getTopMotByType" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		<!-- select m.* from mot m,task_tbl t where t.motcode = m.motcode and t.areacode=#{areaCode} and t.fileid like '%' || #{type} || '%' order by m.motcode desc -->
+		SELECT m.*,t.fileid,t.AREACODE FROM mot m, task_tbl t WHERE t.motcode = m.motcode AND t.areacode LIKE '__'  ORDER BY m.motcode desc
+	</select>
+	
+	<select id="getFileIdByMotCode" parameterType="java.util.HashMap" resultType="com.wr4.domain.TaskAssignation">
+		select t.fileid from TASK_TBL t where t.motcode = #{motCode}
+	</select>
+	
+	<insert id="insertTask_tbl" parameterType="java.util.HashMap">
+		  insert into task_tbl
+        (areacode, motcode, fileid) values(#{city},#{mot},#{fileids})
+	</insert>
+	
+	<update id="updateTask_tbl" parameterType="java.util.HashMap" >
+		update task_tbl t set t.fileid=#{fileids} where t.areacode=#{city} and t.motcode=#{mot}
+	</update>
+	
+	
+</mapper>
+

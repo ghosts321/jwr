@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+ 
+	<package name="respInfo" namespace="/respInfo" extends="struts-base">
+		<action name="*Action" class="scanRespAction" method="{1}">
+		<result name="success" >/JSP/org/resp/respList.jsp</result>
+		<result name="respWork" >/JSP/org/resp/respWork.jsp</result>
+		<result type="redirectAction" name="save" >respListAction</result>
+		<result name="orgReg" >/JSP/org/org/orgReg.jsp</result>
+		</action>
+	</package>
+</struts> 

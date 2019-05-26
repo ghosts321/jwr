@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx
+     	   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- 采用注释的方式配置bean 
+	<context:annotation-config /> -->
+	<!-- 配置要扫描的包 -->
+	<context:component-scan base-package="com.wr4.spring"></context:component-scan>
+	
+	<!--proxy-target-class="true"强制使用cglib代理   如果为false则spring会自动选择-->
+	<aop:aspectj-autoproxy  proxy-target-class="true"/>
+	
+	<!-- 数据库配置文件位置 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	
+	<!-- 配置dbcp数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 队列中的最小等待数 -->
+		<property name="minIdle" value="${jdbc.minIdle}"/>
+		<!-- 队列中的最大等待数 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}"/>
+		<!-- 最长等待时间，单位毫秒 -->
+		<property name="maxWait" value="${jdbc.maxWait}"/>
+		<!-- 最大活跃数 -->
+		<property name="maxActive" value="${jdbc.maxActive}"/>
+		<property name="initialSize" value="${jdbc.initialSize}"/>
+	</bean>
+	
+	<!-- 配置mybitasSqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis.xml"></property>
+	</bean>
+	
+	<!-- 配置SqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 事务配置 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	 
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+        <aop:pointcut id="interceptorPointCuts"
+            expression="execution(* com.wr4.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice"
+            pointcut-ref="interceptorPointCuts" />        
+    </aop:config>      
+	<!-- 使用annotation注解方式配置事务
+	<tx:annotation-driven transaction-manager="transactionManager"/> -->
+	<!-- 使用Quartz 配置spring定时管理 -->
+	
+	
+	<!-- task 类启动定时管理 -->
+	 <bean id="quartzJob" class="com.wr4.task.DataConversionTask"/> 
+	
+	<!-- 间隔固定时间打印信息的监控 -->  
+    <bean id="showQuartzEveryTimeJob"  
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <property name="targetObject" ref="quartzJob"></property>  
+        <property name="targetMethod"  
+            value="showQuartzMessageEachseconds">  
+        </property>  
+        <property name="concurrent" value="false"></property>  
+    </bean> 
+    <!-- 固定时间点打印信息的监控 -->  
+    <bean id="showQuartzFixedTimeJob"  
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <property name="targetObject" ref="quartzJob"></property>  
+        <property name="targetMethod"  
+            value="showQuartzMessageAtFixedTime">  
+        </property>  
+        <property name="concurrent" value="false"></property>  
+    </bean> 
+    
+	 
+	
+	<!-- 间隔时间执行的定时任务 -->  
+    <bean id="showQuartzEveryTimeTrigger"  
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">  
+        <property name="jobDetail" ref="showQuartzEveryTimeJob" />  
+        <property name="startDelay" value="10000" /><!-- 定时任务延时10秒启动 -->  
+        <property name="repeatInterval" value="10000" /><!-- 间隔10秒执行 -->  
+    </bean>
+     <!-- 固定时间点执行的定时任务 -->  
+    <bean id="showQuartzFixedTimeTrigger"  
+        class="org.springframework.scheduling.quartz.CronTriggerBean">  
+        <property name="jobDetail" ref="showQuartzFixedTimeJob" />  
+        <property name="cronExpression" value="0 0 0 * * ?" /><!-- 每分钟的0秒执行 -->  
+    </bean>
+	    
+	
+	<!-- 时间间隔执行任务processSQLToSCPJob -->  
+    <bean id="showQuartzScheduler"  
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="triggers">  
+            <list>  
+                <!-- <ref bean="showQuartzEveryTimeTrigger" /> -->
+                <ref bean="showQuartzFixedTimeTrigger" />  
+            </list>  
+        </property>  
+        <!-- 线程池线程个数 -->  
+        <property name="quartzProperties">  
+            <props>  
+                <prop key="org.quartz.threadPool.threadCount">1</prop>  
+            </props>  
+        </property>  
+        <!-- 初始化之后延迟10秒启动scheduler -->  
+        <property name="startupDelay">  
+            <value>10</value>  
+        </property>  
+    </bean>  
+
+	
+</beans>

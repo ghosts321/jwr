@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.MotInfo">
+	<!-- domain字段与表字段的对应 <resultMap type="com.wr4.domain.User" id="userResult"> 
+		<result property="id" column="id" jdbcType="INTEGER" javaType="java.lang.Integer" 
+		/> <result property="username" column="user_id" /> <result property="password" 
+		column="user_pass" /> </resultMap> -->
+	<select id="selectMot" parameterType="com.wr4.domain.MotInfo"
+		resultType="com.wr4.domain.MotInfo">
+		select * from mot 
+		 where 
+		motcode = #{motcode} 
+	</select>
+	<!-- 查询日志列表 -->
+	<select id="getLogList" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.UserLog">
+		select * from syslog 
+		 where 1=1 
+      	 <if test="type != null">
+         	and type = #{type}
+         </if>
+         <if test="createdate != null">
+         	and createdate like concat(#{createdate},'%')
+         </if>
+         <if test="pid != null">
+         	and pid like CONCAT('%',#{pid},'%')
+         </if>
+         and mot like concat(#{motcode},'%') order by createdate desc limit #{start},#{pagesize}
+	</select>
+	
+	<!-- 查询日志列表 -->
+	<select id="getLogListCount" parameterType="java.util.HashMap"
+		resultType="int">
+		select count(1) count from (
+		select * from syslog 
+		 where 1=1 
+      	 <if test="type != null">
+         	and type = #{type}
+         </if>
+         <if test="createdate != null">
+         	and createdate like concat(#{createdate},'%')
+         </if>
+         <if test="pid != null">
+         	and pid like CONCAT('%',#{pid},'%')
+         </if>
+         and mot like concat(#{motcode},'%')
+         ) ttab
+	</select>
+	<select id="getTotal" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.StatisticsInfo">
+		select count(*) total, userid dimension from syslog s where 1=1 
+		<if test="type != null">
+         	and type = #{type}
+         </if>
+         <if test="createdate != null">
+         	and createdate like concat(#{createdate},'%')
+         </if>
+         <if test="pid != null">
+         	and pid like CONCAT('%',#{pid},'%')
+         </if>
+		group by s.userid
+	</select>
+	
+	<select id="motRegResp" parameterType="com.wr4.domain.MotRegInfo"
+		resultType="com.wr4.domain.MotRegInfo">
+		select * from mot_reg 
+		 where    (del !=1 or del is null)
+		 and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+		    AND motcode like CONCAT(#{loginMotCode},'%') )
+	</select>
+	<select id="motRegRespDcl" parameterType="com.wr4.domain.MotRegInfo"
+		resultType="com.wr4.domain.MotRegInfo">
+		select * from mot_reg 
+		 where   (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+		 and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode like CONCAT(#{loginMotCode},'%'))
+	</select>
+	<select id="motRegRespDclCount" parameterType="com.wr4.domain.MotRegInfo"
+		resultType="int">
+		select count(*) count from mot_reg 
+		 where   (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+		 and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<select id="motRegRespAll" parameterType="com.wr4.domain.MotRegInfo"
+		resultType="com.wr4.domain.MotRegInfo">
+		select * from mot_reg 
+		 where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot =  #{adminmot} 
+			</if>
+			<if test="motname !=null">
+				and motname like CONCAT('%',#{motname},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%')
+			</if>
+			<if test="regresp !=null and regresp !=0 ">
+				and regresp like CONCAT('%',#{regresp},'%')
+			</if>
+			<if test="regresp ==0">
+				and regresp is null
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   		where del != '1' or del is null
+			 	AND motcode like CONCAT(#{loginMotCode},'%') )
+			order by createdate desc limit #{start},#{pagesize}
+	</select>
+	<!-- 计算总数 -->
+	<select id="motRegRespAllCount" parameterType="com.wr4.domain.MotRegInfo"
+		resultType="int">
+		select COUNT(*) count from mot_reg 
+		 where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot =  #{adminmot} 
+			</if>
+			<if test="motname !=null">
+				and motname like CONCAT('%',#{motname},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%')
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%')
+			</if>
+			<if test="regresp ==0">
+				and regresp is null
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   		where del != '1' or del is null
+			 	AND motcode like CONCAT(#{loginMotCode},'%') )
+	</select>
+	<!-- 考评员注册列表 -->
+	<select id="pnRegResp" parameterType="com.wr4.domain.PnRegInfo"
+			resultType="com.wr4.domain.PnRegInfo">
+			select * from pn_reg  where  (del !=1 or del is null)
+			<if test="admin !=null">
+				and admin = #{admin} 
+			</if>
+			<if test="username !=null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%')
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%') 
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			and admin in 
+						( SELECT motcode FROM mot
+					   where del != '1' or del is null
+						 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+			order by cdate desc limit #{start},#{pagesize}
+	</select>
+	<!-- 考评员注册列表总数 -->
+	<select id="pnRegRespCount" parameterType="com.wr4.domain.PnRegInfo"
+			resultType="int">
+			select count(*) count from pn_reg  where  (del !=1 or del is null)
+			<if test="admin !=null">
+				and admin = #{admin} 
+			</if>
+			<if test="username !=null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%') 
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%')
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			and admin in 
+						( SELECT motcode FROM mot
+					   where del != '1' or del is null
+						 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<select id="pnRegRespDcl" parameterType="com.wr4.domain.PnRegInfo"
+			resultType="com.wr4.domain.PnRegInfo">
+			select * from pn_reg  where  (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+			and admin in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+			
+	</select>
+	<select id="pnRegRespDclCount" parameterType="com.wr4.domain.PnRegInfo"
+			resultType="int">
+			select count(*) count from pn_reg  where  (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+			and admin in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<!-- 根据主键获取详情 -->
+	<select id="getPnDetail" parameterType="com.wr4.domain.PnRegInfo"
+			resultType="com.wr4.domain.PnRegInfo">
+		select * from pn_reg where id = #{id} order by cdate desc 
+	</select>
+	<!-- 根据主键更新 -->
+	 	<!-- 主管机关注册审批 -->
+ 	<update id="updatePnRegById" parameterType="com.wr4.domain.PnRegInfo" >
+		update pn_reg mreg set mreg.regresp=#{regresp},mreg.regrespremark=#{regrespremark} ,mreg.regrespuser=#{regrespuser} 
+		where mreg.id=#{id}
+	</update>
+	<!-- 根据主键删除 -->
+		<update id="deleteMotRegById" parameterType="java.util.HashMap" >
+			update  mot_reg  set del ='1' where id=#{id}
+		</update>
+		<update id="deleteEnRegById" parameterType="java.util.HashMap" >
+			update  en_reg  set del ='1' where id=#{id}
+		</update>
+		<update id="deleteOrgRegById" parameterType="java.util.HashMap" >
+			update  org_reg  set del ='1' where id=#{id}
+		</update>
+		<update id="deletePnRegById" parameterType="java.util.HashMap" >
+			update  pn_reg  set del ='1' where  id=#{id}
+		</update>
+	<!-- 考评机构注册列表 -->
+	<select id="orgRegResp" parameterType="com.wr4.domain.OrgRegInfo"
+			resultType="com.wr4.domain.OrgRegInfo">
+			select * from org_reg  where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot = #{adminmot} 
+			</if>
+			<if test="orgname !=null">
+				and orgname like CONCAT('%',#{orgname},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%')
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%')
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null and grade !=0">
+				and grade like CONCAT('%',#{grade},'%')
+			</if>
+			<if test="grade ==0">
+				and grade is null 
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   	where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+			order by createdate desc limit #{start},#{pagesize}
+	</select>
+	<!-- 考评机构注册列表总数 -->
+	<select id="orgRegRespCount" parameterType="com.wr4.domain.OrgRegInfo"
+			resultType="int">
+			select count(*) count from org_reg  where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot = #{adminmot} 
+			</if>
+			<if test="orgname !=null">
+				and orgname like CONCAT('%',#{orgname},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%') 
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%')
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null and grade !=0">
+				and grade like CONCAT('%',#{grade},'%')
+			</if>
+			<if test="grade ==0">
+				and grade is null 
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   			where del != '1' or del is null
+		    		AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<select id="orgRegRespDcl" parameterType="com.wr4.domain.OrgRegInfo"
+			resultType="com.wr4.domain.OrgRegInfo">
+			select * from org_reg  where   (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+			and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<select id="orgRegRespDclCount" parameterType="com.wr4.domain.OrgRegInfo"
+			resultType="int">
+			select count(*) count from org_reg  where   (regresp ='0' or regresp is null) and  (del !=1 or del is null)
+			and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMotCode},'%'))
+	</select>
+	<!-- 根据主键获取详情 -->
+	<select id="getOrgDetail" parameterType="com.wr4.domain.OrgRegInfo"
+			resultType="com.wr4.domain.OrgRegInfo">
+		select * from org_reg where id = #{id} order by createdate desc 
+	</select>
+	<!-- 根据主键更新 -->
+	 	<!-- 主管机关注册审批 -->
+ 	<update id="updateOrgRegById" parameterType="com.wr4.domain.OrgRegInfo" >
+		update org_reg mreg set mreg.regresp=#{regresp},mreg.regrespremark=#{regrespremark} ,mreg.regrespuser=#{regrespuser} 
+		where mreg.id=#{id}
+	</update>
+	 
+	 <!-- 超级用户(不分区域和专业)  地市业务局(分区域 不分专业)-->
+	 <!-- 省专业局(分专业 不分区域)  地市专业局(分区域 分专业) -->
+	 <select id="enRegResp1" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="com.wr4.domain.EnRegInfo">
+			select * from en_reg  where   (del !=1 or del is null)
+			<if test="city !=null">
+				and city =  #{city} 
+			</if>
+			<if test="address != null">
+				and celltype = #{address}
+			</if>
+			<if test="adminmot != null">
+				and adminmot = #{adminmot}
+			</if>
+			<if test="pid != null">
+				and PID = #{pid}
+			</if>
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			<if test="username != null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="regresp != null">
+				and regresp = #{regresp}
+			</if>
+			order by createdate desc limit #{start},#{pagesize}
+	</select>
+	<select id="enRegRespCount1" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="int">
+			select count(*) count from en_reg  where  (del !=1 or del is null)
+			<if test="city !=null">
+				and city =  #{city} 
+			</if>
+			<if test="address != null">
+				and celltype = #{address}
+			</if>
+			<if test="adminmot != null">
+				and adminmot = #{adminmot}
+			</if>
+			
+			<if test="pid != null">
+				and PID = #{pid}
+			</if>
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			<if test="username != null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="regresp != null">
+				and regresp = #{regresp}
+			</if>
+			order by createdate desc
+	</select>
+	<select id="enRegRespCount1_1" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="int">
+			select count(*) count from en_reg  where (regresp ='0' or regresp is null) and   (del !=1 or del is null)
+			<if test="city !=null">
+				and city =  #{city} 
+			</if>
+			<if test="address != null">
+				and celltype = #{address}
+			</if>
+			<if test="adminmot != null">
+				and adminmot = #{adminmot}
+			</if>
+			
+			<if test="pid != null">
+				and PID = #{pid}
+			</if>
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			<if test="username != null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="regresp != null">
+				and regresp = #{regresp}
+			</if>
+			order by createdate desc
+	</select>
+	
+	<select id="enRegResp" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="com.wr4.domain.EnRegInfo">
+			select * from en_reg  where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot =  #{adminmot} 
+			</if>
+			<if test="username !=null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%') 
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%') 
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   		where del != '1' or del is null
+		     	AND motcode LIKE CONCAT(#{loginMot},'%'))
+			order by createdate desc 
+	</select>
+	<select id="enRegRespCount" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="int">
+			select count(*) count from en_reg  where   (del !=1 or del is null)
+			<if test="adminmot !=null">
+				and adminmot =  #{adminmot} 
+			</if>
+			<if test="username !=null">
+				and username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="pid !=null">
+				and pid like CONCAT('%',#{pid},'%') 
+			</if>
+			<if test="regresp !=null and regresp !=0">
+				and regresp like CONCAT('%',#{regresp},'%') 
+			</if>
+			<if test="regresp ==0">
+				and regresp is null 
+			</if>
+			
+			<if test="bustype != null">
+				and bustype = #{bustype}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMot},'%'))
+	</select>
+	<select id="enRegRespDcl" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="com.wr4.domain.EnRegInfo">
+			select * from en_reg  where  (regresp ='0' or regresp is null) and   (del !=1 or del is null)
+			and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			AND motcode LIKE CONCAT(#{loginMot},'%'))
+	</select>
+	<select id="enRegRespDclCount" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="int">
+			select count(*) count from en_reg  where  (regresp ='0' or regresp is null) and   (del !=1 or del is null)
+			and adminmot in ( SELECT motcode FROM mot
+		   where del != '1' or del is null
+			 AND motcode LIKE CONCAT(#{loginMot},'%'))
+	</select>
+	<!-- 根据主键获取详情 -->
+	<select id="getEnDetail" parameterType="com.wr4.domain.EnRegInfo"
+			resultType="com.wr4.domain.EnRegInfo">
+		select * from en_reg where id = #{id} order by createdate desc 
+	</select>
+	<!-- 根据主键更新 -->
+	 	<!-- 主管机关注册审批 -->
+ 	<update id="updateEnRegById" parameterType="com.wr4.domain.EnRegInfo" >
+		update en_reg mreg set mreg.regresp=#{regresp},mreg.regrespremark=#{regrespremark} ,mreg.regrespuser=#{regrespuser}  
+		where mreg.id=#{id}
+	</update>
+	<select id="selectMotList"  parameterType="com.wr4.domain.MotInfo" resultType="com.wr4.domain.MotInfo">
+	SELECT * FROM mot
+	 where (del != '1' or del is null) and motcode !='07'
+	 AND motcode like CONCAT(#{motcode},'%') limit #{start},#{pagesize}
+	</select> 
+	<select id="selectMotList2"  parameterType="com.wr4.domain.MotInfo" resultType="com.wr4.domain.MotInfo">
+	SELECT * FROM mot
+	 where (del != '1' or del is null) and motcode != #{motcode}
+	 AND motcode like CONCAT(#{motcode},'__') order by motcode asc
+	</select> 
+	<select id="getMotCodeIsRealy"  parameterType="com.wr4.domain.MotInfo" resultType="com.wr4.domain.MotInfo">
+	SELECT * FROM mot  where (del != '1' or del is null) and motcode =#{motcode} 
+	</select> 
+	
+	<select id="selectMotListCount"  parameterType="com.wr4.domain.MotInfo" resultType="int">
+	SELECT count(*) FROM mot
+	 where (del != '1' or del is null)  and motcode !='07'
+	 AND motcode like CONCAT(#{motcode},'%')
+	</select> 
+	<select id="selectMotListCount2"  parameterType="com.wr4.domain.MotInfo" resultType="int">
+	SELECT count(*) FROM mot
+	 where (del != '1' or del is null)  and motcode !=#{motcode}
+	 AND motcode like CONCAT(#{motcode},'__')
+	</select> 
+	<insert id="insertMot" parameterType="com.wr4.domain.MotInfo" >
+		insert into mot (motname,motcode,motupper)
+	       values (#{motname,jdbcType=VARCHAR},#{motcode,jdbcType=VARCHAR},#{motupper,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateMotById" parameterType="com.wr4.domain.MotInfo" >
+		 update  mot 
+		 set     motname=#{motname,jdbcType=VARCHAR} ,  motcode=#{motcode,jdbcType=VARCHAR} ,motupper=#{motupper,jdbcType=VARCHAR}
+	     where   id=#{id}
+	</update>
+	<update id="deleteMotById" parameterType="com.wr4.domain.MotInfo" >
+		delete from mot  where id=#{id}
+	</update>
+	
+	<!-- 插入首页内容 -->
+	<insert id="insertIndex" parameterType="com.wr4.domain.IndexInfo" >
+		
+		insert into synr_tbl (ptype,createdate,linkhref,contenttext,pno,ptitle,userid,filename,pdel)
+	       values (
+	       	#{ptype,jdbcType=VARCHAR},#{createdate,jdbcType=VARCHAR},#{linkhref,jdbcType=VARCHAR},
+	       	#{contenttext,jdbcType=VARCHAR},#{pno,jdbcType=VARCHAR},#{ptitle,jdbcType=VARCHAR},
+	       	#{userid,jdbcType=VARCHAR},#{filename,jdbcType=VARCHAR},'0'		
+	       )
+	</insert>
+	
+	<select id="getIndexList"    resultType="com.wr4.domain.IndexInfo">
+	SELECT * from synr_tbl where pdel !='1' or pdel is null order by createdate desc 
+	</select> 
+	<!-- 获取 用户列表 -->
+	<select id="getUserList" parameterType="com.wr4.domain.MotInfo"   resultType="com.wr4.domain.User">
+	SELECT us.*,m.motname from userregister us
+	left join  mot m on m.motcode=us.mot
+  where 
+  ( us.del !='1'  or us.del is null )
+  and us.user_id !='lnadmin'
+  	<if test="admin != null">
+    	and us.usertype =#{admin}
+    </if>
+    	<if test="admin == null">
+    	and us.usertype ='mot'
+    </if>
+    <if test="motname != null">
+    	and us.commonname like CONCAT('%',#{motname},'%')
+    </if>
+    <if test="userId != null">
+    	and us.paperid like CONCAT('%',#{userId},'%')
+    </if>
+   and  mot in   
+  (SELECT motcode FROM mot  where del != '1' or del is null
+   AND motcode like CONCAT(#{motcode},'%'))
+  order by us.mot limit #{start},#{pagesize}
+	</select> 
+	<!-- 获取 用户列表 总数-->
+	<select id="getUserListCount" parameterType="com.wr4.domain.MotInfo"   resultType="int">
+	select count(1) count from (
+	SELECT us.*,m.motname from userregister us
+	left join  mot m on m.motcode=us.mot
+  where 
+  ( us.del !='1'  or us.del is null )
+  and us.user_id !='lnadmin'
+  	<if test="admin != null">
+    	and us.usertype =#{admin}
+    </if>
+    	<if test="admin == null">
+    	and us.usertype ='mot'
+    </if>
+    <if test="motname != null">
+    	and us.commonname like CONCAT('%',#{motname},'%')
+    </if>
+    <if test="userId != null">
+    	and us.paperid like CONCAT('%',#{userId},'%')
+    </if>
+   and mot in   
+  (SELECT motcode FROM mot  where del != '1' or del is null
+   AND motcode like CONCAT(#{motcode},'%'))
+  order by us.mot 
+  ) tab
+	</select> 
+	<!-- 获取 用户详情 -->
+	<select id="getUserDetail" parameterType="String"   resultType="com.wr4.domain.User">
+	SELECT us.*  from userregister us where us.id=#{id}
+	</select> 
+	<select id="getTableByColumn"  parameterType="java.util.HashMap"  resultType="int">
+		SELECT * from #{tablename} where  #{column}=#{param} and del !='1'
+	</select> 
+	
+	<select id="getIndexById" parameterType="java.util.HashMap" resultType="com.wr4.domain.IndexInfo">
+		select s.* from synr_tbl s where s.id  = #{id}  and  s.pdel !=1
+	
+	</select>
+	<update id="deleteIndexById" parameterType="com.wr4.domain.IndexInfo" >
+		 update  synr_tbl 
+		 set     pdel='1'
+	     where   id=#{id}
+	</update>
+	<update id="updateUser" parameterType="com.wr4.domain.User" >
+		update userregister u set 
+		u.mot=#{mot},u.isread=#{isread},u.USABLE=#{usable} 
+		where u.user_id=#{user_id} and u.usertype=#{usertype}
+	</update>
+	<update id="updateMotreg" parameterType="com.wr4.domain.MotRegInfo" >
+		update mot_reg t set t.adminmot=#{mot} where t.userid=#{user_id} 
+	</update>
+	<update id="updateEnreg" parameterType="com.wr4.domain.EnRegInfo" >
+		update en_reg t set t.adminmot=#{mot} where t.userid=#{user_id} 
+	</update>
+	<update id="updatePnreg" parameterType="com.wr4.domain.PnRegInfo" >
+		update pn_reg t set t.admin=#{mot} where t.userid=#{user_id} 
+	</update>
+	<update id="updateOrgreg" parameterType="com.wr4.domain.OrgRegInfo" >
+		update org_reg t set t.adminmot=#{mot} where t.userid=#{user_id} 
+	</update>
+	<insert id="insertMenuRole" parameterType="java.util.HashMap">
+		insert into role_table (menuserids,userid,usertype) values(#{menuids},#{userid},#{usertype})
+	</insert>
+	<select id="selectUserRole" parameterType="java.util.HashMap" resultType="com.wr4.domain.RoleInfo">
+		select * from (
+			select s.* from role_table s where s.USERID  = #{userid}  and  s.USERTYPE =#{usertype} 
+			order by s.id desc
+ 		) t limit 1
+	</select>
+	
+	<select id="getPnApplyAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_apply c
+         where  c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+         and  c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	
+	<select id="getPnApplyAllListCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count from pn_apply c
+         where  c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+         and  c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getPnApplyRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_apply c  where  c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+                and c.AUDITRESP is null
+                and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getPnApplyRespListCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count from pn_apply c 
+         where  c.cid is null and c.applytype='1'  and (c.del !='1' or c.del is null)
+                and c.AUDITRESP is null
+                and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getPnChangeAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_apply c where  c.cid is not null and c.applytype='2'  and (c.del !='1' or c.del is null)
+             and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getPnChangeCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count from pn_apply c where  c.cid is not null and c.applytype='2'
+              and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	
+	<select id="getPnChangeRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select * from pn_apply c 
+             where  c.cid is not null and c.applytype='2'  and (c.del !='1' or c.del is null) and c.CHANGERESAULT is null
+             and c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getPnChangeRespListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count from pn_apply c 
+             where  c.cid is not null and c.applytype='2'  and (c.del !='1' or c.del is null) and c.CHANGERESAULT is null
+             and  c.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getOrgApplyAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select z.*  from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		               FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,examine e,valuetext v
+		      where   t.applytype = '1'
+              and t.del = '0'
+              and t.adminmot = b.motcode 
+              and e.usertype='org'
+              and e.applyid=t.id
+               and v.fileid=t.bustype
+              )z
+             <!--  order by rn asc -->
+	</select>
+	<select id="getOrgApplyAllListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		               FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,examine e,valuetext v
+		      where   t.applytype = '1'
+              and t.del = '0'
+              and t.adminmot = b.motcode 
+              and e.usertype='org'
+              and e.applyid=t.id
+               and v.fileid=t.bustype
+              )z 
+	</select>
+	<select id="getOrgApplyRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select z.*  from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		               FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,examine e,valuetext v
+		      where   t.applytype = '1'
+              and t.del = '0'
+              and t.adminmot = b.motcode 
+              and e.usertype='org'
+              and e.applyid=t.id
+               and v.fileid=t.bustype
+               and t.resp ='尚未处理'
+              )z
+              <!-- order by rn asc -->
+	</select>
+	
+	<select id="getOrgApplyRespListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count  from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		                FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,examine e,valuetext v
+		      where   t.applytype = '1'
+              and t.del = '0'
+              and t.adminmot = b.motcode 
+              and e.usertype='org'
+              and e.applyid=t.id
+               and v.fileid=t.bustype
+               and t.resp ='尚未处理'
+              )z
+	</select>
+	<select id="getOrgExchangeAllListCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count
+		  from exchange t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where t.adminmot = b.motcode and t.type=#{type} and t.del='0' 
+	</select>
+	<!-- 查询总数 SQL 已修改 -->
+		<select id="getOrgExchangeAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select t.*, b.motname
+		  from exchange t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where t.adminmot = b.motcode and t.type=#{type} and t.del='0' 
+	</select>
+	<select id="getOrgExchangeRespListCount" parameterType="java.util.HashMap" resultType="int">
+		 select  count(*) count
+		  from exchange t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where t.adminmot = b.motcode and t.type=#{type} and t.del='0'     
+     and t.resp is null
+	</select>
+	
+	<!-- 优化总数SQL -->
+		<select id="getOrgExchangeRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select t.*, b.motname
+		  from exchange t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+		 where t.adminmot = b.motcode and t.type=#{type} and t.del='0'     
+     and t.resp is null
+	</select>
+	<select id="getOrgChangeAllListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count
+		  from org_apply t,
+		       (SELECT motcode, motname
+		          FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		     and t.del='0'
+	</select>
+	<!-- 优化总数SQL  zhangli -->
+		<select id="getOrgChangeAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select t.*, b.motname, v.filetext uppername
+		  from org_apply t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		     and t.del='0'
+		 <!-- order by rn asc -->
+	</select>
+	
+		<select id="getOrgChangeRespListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count
+		  from org_apply t,
+		       (SELECT motcode, motname
+		          FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		   and t.del = '0'
+	</select>
+	<!-- 优化总数SQL -->
+		<select id="getOrgChangeRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select t.*, b.motname,  v.filetext uppername
+		  from org_apply t,
+		       (SELECT motcode, motname
+		            FROM mot WHERE motcode like CONCAT(#{mot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		   and t.del = '0'
+		 <!-- order by rn asc -->
+	</select>
+	
+		<select id="getEnFirstApplyAllList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		     select e.*,(select motname from mot where motcode=e.adminmot) as adminMotName,
+			(select filetext from valuetext where fileid=e.type2) as filetext,
+			(select filetext from valuetext where fileid=e.bustype) as uppername 
+			from en_apply e
+			   join examine ex on ex.applyid =e.id and ex.usertype='en' and (ex.status='已处理' or ex.status='已申请') and ex.auditdate is not null
+	    and (e.del !='1' or e.del is null)
+               and (e.applytype !='2' or e.applytype is null)
+	</select>
+		<select id="getEnFirstApplyRespListCount" parameterType="java.util.HashMap" resultType="int">		 
+		 select count(*) count
+		from en_apply e
+		 left  join examine ex on ex.applyid =e.id and ex.usertype='en'   and ex.auditdate is null
+    and e.del is null
+    and (e.del !='1' or e.del is null)
+               and (e.applytype !='2' or e.applytype is null)
+               where 1=1 and  e.resp is null
+    and e.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<select id="getEnFirstApplyRespAllListCount" parameterType="java.util.HashMap" resultType="int">		 
+		 select count(*) count 
+		from en_apply e
+		 left  join examine ex on ex.applyid =e.id and ex.usertype='en'   and ex.auditdate is null
+    and e.del is null
+    and (e.del !='1' or e.del is null)
+               and (e.applytype !='2' or e.applytype is null)
+               where 1=1
+               and e.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getEnFirstApplyRespList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 
+		 select e.*,(select motname from mot where motcode=e.adminmot) as adminMotName,
+		(select filetext from valuetext where fileid=e.type2) as filetext,
+		(select filetext from valuetext where fileid=e.bustype) as uppername 
+		from en_apply e
+		 left  join examine ex on ex.applyid =e.id and ex.usertype='en'   and ex.auditdate is null
+    and e.del is null
+    and (e.del !='1' or e.del is null)
+               and (e.applytype !='2' or e.applytype is null)
+    
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getEnExchangeAllListCount" parameterType="java.util.HashMap" resultType="int">
+			select count(*) count
+	      from exchange t,
+	           (SELECT motcode, motname
+	               FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+	     where t.adminmot = b.motcode and t.type='en' and t.del='0'  
+	</select>
+	
+		<select id="getEnExchangeRespListCount" parameterType="java.util.HashMap" resultType="int">
+		select  count(*) count
+      from exchange t,
+           (SELECT motcode, motname
+               FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+     where t.adminmot = b.motcode and t.type='en' and t.del='0'  
+     and t.resp is null
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getEnChangeAllListCount" parameterType="java.util.HashMap" resultType="int">
+		select  count(*) count 
+		from EN_APPLY where 
+		cid is not null
+		and applytype='2'
+		and adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getEnChangeRespListCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count
+    from EN_APPLY where 
+    cid is not null
+    and changeresault is  null
+    and applytype='2'
+    and adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))
+	</select>
+	<!-- 优化查询总数SQL -->
+	<select id="getEnScanAllListCount" parameterType="java.util.HashMap" resultType="int">
+		    select count(*) count from (      
+		          select distinct b.*,
+		                ex.results   as respResult,
+		                ex.advice    as respAdvice,
+		                ex.auditdate as respdate1,
+		                ey.results   as orgresult,
+		                ey.advice    as orgadvice,
+		                ey.auditdate as orgdate,
+		                
+		                zp.scoresum  selfScore,
+		                kp.scoresum  kaoScore
+		  from (select  
+		               en.userid,
+		               en.id,
+		               en.type2 
+		          from en_apply en
+		          join  examine aa on en.id = aa.applyid
+		         where   
+		           (en.applytype != '2' or en.applytype is null)
+		           and (en.del != '1' or en.del is null)
+               and (aa.status = '待审核')
+               and aa.handletype = 'en'
+               and aa.auditer_mot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))) b
+      join qypf_table kp
+        on kp.applyid = b.id
+       and kp.busclass = b.type2
+       and kp.createdate in (select max(createdate)
+                               from qypf_table
+                              where id = kp.applyid
+                                and kp.busclass = busclass)
+      join examine ex
+        on b.id = ex.applyid
+       and ex.status = '已处理'
+       and ex.usertype = 'en'
+      join examine ey
+        on b.id = ey.applyid
+       and ey.status = '已考评'
+       and ey.handletype = 'en'
+      join qypf_table zp
+        on zp.createuser = b.userid
+       and zp.busclass = b.type2
+          
+     where zp.createdate = (select max(qy.createdate)
+                              from qypf_table qy
+                             where qy.createuser = b.userid
+                               and qy.busclass = b.type2)
+       ) ttab
+	</select>
+	<!-- 优化查询总数SQL -->
+	<select id="getEnScanRespListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count from (
+		select * from (
+              select distinct b.*,
+		                ex.results   as respResult,
+		                ex.advice    as respAdvice,
+		                ex.auditdate as respdate1,
+		                ey.results   as orgresult,
+		                ey.advice    as orgadvice,
+		                ey.auditdate as orgdate,
+		                
+		                zp.scoresum  selfScore,
+		                kp.scoresum  kaoScore
+		  from (select  en.license,
+		               en.tax,
+		               en.createdate,
+		               en.cdate,
+		               en.remarks,
+		               en.orgid1,
+		               en.advice,
+		               en.pid,
+		               en.del,
+		               en.enname,
+		               en.safe,
+		               en.renew,
+		               en.zpreport,
+		               en.province,
+		               en.cid,
+		               en.legalp,
+		               en.grade,
+		               en.email,
+		               en.bustype,
+		               (select filetext from valuetext where fileid = en.bustype) as uppername,
+		               en.resp,
+		               en.respdate_review,
+		               en.type2,
+		               (select filetext from valuetext where fileid = en.type2) as filetext,
+		               en.contact,
+		               en.advice_review,
+		               en.address,
+		               en.mobile,
+		               en.qual,
+		               en.adminmot,
+		               (select motname from mot where motcode = en.adminmot) as adminMotName,
+		               en.resp_review,
+		               en.tel,
+		               en.respdate,
+		               en.userid,
+		               en.applytype,
+		               en.id,
+		               en.zpscore,
+		               en.type2 busclass,
+		               en.pncidlist,
+		               aa.results   as auditResult,
+		                aa.advice    as auditAdvice,
+		                aa.auditdate as auditdate
+		          from en_apply en
+		          join  examine aa on en.id = aa.applyid
+		         where   
+		           (en.applytype != '2' or en.applytype is null)
+		           and (en.del != '1' or en.del is null)
+               and (aa.status = '待审核')
+               and aa.handletype = 'en'
+               and aa.auditer_mot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%'))) b
+      join qypf_table kp
+        on kp.applyid = b.id
+       and kp.busclass = b.type2
+       and kp.createdate in (select max(createdate)
+                               from qypf_table
+                              where id = kp.applyid
+                                and kp.busclass = busclass)
+      join examine ex
+        on b.id = ex.applyid
+       and ex.status = '已处理'
+       and ex.usertype = 'en'
+      join examine ey
+        on b.id = ey.applyid
+       and ey.status = '已考评'
+       and ey.handletype = 'en'
+      join qypf_table zp
+        on zp.createuser = b.userid
+       and zp.busclass = b.type2
+          
+     where zp.createdate = (select max(qy.createdate)
+                              from qypf_table qy
+                             where qy.createuser = b.userid
+                               and qy.busclass = b.type2)
+     )ss where    ss.auditResult is  null
+     
+     ) ttab
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getNameReportAllListCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(*) count
+       from snjb_tbl s,mot o ,
+       (SELECT motcode, motname
+                FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+       where s.adminmot = b.motcode
+       and s.adminmot = o.motcode
+       order by s.createdate desc
+	</select>
+	<!-- 优化查询总数SQL -->
+		<select id="getNameReportRespListCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count
+       from snjb_tbl s,mot o ,
+       (SELECT motcode, motname
+                 FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+       where s.adminmot = b.motcode
+       and s.adminmot = o.motcode
+       and s.advice is null
+       order by s.createdate desc
+	</select>
+<!-- 	重置密码 -->
+	<update id="resetPwd" parameterType="java.util.HashMap" >
+			update userregister t set t.user_pass=#{pwd} where t.user_id=#{username}
+		</update>
+	<!-- 删除用户表信息 -->
+	<delete id="mdelete">
+		delete from userregister t where t.id=#{id} 
+	</delete>
+</mapper>
+

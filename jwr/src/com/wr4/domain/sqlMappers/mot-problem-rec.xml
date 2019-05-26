@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.ProblemRec">
+	<select id="getEnInfo" parameterType="com.wr4.domain.ProblemRec" resultType="com.wr4.domain.ProblemRec">
+		select c.*, a.*
+		  from cert c, en_apply a
+		 where c.CERTNUMBER = a.cid
+		   and c.CERTNUMBER =  #{cid}
+		   and (a.del != '1' or a.del is null)
+		   and (a.applytype != '2' or a.applytype is null)
+		   and (c.del != '1' or c.del is null)
+	</select>
+	<select id="getCertInfo" parameterType="com.wr4.domain.ProblemRec" resultType="com.wr4.domain.QueryResule">
+		 select c.id, a.enName || ' 证书号:' || c.certnumber as text
+                  from cert c, en_apply a
+                 where c.CERTNUMBER = a.cid
+                   and (c.certNumber like CONCAT('%',#{cid},'%') or a.enName like CONCAT('%',#{cid},'%'))
+                   and (a.applytype != '2' or a.applytype is null)
+                   and (a.del != '1' or a.del is null)
+                   and a.cdate is not null
+                   and c.id in (select id
+                                  from cert
+                                 where (del != '1' or del is null))
+                   and a.adminmot in
+                       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminMot},'%'))
+	</select>
+	<insert id="save" parameterType="com.wr4.domain.RecNotice">
+	INSERT INTO zgtz_tbl(CREATEDATE,ADVICE_REFINE,USERID,ADMIN_USERID,ADMINMOT,USERTYPE,TZUSERTYPE)
+	values(#{createDate,jdbcType=VARCHAR},#{advice_Refine,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},
+		   #{admin_userId,jdbcType=VARCHAR},#{adminmot},#{userType,jdbcType=VARCHAR},#{tzusertype,jdbcType=VARCHAR}
+	)
+	</insert>
+	<select id="getCertInfo1" parameterType="com.wr4.domain.ProblemRec" resultType="com.wr4.domain.QueryResule">
+<!-- 		select c.id,c.certnumber||a.orgName as text from cert c,org_apply a where c.CERTNUMBER = a.cid and c.certNumber like '%${cid}%' -->
+		select c.id, a.orgName || ',证书号:' || c.certnumber as text
+          from cert c, org_apply a
+         where c.CERTNUMBER = a.cid
+           and (c.certNumber like CONCAT('%',#{cid},'%') or a.orgName like CONCAT('%',#{cid},'%'))
+           and (a.applytype != '2' or a.applytype is null)
+           and (a.del != '1' or a.del is null)
+           and a.adminmot in
+               (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminMot},'%'))
+           and a.cid is not null
+           and a.cdate is not null
+           and c.id in
+               (select id from cert where (del != '1' or del is null))
+	</select>
+	<select id="getOrgInfo" parameterType="com.wr4.domain.ProblemRec" resultType="com.wr4.domain.QueryResule">
+		select (@rownum :=@rownum+1) AS id,ORGNAME AS text from org_apply,(SELECT @rownum :=0) r where CID IS NOT NULL AND ORGNAME like CONCAT('%',#{orgname},'%')
+	</select>
+	<select id="getRecList" parameterType="com.wr4.domain.ProblemRec" resultType="com.wr4.domain.RecNotice">
+		select * from zgtz_tbl where USERID=#{userId} and TZUSERTYPE=#{tzusertype}
+	</select>
+	<update id="saveRecReport">
+		update zgtz_tbl set RESPDATE_REFINE=#{respdate_Refine},REFINE_DOC=#{refine_doc} WHERE ID=#{id}
+	</update>
+</mapper>

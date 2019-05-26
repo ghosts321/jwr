@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+<!-- 	企业达标等级证书制发 -->
+ 	<package name="enProduce" namespace="/enProduce" extends="struts-base">
+		<action name="*Action" class="enProduceAction" method="{1}">
+		<result name="success" >/JSP/org/en/enProduce.jsp</result>
+		</action>
+	</package>
+	
+<!-- 	考评企业档案管理 -->
+	<package name="enFileManage" namespace="/enFileManage" extends="struts-base">
+		<action name="*Action" class="enFilesManageAction" method="{1}">
+		<result name="success" >/JSP/org/en/enFileManage.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 	考评汇总 -->
+	<package name="enScoreSum" namespace="/enScoreSum" extends="struts-base">
+		<action name="*Action" class="enScoreSumAction" method="{1}">
+		<result name="success" >/JSP/org/en/enScoreSum.jsp</result>
+		</action>
+	</package>
+</struts> 

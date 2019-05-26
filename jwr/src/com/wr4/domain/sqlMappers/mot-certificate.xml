@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.CertificateInfo">
+	<!-- 资质证书列表 -->
+	<select id="selectAll" parameterType="com.wr4.domain.CertificateInfo"
+		resultType="com.wr4.domain.CertificateInfo">
+		select  a.*
+  from (select distinct p.bussinestype , p.adminmot, p.pnname,p.userid,p.id,p.pid ,p.photo,p.createdate ctreatedate
+          from pn_apply p, examine e where p.pid = e.pid
+                             and p.cid is null and e.usertype='pn'
+                             and p.bussinestype=e.bustype
+                             and e.status = '待发证' and p.auditresp='1'
+                              and p.bussinestype not in
+                              (select bussinestype from pn_apply 
+	                              where cid is not null 
+	                              and userid=p.userid
+	                              and (del !='1' or del is null)
+                                 and (applytype !='2' or applytype is null)
+                               )
+                             and p.createdate in(
+                                   select max(createdate)
+                                  from pn_apply
+                                 where cid is  null
+                                   and p.bussinestype=bussinestype
+                                   and userid = p.userid
+                                   and (del != '1' or del is null)
+                                   and (applytype != '2' or applytype is null)
+                                   )  
+                               and p.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+                             ) a limit #{start},#{pagesize}
+
+	</select>
+	<!-- 资质证书列表 -->
+	<select id="selectAllCount" parameterType="com.wr4.domain.CertificateInfo"
+		resultType="int">
+		select count(1) count from (
+		select  a.*
+  from (select distinct p.bussinestype , p.adminmot, p.pnname,p.userid,p.id,p.pid ,p.photo,p.createdate ctreatedate
+          from pn_apply p, examine e where p.pid = e.pid
+                             and p.cid is null and e.usertype='pn'
+                             and p.bussinestype=e.bustype
+                             and e.status = '待发证' and p.auditresp='1'
+                             and p.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+                              and p.bussinestype not in
+                              (select bussinestype from pn_apply 
+	                              where cid is not null 
+	                              and userid=p.userid
+	                              and (del !='1' or del is null)
+                                 and (applytype !='2' or applytype is null)
+                               )
+                               and p.createdate in(
+                                   select max(createdate)
+                                  from pn_apply
+                                 where cid is  null
+                                   and p.bussinestype=bussinestype
+                                   and userid = p.userid
+                                   and (del != '1' or del is null)
+                                   and (applytype != '2' or applytype is null)
+                                   )   
+                             ) a
+	) ttab
+	</select>
+	<!-- 资质证书详情 -->
+	<select id="selectOne" parameterType="com.wr4.domain.CertificateInfo"
+		resultType="com.wr4.domain.CertificateInfo">
+	       select *
+			  from (select p.*, e.results, pt.train_start,pt.train_end,pt.train_hour,pt.exam_score,pt.exam_date,pt.train_id
+			          from pn_apply p
+			          join examine e  on  p.pid = e.pid 
+			          left join pn_train pt on pt.pn_id=p.id
+			         where  p.cid is null
+			           and e.status = '待发证'
+			           and p.bussinestype = e.bustype
+			           and e.usertype = 'pn'
+			           and p.bussinestype = #{bussinestype}
+			           and p.userid = #{userid}
+			         order by p.auditdate desc) tab limit 1
+	</select>
+	<!-- 资质证书详情 -->
+	<select id="isHaveCert" parameterType="com.wr4.domain.CertificateInfo"
+		resultType="com.wr4.domain.CertificateInfo">
+	       select * from  cert
+			  where userid=#{userid} and certtype=#{bussinestype} and ( del !='1' or del is null)
+	</select>
+	<!-- 发证 -->
+	<insert id="insertCertNo" parameterType="com.wr4.domain.CertificateInfo">
+		insert into cert(userid,certnumber,fzdate,certtype,certstatus,stopdate )  
+		
+		values(#{userid},#{certnumber},#{fzdate},#{bussinestype},'1', date_format(DATE_ADD(STR_TO_DATE(#{fzdate},'%Y-%m-%d'),INTERVAL 60 MONTH),'%Y-%m-%d') )
+	</insert>
+	<!-- 流程表添加记录 -->
+	<insert id="insertExam" parameterType="com.wr4.domain.CertificateInfo">
+		insert into examine values(#{userid},#{usertype},'已发证',#{auditer_mot},#{auditer},
+		 #{auditdate},#{advice},#{audittype},#{results},#{auditname},'',
+		 '','','',#{bussinestype},'')
+	</insert>
+	<update id="updateApply" parameterType="com.wr4.domain.CertificateInfo">
+		update pn_apply t set cid = #{certnumber} where  t.id=#{id} and t.bussinestype=#{bussinestype}
+	</update>
+	<!-- 更换证件更新cert表证书状态字段 -->
+	<update id="updateCertByUserIdAndCertType" parameterType="java.util.HashMap">
+		update cert t set t.certstatus = '2' where  t.userid=#{userid} and t.certnumber=#{cid}
+	</update>
+	<!-- 考评员登陆资质申请详情 -->
+	<select id="getDetialById" parameterType="string"
+		resultType="com.wr4.domain.PnApply">
+		select * from pn_apply where id=#{id}
+	</select>
+</mapper>

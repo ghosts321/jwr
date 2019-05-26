@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+<!-- 考评机构工作	资质申请 -->
+ 	<package name="bookApply" namespace="/bookApply" extends="struts-base">
+		<action name="*Action" class="bookApplyAction" method="{1}">
+		 <result name="success" >/JSP/org/org/bookApply.jsp</result>
+		 <result name="applyTwo" >/JSP/org/org/orgReg.jsp</result>
+		 <result name="error"  >/JSP/org/org/error.jsp</result>
+		</action>
+	</package>
+<!-- 考评机构工作	变更申请 -->
+	<package name="bookUpdate" namespace="/bookUpdate" extends="struts-base">
+		<action name="*Action" class="bookUpdateAction" method="{1}">
+		 <result name="success" >/JSP/org/org/bookUpdate.jsp</result>
+		 <result name="bookUpdate" type="redirectAction">bookUpdateAction</result>
+		  <result name="enChangeApply"  >/JSP/mot/en/changeApply.jsp</result>
+		</action>
+	</package>
+<!-- 	考评机构工作  换证申请 -->
+	<package name="bookChange" namespace="/bookChange" extends="struts-base">
+		<action name="*Action" class="bookChangeAction" method="{1}">
+		 <result name="success" >/JSP/org/org/changebookApply.jsp</result>
+		</action>
+	</package>
+<!-- 	考评机构工作  资质证书信息 -->
+	<package name="bookInfo" namespace="/bookInfo" extends="struts-base">
+		<action name="*Action" class="bookInfoAction" method="{1}">
+		 <result name="success" >/JSP/org/org/bookInfo.jsp</result>
+		</action>
+	</package>
+	<!-- 	考评机构工作 年度工作报告 -->
+	<package name="bookYearReport" namespace="/bookYearReport" extends="struts-base">
+		<action name="*Action" class="bookYearReportAction" method="{1}">
+		 <result name="success" >/JSP/org/org/yearReport.jsp</result>
+		 <result name="save" type="redirectAction">bookYearReportAction</result>
+		</action>
+	</package>
+	<!-- 	考评机构考评员管理页面跳转Action -->
+	<package name="orgPageAction" namespace="/orgManager" extends="struts-base">
+		<action name="*Action" class="orgPageAction" method="{1}">
+		 <result name="success" >/JSP/org/org/{1}.jsp</result>
+		</action>
+	</package>
+	<!-- 	考评机构考评员档案管理Action -->
+	<package name="enFileManage2" namespace="/enFileManage2" extends="struts-base">
+		<action name="*Action" class="enFileManageAction" method="{1}">
+		 <result name="success" >/JSP/org/org/{1}.jsp</result>
+		</action>
+	</package>
+	
+</struts> 

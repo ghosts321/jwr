@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+ 	<package name="orgControl" namespace="/orgControl" extends="struts-base">
+		<action name="*Action" class="orgListBookAction" method="{1}">
+		<result name="success" >/JSP/mot/org/{1}.jsp</result>
+		</action>
+	</package>
+	
+	<package name="orgListControl" namespace="/orgListControl" extends="struts-base">
+		<action name="*Action" class="orgListAction" method="{1}">
+		<result name="scanDetail" >/JSP/mot/org/scanDetail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="problemModify" namespace="/problemModify" extends="struts-base">
+		<action name="*Action" class="problemModifyAction" method="{1}">
+		<result name="getOrgInfo" >/JSP/mot/org/problemModify.jsp</result>
+		</action>
+	</package>
+	
+	<package name="bookCancel" namespace="/bookCancel" extends="struts-base">
+		<action name="*Action" class="bookCancelAction" method="{1}">
+		<result name="getOrgInfo" >/JSP/mot/org/problemModify.jsp</result>
+		</action>
+	</package>
+	
+	<package name="orgYearReport" namespace="/orgYearReport" extends="struts-base">
+		<action name="*Action" class="orgYearReportAction" method="{1}">
+		</action>
+	</package>
+</struts> 

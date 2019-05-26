@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+<!--  	考评机构申请受理 -->
+	<package name="respOrg" namespace="/respOrg" extends="struts-base">
+		<action name="*Action" class="respOrgApplyManageAction" method="{1}">
+		<result name="success" >/JSP/mot/resp/respOrgList.jsp</result>
+		</action>
+	</package>
+	
+<!-- 	考评机构变更备案受理 -->
+	<package name="orgExchange" namespace="/orgExchange" extends="struts-base">
+		<action name="*Action" class="orgExchangeAction" method="{1}">
+		<result name="success" >/JSP/mot/resp/orgExchangeList.jsp</result>
+		<result name="enchange" >/JSP/mot/en/enExchangeList.jsp</result>
+		</action>
+	</package>
+	
+<!-- 	考评机构换证申请 -->
+	<package name="certChange" namespace="/certChange" extends="struts-base">
+		<action name="*Action" class="certChangeAction" method="{1}">
+		<result name="success" >/JSP/mot/resp/certChangeList.jsp</result>
+		</action>
+	</package>
+</struts> 

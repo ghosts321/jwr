@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.User">
+	<!-- domain字段与表字段的对应 
+	<resultMap type="com.wr4.domain.User" id="userResult">
+		<result property="id" column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+		<result property="username" column="user_id" />
+		<result property="password" column="user_pass" />
+	</resultMap>
+	 -->
+	 <!-- 审批前再次验证用户表中是否已重复 -->
+	 <select id="isMotUserBol"  parameterType="String" resultType="com.wr4.domain.User">
+		select u.* from userregister u
+  			join mot_reg e on (e.userid=u.user_id or e.pid=u.paperid)
+			where e.id=#{id} limit 1
+	</select>
+	  <select id="isEnUserBol"  parameterType="String" resultType="com.wr4.domain.User">
+		select u.* from userregister u
+  			join en_reg e on (e.userid=u.user_id or e.pid=u.paperid)
+			where e.id=#{id} limit 1
+	</select>
+	 <select id="isOrgUserBol"  parameterType="String" resultType="com.wr4.domain.User">
+		select u.* from userregister u
+  			join org_reg e on (e.userid=u.user_id or e.pid=u.paperid)
+			where e.id=#{id} limit 1
+	</select>
+	 <select id="isPnUserBol"  parameterType="String" resultType="com.wr4.domain.User">
+		select u.* from userregister u
+  			join pn_reg e on (e.userid=u.user_id or e.pid=u.paperid)
+			where e.id=#{id} limit 1
+	</select>
+	 
+	<select id="userLogin"  parameterType="com.wr4.domain.User" resultType="com.wr4.domain.User">
+		select * from userregister 
+		where 
+		 	USER_ID=#{user_id} and user_pass=#{user_pass} and usertype=#{usertype} and (del is null or del='0')
+	</select>
+	<insert id="insertLoginLog"  parameterType="com.wr4.domain.User"  >
+		insert into syslog  (createdate,pid,userid,role,username,remark,mot,type)
+				values(date_format(sysdate(),'%Y-%m-%d %H:%i:%s'),#{paperid,jdbcType=VARCHAR},#{user_id,jdbcType=VARCHAR},
+						#{usertype,jdbcType=VARCHAR},#{commonname,jdbcType=VARCHAR},
+						#{remark,jdbcType=VARCHAR},#{mot,jdbcType=VARCHAR},'登录'
+						)
+	</insert>
+<insert id="insertRespLog"  parameterType="com.wr4.domain.User"  >
+		insert into syslog  (createdate,pid,userid,role,username,remark,mot,type,respuserid)
+				values(date_format(sysdate(),'%Y-%m-%d %H:%i:%s'),#{paperid,jdbcType=VARCHAR},#{user_id,jdbcType=VARCHAR},
+						#{usertype,jdbcType=VARCHAR},#{commonname,jdbcType=VARCHAR},
+						#{remark,jdbcType=VARCHAR},#{mot,jdbcType=VARCHAR},'审批',#{respuserid,jdbcType=VARCHAR}
+						)
+	</insert>
+	<select id="selectMenu"  parameterType="string" resultType="com.wr4.domain.MenuInfo">
+		select * from menu  where type='1'
+ 	</select> 
+ 	<select id="selectAllMenu"  parameterType="string" resultType="com.wr4.domain.MenuInfo2">
+		<!-- SELECT * FROM menu
+		 where type != '1'
+		START WITH id= #{id}
+		CONNECT BY PRIOR ID=PARENTID -->
+		select * from menu where type != '1' and del is null and id like CONCAT(#{id},'%')
+ 	</select> 
+ 	<select id="selectMenuByparentid"  parameterType="String" resultType="com.wr4.domain.MenuInfo">
+		select * from menu   where parentid=#{menuID}
+ 	</select>
+ 	<select id="getMotDetail"  parameterType="String" resultType="com.wr4.domain.MotRegInfo">
+		select * from mot_reg where id = #{id} order by createdate desc  
+ 	</select>  
+ 	<insert id="insertMenu"  parameterType="com.wr4.domain.MenuInfo"  >
+		 <![CDATA[
+		 insert into menu 
+		  (id,text,type,url,isleaf,parentid)
+		 values
+		 (#{id,jdbcType=VARCHAR},#{text,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+		 #{url,jdbcType=VARCHAR},#{isleaf,jdbcType=VARCHAR},#{parentid,jdbcType=VARCHAR} )
+		 ]]>
+ 	</insert> 
+ 	<insert id="insertMotUser"  parameterType="java.util.HashMap"  >
+		 <![CDATA[
+			insert into userregister (commonname,paperid,telephonenumber,fax,mobiletelephone,
+										 email,usertype,registerdate,user_id,user_pass ,mot,legalp,contact,city 
+										 )
+	  							  values (#{commonname,jdbcType=VARCHAR},#{paperid,jdbcType=VARCHAR},#{telephonenumber,jdbcType=VARCHAR},
+										  #{fax,jdbcType=VARCHAR},#{mobiletelephone,jdbcType=VARCHAR} ,
+										  #{email,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},#{registerdate,jdbcType=VARCHAR},
+										  #{user_id,jdbcType=VARCHAR},#{user_pass,jdbcType=VARCHAR}, 
+										  #{mot,jdbcType=VARCHAR},#{legalp,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
+										  )
+		 ]]>
+ 	</insert> 
+ 	<insert id="insertUser"  parameterType="java.util.HashMap"  >
+		 <![CDATA[
+			insert into userregister (commonname,paperid,telephonenumber,fax,mobiletelephone,
+										 email,usertype,registerdate,user_id,user_pass ,mot,province,contact,
+										 legalp,bustype,address,provincename,busclass,city
+										 )
+	  							  values (#{commonname,jdbcType=VARCHAR},#{paperid,jdbcType=VARCHAR},#{telephonenumber,jdbcType=VARCHAR},
+										  #{fax,jdbcType=VARCHAR},#{mobiletelephone,jdbcType=VARCHAR} ,
+										  #{email,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},#{registerdate,jdbcType=VARCHAR},
+										  #{user_id,jdbcType=VARCHAR},#{user_pass,jdbcType=VARCHAR}, 
+										  #{mot,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR}
+										  ,#{legalp,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+										  #{provincename,jdbcType=VARCHAR},#{buclass,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
+										  )
+		 ]]>
+ 	</insert> 
+ 	 
+ 	<!-- 主管机关注册审批 -->
+ 	<update id="updateMotRegById" parameterType="com.wr4.domain.MotRegInfo" >
+		update mot_reg mreg set mreg.regresp=#{regresp},mreg.regrespremark=#{regrespremark}
+    	where mreg.id=#{id}
+	</update>
+	<!-- 主管机关注册删除 -->
+ 	<update id="deleteMotRegById" parameterType="com.wr4.domain.MotRegInfo" >
+		update mot_reg mreg set mreg.del='1' 
+		where mreg.id=#{id}
+	</update>
+	
+ 	<insert id="motReg"  parameterType="com.wr4.domain.MotRegInfo"  >
+		 <![CDATA[
+		insert into mot_reg   
+		 (tax,createdate,pid,del,motname,legalp,email,contact,address,mobile,adminmot,tel,city,cpid,userid,userpass)
+		 values 
+		 (#{tax,jdbcType=VARCHAR},#{createdate,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},#{del,jdbcType=CHAR},
+		 #{motname,jdbcType=VARCHAR},#{legalp,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}, 
+		 #{contact,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+		 #{adminmot,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{cpid,jdbcType=VARCHAR},
+		 #{userid,jdbcType=VARCHAR},#{userpass,jdbcType=VARCHAR}
+		 )
+		 ]]>
+ 	</insert> 
+ 	<!-- 修改主管机关报名申请信息 -->
+ 	<update id="updatemotreg" parameterType="com.wr4.domain.MotRegInfo" >
+		update mot_reg m set m.userid=#{userid},m.adminmot=#{adminmot},m.motname=#{motname},m.pid=#{pid},
+       		m.legalp=#{legalp},m.contact=#{contact},m.cpid=#{cpid},m.mobile=#{mobile},m.email=#{email},
+       		m.address=#{address},m.tel=#{tel},m.tax=#{tax},m.regresp='' where m.id=#{id}
+	</update>
+	<!-- 修改企业报名申请信息 -->
+ 	<update id="updateenReg" parameterType="com.wr4.domain.EnRegInfo" >
+		update en_reg m set m.userid=#{userid},m.adminmot=#{adminmot},m.province=#{province},m.city=#{city},m.username=#{username},m.pid=#{pid},
+       		m.legalp=#{legalp},m.contact=#{contact},m.cpid=#{cpid},m.mobile=#{mobile},m.email=#{email},m.grade=#{grade},m.bustype=#{bustype},
+       		m.celltype=#{celltype},m.address=#{address},m.tel=#{tel},m.tax=#{tax},m.qual=#{qual},m.buslicense=#{buslicense},m.orgcodecert=#{orgcodecert},
+       		m.license=#{license},m.othercert=#{othercert},m.area=#{area},m.regresp='' where m.id=#{id}
+	</update>
+	<!-- 修改考评机构报名申请信息 -->
+ 	<update id="updateorgreg" parameterType="com.wr4.domain.OrgRegInfo" >
+		update org_reg m set m.userid=#{userid},m.adminmot=#{adminmot},m.province=#{province},m.city=#{city},m.orgname=#{orgname},m.pid=#{pid},
+       		m.legalp=#{legalp},m.contact=#{contact},m.cpid=#{cpid},m.mobile=#{mobile},m.email=#{email},m.grade=#{grade},m.bustype=#{bustype},
+       		m.pnumber=#{pnumber},m.pnumber2=#{pnumber2},m.startdate=#{startdate},m.address=#{address},m.pcode=#{pcode},m.tel=#{tel},m.fax=#{fax},
+       		m.met=#{met},m.pns=#{pns},m.rule=#{rule},m.others=#{others},m.regresp='' where m.id=#{id}
+	</update>
+	<!-- 修改考评员报名申请信息 -->
+ 	<update id="updatepnreg" parameterType="com.wr4.domain.PnRegInfo" >
+		update pn_reg m set m.userid=#{userid},m.admin=#{admin},m.comefrom=#{comefrom},m.city=#{city},m.username=#{username},m.pid=#{pid},m.photo=#{photo},
+       		m.org=#{org},m.title=#{title},m.address=#{address},m.pcode=#{pcode},m.tel=#{tel},m.fax=#{fax},m.mobile=#{mobile},
+       		m.email=#{email},m.edu=#{edu},m.major=#{major},m.prof=#{prof},m.begindate=#{begindate},m.type=#{type},m.train=#{train},
+       		m.resume=#{resume},m.perf=#{perf},m.perf1=#{perf1},m.perf2=#{perf2},m.proof=#{proof},m.proofb=#{proofb},m.proof2=#{proof2},m.proof3=#{proof3},m.regresp='' where m.id=#{id}
+	</update>
+ 	 <insert id="enReg"  parameterType="com.wr4.domain.EnRegInfo"  >
+		 <![CDATA[
+		insert into en_reg (
+							userid,userpass,license,tax,pid,username,safe,myreport,province ,legalp,grade,email,celltype,bustype
+							,contact,address,mobile,qual,adminmot,tel ,buslicense,orgcodecert,othercert,cpid,createdate,city,area
+							)
+					values
+						(
+						  #{userid,jdbcType=VARCHAR},#{userpass,jdbcType=VARCHAR},#{license,jdbcType=VARCHAR},
+						  #{tax,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
+						  #{safe,jdbcType=VARCHAR},#{myreport,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},
+						  #{legalp,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},
+						  #{celltype,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},
+						  #{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{qual,jdbcType=VARCHAR},
+						  #{adminmot,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{buslicense,jdbcType=VARCHAR},
+						  #{orgcodecert,jdbcType=VARCHAR},#{othercert,jdbcType=VARCHAR},#{cpid,jdbcType=VARCHAR}
+						   , #{createdate,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{area,jdbcType=VARCHAR}
+						)
+		 ]]>
+ 	</insert> 
+ 	<!-- insert 考评机构注册信息 -->
+ 	 <insert id="orgReg"  parameterType="com.wr4.domain.OrgRegInfo"  >
+		 <![CDATA[
+		insert into org_reg (userid,userpass,met,pcode,pid,orgname,others,startdate,pns,province,legalp,grade,email,
+                    bustype,fax,pnumber,pnumber2,contact,address,mobile,adminmot,tel,rule,cpid,createdate,city
+                    )
+                    values
+                   (
+                   	#{userid,jdbcType=VARCHAR},#{userpass,jdbcType=VARCHAR},#{met,jdbcType=VARCHAR},#{pcode,jdbcType=VARCHAR},
+                    #{pid,jdbcType=VARCHAR},#{orgname,jdbcType=VARCHAR},#{others,jdbcType=VARCHAR},#{startdate,jdbcType=VARCHAR},
+                    #{pns,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{legalp,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},
+                    #{email,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{pnumber,jdbcType=VARCHAR},
+                    #{pnumber2,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+                    #{adminmot,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{rule,jdbcType=VARCHAR},#{cpid,jdbcType=VARCHAR},
+					#{createdate,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
+                   
+                   )
+		 ]]>
+ 	</insert> 
+ 	<!-- insert 考评员注册信息 -->
+ 	 <insert id="pnReg"  parameterType="com.wr4.domain.PnRegInfo"  >
+		 <![CDATA[
+		insert into pn_reg (userid,userpass,username,admin,comefrom
+                    ,pid,photo,org,title,address,pcode,tel,fax,mobile
+                    ,email,edu,major,prof,begindate,type,train,resume,perf,perf1
+                    ,perf2,proof,proofb,proof2,proof3,cdate,city
+                    )
+                    values
+                    (#{userid,jdbcType=VARCHAR},#{userpass,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{admin,jdbcType=VARCHAR},
+                    #{comefrom,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},
+                    #{photo,jdbcType=VARCHAR},#{org,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+                    #{pcode,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+                    #{email,jdbcType=VARCHAR},#{edu,jdbcType=VARCHAR},#{major,jdbcType=VARCHAR},#{prof,jdbcType=VARCHAR},
+                    #{begindate,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{train,jdbcType=VARCHAR},#{resume,jdbcType=VARCHAR},
+                    #{perf,jdbcType=VARCHAR},#{perf1,jdbcType=VARCHAR},#{perf2,jdbcType=VARCHAR},#{proof,jdbcType=VARCHAR},
+                    #{proofb,jdbcType=VARCHAR},#{proof2,jdbcType=VARCHAR},#{proof3,jdbcType=VARCHAR},#{cdate,jdbcType=VARCHAR},
+                    #{city,jdbcType=VARCHAR}
+                    )
+		 ]]>
+ 	</insert> 
+ 	
+	 <delete id="deleteMenu" parameterType="String">
+			delete from menu where id in  
+		#{ids}
+	</delete>
+ <!--
+	<select id="findUserById" parameterType="int" resultMap="userResult">
+		select *
+		from user where id=#{id}
+ 	</select>
+	<insert id="insertUser" parameterType="user">
+	 <![CDATA[
+		insert into
+		user(username,password) values(#{username},#{password})
+		]]>
+ 	</insert>
+
+	<update id="updateUser" parameterType="user">
+		update user set
+		username=#{username},password=#{password} where id=#{id}
+ 	</update>
+ 	
+	<delete id="deleteUser" parameterType="int">
+		delete from user where
+		id=#{id}
+	</delete>
+  -->
+</mapper>
+

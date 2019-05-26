@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.NameReport">
+
+	<select id="selectNameReport" parameterType="java.util.HashMap"		resultType="com.wr4.domain.NameReport">
+	
+		
+		  select s.*,o.motname orgname
+		  
+       from snjb_tbl s,mot o ,
+       (SELECT motcode, motname
+	                FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b
+       where s.adminmot = b.motcode
+       and s.adminmot = o.motcode
+       order by s.createdate desc
+		
+	</select>
+	
+	<!-- 插入实名举报内容 -->
+	<insert id="insertNameReport" parameterType="com.wr4.domain.NameReport" >
+		
+		insert into snjb_tbl (jmessage,adminmot,jtype,contenttext,createdate,userid)
+	       values (
+	       	#{jmessage,jdbcType=VARCHAR},#{adminmot,jdbcType=VARCHAR},#{jtype,jdbcType=VARCHAR},
+	       	#{contenttext,jdbcType=VARCHAR},#{createdate,jdbcType=VARCHAR},
+	       #{userid,jdbcType=VARCHAR}		
+	       )
+	</insert>
+	
+	
+	<!-- 查看实名举报内容 -->
+	<select id="getNameReportDetail" parameterType="java.util.HashMap" resultType="com.wr4.domain.NameReport">
+		select s.*,o.motname orgname 
+		from snjb_tbl s ,mot o 
+		where s.adminmot = o.motcode
+		and s.id  = #{id} 
+		
+		
+	</select>
+	
+	<!-- 	更新举报处理意见 -->
+	<update id="updateNameReport" parameterType="java.util.HashMap" >
+		update snjb_tbl t
+		 set t.advice=#{advice},t.createdate=#{createdate},t.zforg = #{zforg},t.adminmot = #{zforg} 
+		where t.id=#{id} 
+	</update>
+</mapper>
+

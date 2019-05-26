@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.OrgRespInfo">
+	<resultMap type="com.wr4.domain.MotInfo" id="motResult">
+        <!-- 主管机关名称 -->
+        <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+        <!-- 主管机关编号 -->
+        <result column="MOTCODE" jdbcType="VARCHAR" property="motcode" />
+        <!-- 上级主管机关编号 -->
+        <result column="MOTUPPER" jdbcType="VARCHAR" property="motupper" />
+        <!-- DEL -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+	</resultMap>
+	
+	<resultMap id="enResult1" type="com.wr4.domain.EnInfo">
+		<result property="id" jdbcType="INTEGER" column="ID" />
+		<result property="license" column="LICENSE" />
+		<result property="tax" column="TAX" />
+		<result property="date" column="CREATEDATE" />
+		<result property="cDate" column="CDATE" />
+		<result property="comment" column="COMMENT" />
+		<result property="orgId1" column="ORGID1" />
+		<result property="advice" column="ADVICE" />
+		<result property="pid" column="PID" />
+		<result property="del" column="DEL" />
+		<result property="enname" column="ENNAME" />
+		<result property="safe" column="SAFE" />
+		<result property="reNew" column="RENEW" />
+		<result property="report" column="REPORT" />
+		<result property="province" column="PROVINCE" />
+		<result property="cid" column="CID" />
+		<result property="legalp" column="LEGALP" />
+		<result property="grade" column="GRADE" />
+		<result property="email" column="EMAIL" />
+		<result property="bustype" column="BUSTYPE" />
+		<result property="resp" column="RESP" />
+		<result property="respDateReview" column="RESPDATE_REVIEW" />
+		<result property="type2" column="TYPE2" />
+		<result property="contact" column="CONTACT" />
+		<result property="adviceReview" column="ADVICE_REVIEW" />
+		<result property="address" column="ADDRESS" />
+		<result property="mobile" column="MOBILE" />
+		<result property="qual" column="QUAL" />
+		<result property="adminmot" column="ADMINMOT" />
+		<result property="respReview" column="RESP_REVIEW" />
+		<result property="tel" column="TEL" />
+		<result property="respDate" column="RESPDATE" />
+		<result property="auditDate" column="AUDITDATE" />
+		<result property="fzDate" column="FZDATE" />
+		<result property="auditAdvice" column="AUDITADVICE" />
+		<result property="results" column="RESULTS" />
+		<result property="userId" column="USERID" />
+		<result property="orgId" column="ORGID" />
+		<result property="applyType" column="APPLYTYPE" />
+		<result property="filetext" column="FILETEXT"/>
+		<result property="motname" column="MOTNAME"/>
+		<result property="rn" column="RN"/>
+		<result property="slAdvice" column="SLADVICE"/>
+		<result property="slResult" column="SLRESULT"/>
+		<result property="slDate" column="SLDATE"/>
+		<result property="regrespremark" column="REGRESPREMARK"/>
+		<result property="regresp" column="REGRESP"/>
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.OrgReg" id="orgRegResult">
+        <!-- 单位基本情况相关材料 -->
+        <result column="MET" jdbcType="VARCHAR" property="met" />
+        <!-- 邮编 -->
+        <result column="PCODE" jdbcType="VARCHAR" property="pcode" />
+        <!-- 组织机构代码 -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 名称 -->
+        <result column="ORGNAME" jdbcType="VARCHAR" property="orgname" />
+        <!-- 换证原因（仅换证申请）                     -->
+        <result column="RENEW" jdbcType="VARCHAR" property="renew" />
+        <!-- 其他材料                     -->
+        <result column="OTHERS" jdbcType="VARCHAR" property="others" />
+        <!-- 开始从事相应业务年份         -->
+        <result column="STARTDATE" jdbcType="VARCHAR" property="startdate" />
+        <!-- 专职考评员聘用证明与职称证明  -->
+        <result column="PNS" jdbcType="VARCHAR" property="pns" />
+        <!-- 所在省市       -->
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <!-- 法人代表                 -->
+        <result column="LEGALP" jdbcType="VARCHAR" property="legalp" />
+        <!-- 等级                 -->
+        <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+        <!-- 联系人邮箱                     -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 用户ID               -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 业务类型                 -->
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="bustype" />
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="busType" />
+        <!-- 传真号码                 -->
+        <result column="FAX" jdbcType="VARCHAR" property="fax" />
+        <!-- 专职考评员人数               -->
+        <result column="PNUMBER" jdbcType="INTEGER" property="pnumber" />
+        <!-- 联系人姓名                 -->
+        <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+        <!-- 通讯地址                     -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机         -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 主管机关                 -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 联系电话                 -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 考评管理制度               -->
+        <result column="RULE" jdbcType="VARCHAR" property="rule" />
+        <!-- 高级技术职称考评员人数               -->
+        <result column="PNUMBER2" jdbcType="INTEGER" property="pnumber2" />
+        <!-- 用户密码 -->
+        <result column="USERPASS" jdbcType="VARCHAR" property="userpass" />
+        <!-- 联系人身份证号 -->
+        <result column="CPID" jdbcType="VARCHAR" property="cpid" />
+        <!-- 注册日期            -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 备用字段3               -->
+        <result column="BYZD3" jdbcType="VARCHAR" property="byzd3" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 删除标识 1 已删除 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 初审结果 -->
+        <result column="REGRESP" jdbcType="VARCHAR" property="regresp" />
+        <!-- 初审意见 -->
+        <result column="REGRESPREMARK" jdbcType="VARCHAR" property="regrespremark" />
+        <!-- 初审审核人 -->
+        <result column="REGRESPUSER" jdbcType="VARCHAR" property="regrespuser" />
+        <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typename" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.ValueTextBustype" id="valueTextResult">
+        <!-- 字段中文 -->
+        <result column="FILETEXT" jdbcType="VARCHAR" property="filetext" />
+        <!-- 字段id -->
+        <result column="FILEID" jdbcType="VARCHAR" property="fileid" />
+        <!-- 字段类型 -->
+        <result column="FILETYPE" jdbcType="VARCHAR" property="filetype" />
+        <!-- 字段所属上级字段id -->
+        <result column="UPPERID" jdbcType="VARCHAR" property="upperid" />
+        <!-- 字段所属上级字段名称 -->
+        <result column="UPPERNAME" jdbcType="VARCHAR" property="uppername" />
+        <!-- 是否删除 1为已删除 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 创建人 -->
+        <result column="CREATEUSER" jdbcType="VARCHAR" property="createuser" />
+        <!-- 创建时间 -->
+        <result column="CREATETIME" jdbcType="VARCHAR" property="createtime" />
+	</resultMap>
+	
+	
+<!-- 	获取主管机关 -->
+<!-- 上线时需改为08  暂为 01 测试 -->
+	<select id="getMot" parameterType="java.util.HashMap" resultMap="motResult">
+		select t.*
+		  from mot t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE 1=1 
+		           <if test="adminmot != null">
+		           and motcode like CONCAT(#{adminmot},'%')
+		           </if>
+		            ) b
+		 where t.motcode = b.motcode and (t.del!='1' or del is null) 
+		 order by t.motcode desc
+	</select>
+	<select id="getMotByReg2" parameterType="java.util.HashMap" resultMap="motResult">
+		select m.*
+		  from mot m, mot_reg mr
+		 where m.motcode = mr.adminmot
+		   and (mr.del != '1' or mr.del is null)
+		   and mr.regresp = '1' and mr.city=#{city} order by m.motcode
+	</select>
+	<select id="getMotByReg" parameterType="java.util.HashMap" resultMap="motResult">
+		<!-- select *
+		  from mot m
+		 where 
+		   (city is null
+		    or city = #{city})
+		    and m.motupper in (select motcode
+		                       from mot m
+		                      where m.city =#{city} 
+		                     ) -->
+		select *
+		  from mot m
+		 where 
+		    m.motupper in (select motcode
+		                       from mot m
+		                      where m.city =#{city} 
+		                     ) and city is null
+		    or city = #{city} 
+	</select>
+	<select id="getMotByCityMot" parameterType="java.util.HashMap" resultMap="motResult">
+		select *
+		  from mot m
+		 where m.motcode like CONCAT(#{loginMot},'%')
+		 <if test="city != null">
+       	   and (city is null
+		    or city = #{city})
+        </if>
+		   
+	</select>
+<!-- 获取省市 -->
+	<select id="getQYcode" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select * from (select * from qy_dm_table t order by t.du_code ) c where c.sz_province is null
+	</select>
+<!-- 获取业务类别 -->
+	<select id="gettype2" parameterType="java.util.HashMap" resultType="com.wr4.domain.ValueTextBustype">
+		select t.fileid,t.filetext from valuetext t where t.upperid=#{busType}
+	</select>
+<!-- 获取市 -->
+	<select id="getcity" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select * from qy_dm_table t where t.sz_province=#{sprovince}
+	</select>
+<!-- 获取市 -->
+	<select id="getcitys" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select * from qy_dm_table t where t.sz_province is not null
+	</select>
+<!-- 获取所有(包含省) -->
+	<select id="getAllCitys" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select * from qy_dm_table t order by t.sz_province desc
+	</select>	
+<!-- 获取考评员userid -->
+	<select id="getpnUserId" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select *  from pn_reg u where u.userid=#{userid} and (u.del is null or u.del != '1')
+	</select>
+<!-- 获取企业userid -->
+	<select id="getenUserId" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnInfo">
+		select *  from en_reg u where u.userid=#{userid} and (u.del is null or u.del != '1')
+	</select>
+<!-- 获取考评机构userid -->
+	<select id="getorgUserId" parameterType="java.util.HashMap" resultType="com.wr4.domain.OrgInfo">
+		select *  from org_reg u where u.userid=#{userid} and (u.del is null or u.del != '1')
+	</select>
+<!-- 获取主管机关userid -->
+	<select id="getmotUserId" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		select *  from mot_reg u where u.userid=#{userid} and (u.del is null or u.del != '1')
+	</select>
+<!-- 获取pid -->
+	<select id="getpnpid" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select *  from pn_reg u where u.pid=#{pid} and (u.del is null or u.del != '1') and u.regresp='1'
+	</select>
+<!-- 获取pid -->
+	<select id="getenpid" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnInfo">
+		select *  from en_reg u where u.cpid=#{pid} and (u.del is null or u.del != '1') and u.regresp='1'
+	</select>	
+<!-- 获取pid -->
+	<select id="getorgpid" parameterType="java.util.HashMap" resultType="com.wr4.domain.OrgInfo">
+		select *  from org_reg u where u.cpid=#{pid} and (u.del is null or u.del != '1') and u.regresp='1'
+	</select>
+<!-- 获取pid -->
+	<select id="getmotpid" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		select *  from mot_reg u where u.cpid=#{pid} and (u.del is null or u.del != '1') and u.regresp='1'
+	</select>
+<!-- 获取企业组织机构代码 -->
+	<select id="getenorgCode" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnInfo">
+		select *  from en_reg u where u.pid=#{pid} and (u.del is null or u.del != '1')
+	</select>	
+<!-- 获取考评机构组织机构代码 -->
+	<select id="getorgorgCode" parameterType="java.util.HashMap" resultType="com.wr4.domain.OrgInfo">
+		select *  from org_reg  u where u.pid=#{pid} and (u.del is null or u.del != '1')
+	</select>
+<!-- 获取主管机关组织机构代码  -->
+	<select id="getmotorgCode" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		select *  from mot_reg u where u.pid=#{pid} and (u.del is null or u.del != '1')
+	</select>	
+<!-- 获取主管机关进度查询  -->
+	<select id="getmotjd" parameterType="java.util.HashMap" resultType="com.wr4.domain.MotInfo">
+		select * from mot_reg m where m.userid=#{userid} and m.userpass=#{md5Pass} and (m.del is null or m.del != '1')
+	</select>
+<!-- 获取企业进度查询  -->
+	<select id="getenjd" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnInfo">
+		select * from en_reg m where m.userid=#{userid} and m.userpass=#{md5Pass} and (m.del is null or m.del != '1')
+	</select>
+<!-- 获取考评机构进度查询  -->
+	<select id="getorgjd" parameterType="java.util.HashMap" resultType="com.wr4.domain.OrgInfo">
+		select * from org_reg m where m.userid=#{userid} and m.userpass=#{md5Pass} and (m.del is null or m.del != '1')
+	</select>
+<!-- 获取考评员进度查询  -->
+	<select id="getpnjd" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		select * from pn_reg m where m.userid=#{userid} and m.userpass=#{md5Pass} and (m.del is null or m.del != '1')
+	</select>	
+	
+	
+<!-- 	通过主管机关获取企业列表 -->
+	<select id="getListByMot" parameterType="java.util.HashMap" resultMap="enResult1">
+		select distinct a.*, v.filetext, m.motname,ex.advice as slAdvice,ex.results as slResult,ex.auditdate as slDate
+		  from en_apply a, valuetext v, mot m,examine ex
+		 where 
+		   v.fileid = a.type2
+		   and (a.del !='1' or a.del is null)
+  		   and (a.applytype !='2' or a.applytype is null)
+		   <if test="adminmot != null">and a.adminmot =#{adminmot} </if>
+		<if test="name != null">and a.enname =#{name} </if>
+		<if test="pid != null">and a.pid =#{pid} </if>
+		<if test="province != null">and a.province =#{province} </if>
+		<if test="grade != null ">and a.grade =#{grade} </if>
+		<if test="resp != null and resp != 'resp'">and a.resp =#{resp} </if>   
+		<if test="resp == 'resp'">and a.resp is null </if>   
+		   and m.motcode = a.adminmot
+		   and a.id=ex.applyid
+		   and ex.status = '已处理' 
+		   and ex.usertype = 'en'
+		   and a.id in (select t.applyid
+		                 from examine t
+		                where t.status = '待考评'
+		                  and t.auditer = #{auditer})
+		   order by a.createdate desc limit #{start},#{pagesize}
+	</select>
+	<select id="getListByMotCount" parameterType="java.util.HashMap" resultType="int">
+		select count(*) count from (select distinct a.*, v.filetext, m.motname,ex.advice as slAdvice,ex.results as slResult,ex.auditdate as slDate
+		  from en_apply a, valuetext v, mot m,examine ex
+		 where 
+		    v.fileid = a.type2
+		   and (a.del !='1' or a.del is null)
+  		   and (a.applytype !='2' or a.applytype is null)
+		   <if test="adminmot != null">and a.adminmot =#{adminmot} </if>
+		<if test="name != null">and a.enname =#{name} </if>
+		<if test="pid != null">and a.pid =#{pid} </if>
+		<if test="province != null">and a.province =#{province} </if>
+		<if test="grade != null ">and a.grade =#{grade} </if>
+		<if test="resp != null and resp != 'resp'">and a.resp =#{resp} </if>   
+		<if test="resp == 'resp'">and a.resp is null </if>   
+		   and m.motcode = a.adminmot
+		   and a.id=ex.applyid
+		   and ex.status = '已处理' 
+		   and ex.usertype = 'en'
+		   and a.id in (select t.applyid
+		                 from examine t
+		                where t.status = '待考评'
+		                  and t.auditer = #{auditer})
+		   order by a.createdate desc) tab
+	</select>
+	
+<!-- 	加载申请页面根据userid -->
+	<select id="getOrgRegInfo" parameterType="java.util.HashMap" resultMap="orgRegResult">
+		select distinct t.*, m.motname, v.filetext typename
+		  from org_reg t, mot m, valuetext v
+		 where t.userid = #{userid}
+		   and t.adminmot = m.motcode
+		   and t.bustype = v.fileid
+		   and (t.del is null or t.del !='1')
+	</select>	
+	
+<!-- 	加载下拉菜单业务类型 -->
+	<select id="getBusType" parameterType="java.util.HashMap" resultMap="valueTextResult">
+		select v.* from valuetext v where v.filetype=#{bustype}
+	</select>
+	
+	
+	<!-- 加载Chart数据 -->
+	<select id="getRespSum" parameterType="java.util.HashMap" resultMap="motResult">
+		SELECT 
+		 COUNT(CASE WHEN en.resp IS NULL THEN 1 END) motname,
+		 COUNT(CASE WHEN en.resp_Review IS NULL THEN 1 END) motupper
+		   FROM en_apply en WHERE (en.del IS NULL OR en.del != '1') AND en.adminmot LIKE CONCAT(#{motcode},'%')
+	</select>
+	<select id="getRegRespSum" parameterType="java.util.HashMap" resultMap="motResult">
+		SELECT * FROM (SELECT
+  COUNT(*) motname
+FROM mot_reg
+WHERE (del != 1
+        OR del IS NULL)
+    AND adminmot IN(SELECT
+                      motcode
+                    FROM mot
+                    WHERE del != '1'
+                         OR del IS NULL
+                        AND motcode LIKE CONCAT(#{motcode},'%'))
+    AND (regresp = 0
+          OR regresp IS NULL)) mot ,
+(SELECT COUNT(*) motcode
+      FROM pn_reg
+      WHERE (del != 1
+	      OR del IS NULL)
+	  AND admin IN(SELECT
+			 motcode
+		       FROM mot
+		       WHERE del != '1'
+			    OR del IS NULL
+			   AND motcode LIKE CONCAT(#{motcode},'%'))
+	  AND (regresp = 0
+		OR regresp IS NULL) ) pn,
+(SELECT COUNT(*) motupper
+    FROM org_reg
+    WHERE (del != 1
+	    OR del IS NULL)
+	AND adminmot IN(SELECT
+			  motcode
+			FROM mot
+			WHERE del != '1'
+			     OR del IS NULL
+			    AND motcode LIKE CONCAT(#{motcode},'%'))
+AND (regresp = 0
+		OR regresp IS NULL)) org,
+		
+(SELECT COUNT(*) del
+    FROM en_reg
+    WHERE (del != 1
+	    OR del IS NULL)
+	AND adminmot IN(SELECT
+			  motcode
+			FROM mot
+			WHERE del != '1'
+			     OR del IS NULL
+			    AND motcode LIKE CONCAT(#{motcode},'%'))
+AND (regresp = 0
+		OR regresp IS NULL)) en
+	</select>
+	
+</mapper>
+

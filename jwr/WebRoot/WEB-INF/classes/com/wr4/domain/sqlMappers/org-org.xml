@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.OrgOrgInfo">
+		 <resultMap type="com.wr4.domain.OrgInfo" id="orgResult">
+        <!-- 日期                            -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 单位基本情况相关材料            -->
+        <result column="MET" jdbcType="VARCHAR" property="met" />
+        <!-- 发证时间                        -->
+        <result column="CDATE" jdbcType="VARCHAR" property="cdate" />
+        <!-- 邮编                            -->
+        <result column="PCODE" jdbcType="VARCHAR" property="pcode" />
+        <!-- 备注                            -->
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <!-- 处理意见                        -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 证件号                          -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 名称                            -->
+        <result column="ORGNAME" jdbcType="VARCHAR" property="orgname" />
+        <!-- 换证原因（仅换证申请）          -->
+        <result column="RENEW" jdbcType="VARCHAR" property="renew" />
+        <!-- 开始从事相应业务年份            -->
+        <result column="STARTDATE" jdbcType="VARCHAR" property="startdate" />
+        <!-- 专职考评员聘用证明与职称证明    -->
+        <result column="PNS" jdbcType="VARCHAR" property="pns" />
+        <!-- 所在省市                        -->
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <!-- 证书号                          -->
+        <result column="CID" jdbcType="VARCHAR" property="cid" />
+        <!-- 法人代表                        -->
+        <result column="LEGALP" jdbcType="VARCHAR" property="legalp" />
+        <!-- 等级                            -->
+        <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+        <!-- 联系人邮箱                      -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 用户ID                          -->
+        <result column="USERID" jdbcType="VARCHAR" property="userId" />
+        <!-- 业务类型                        -->
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="busType" />
+        <!-- 受理结果                        -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 传真号码                        -->
+        <result column="FAX" jdbcType="VARCHAR" property="fax" />
+        <!-- 专职考评员人数                  -->
+        <result column="PNUMBER" jdbcType="DOUBLE" property="pnumber" />
+        <!-- 联系人姓名                      -->
+        <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+        <!-- 通讯地址                        -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机                            -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 主管机关                        -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 联系电话                        -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 高级技术职称考评员人数          -->
+        <result column="PNUMBER2" jdbcType="DOUBLE" property="pnumber2" />
+        <!-- 受理日期                        -->
+        <result column="RESPDATE" jdbcType="VARCHAR" property="respdate" />
+        <!-- 申请标示(0表示初次申请,1标示证书申请,2换证申请) -->
+        <result column="APPLYTYPE" jdbcType="VARCHAR" property="applytype" />
+        <!-- ID -->
+        <result column="ID"  property="id" />
+        <!-- 考评管理制度 -->
+        <result column="MAN" jdbcType="VARCHAR" property="man" />
+        <!-- 其他材料 -->
+        <result column="ORHER" jdbcType="VARCHAR" property="orher" />
+        <!-- 删除标志 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 审核结果 -->
+        <result column="RESPREVIEW" jdbcType="VARCHAR" property="respreview" />
+        <result column="RN"  property="rn" />
+        <result column="TYPENAME"  property="typename" />
+         <result column="MOTNAME"  property="motname" />
+	</resultMap>
+
+	<resultMap type="com.wr4.domain.ExchangeInfo" id="exchangeMap">
+        <!-- 主键 -->
+        <result column="ID"   property="id" />
+        <!-- 更改原因 -->
+        <result column="REASON"   property="reason" />
+        <!-- 更改内容 -->
+        <result column="CONTENT"   property="content" />
+        <!-- 机构id -->
+        <result column="PID"  property="pid" />
+        <!-- 更改日期 -->
+        <result column="CDATE"  property="cdate" />
+        <!-- 主管机关 -->
+        <result column="ADMINMOT"  property="adminmot" />
+        <!-- 用户id -->
+        <result column="USERID"  property="userid" />
+        <!-- 备用字段 -->
+        <result column="BYZD2"  property="byzd2" />
+        <!-- 备用字段 -->
+        <result column="BYZD3"  property="byzd3" />
+        <!-- 备用字段 -->
+        <result column="BYZD4" property="byzd4" />
+        <result column="RN" property="rn"/>
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.CertInfo" id="certMap">
+        <!-- 主键 -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 创建人 -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 证书号 -->
+        <result column="CERTNUMBER" jdbcType="VARCHAR" property="certnumber" />
+        <!-- 发证时间 -->
+        <result column="FZDATE" jdbcType="VARCHAR" property="fzdate" />
+        <!-- 证书类型 -->
+        <result column="CERTTYPE" jdbcType="VARCHAR" property="certtype" />
+        <!-- 证书状态 -->
+        <result column="CERTSTATUS" jdbcType="VARCHAR" property="certstatus" />
+        <!-- 更改原因 -->
+        <result column="REASON" jdbcType="VARCHAR" property="reason" />
+        <!-- 证件号 -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 证书到期日 -->
+        <result column="STOPDATE" jdbcType="VARCHAR" property="stopdate" />
+        <!-- 受理结果 -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 受理结果 -->
+        <result column="ORGID" jdbcType="VARCHAR" property="orgid" />
+        <!-- 备用字段 -->
+        <result column="BYZD3" jdbcType="VARCHAR" property="byzd3" />
+           <result column="FILETEXT" jdbcType="VARCHAR" property="filetext" />
+         <result column="RN"  property="rn" />
+	</resultMap>
+
+	<resultMap type="com.wr4.domain.OrgYearReport" id="yearMap">
+        <!-- 年报URL -->
+        <result column="FREPORT" jdbcType="VARCHAR" property="freport" />
+        <!-- 用户ID  -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 年份    -->
+        <result column="YEAR" jdbcType="VARCHAR" property="year" />
+        <!-- 日期    -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+          <result column="RN" property="rn" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.MotInfo" id="motResult">
+        <!-- 主管机关名称 -->
+        <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+        <!-- 主管机关编号 -->
+        <result column="MOTCODE" jdbcType="VARCHAR" property="motcode" />
+        <!-- 上级主管机关编号 -->
+        <result column="MOTUPPER" jdbcType="VARCHAR" property="motupper" />
+        <!-- DEL -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 主键 -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+	</resultMap>
+	
+<!-- 	查询考评机构工作资质申请列表	 -->
+	<select id="getBookApply" parameterType="java.util.HashMap" resultMap="orgResult">
+		select distinct t.*, m.filetext typename
+		  from org_apply t, valuetext m
+		 where t.userid = #{userId}
+		   and t.bustype = m.fileid
+		      and ( t.del is null or t.del='0')
+   			and(t.applytype is null or t.applytype!='2')
+		   order by t.createdate desc limit #{start},#{pagesize}
+	</select>
+	
+	<select id="getBookChangesApply" parameterType="java.util.HashMap" resultMap="orgResult">
+		select distinct t.*, m.filetext typename
+		  from org_apply t, valuetext m
+		 where t.userid = #{userId}
+		   and t.bustype = m.fileid
+		      and ( t.del is null or t.del='0')
+   			and t.applytype='2' 
+		   order by t.createdate desc
+	</select>
+	
+	<!-- 	查询考评机构工作资质申请是否重复	 -->
+	<select id="getBookApplyIsBol" parameterType="java.util.HashMap" resultMap="orgResult">
+		select distinct t.*, m.filetext typename
+		  from org_apply t, valuetext m
+		 where t.userid = #{userId}
+		   and t.bustype = m.fileid
+		    and ( t.del is null or t.del='0')
+   			and(t.applytype is null or t.applytype!='2')
+   			and t.bustype=#{bustype}
+   			and t.grade=#{grade}
+   			and (t.resp ='同意' or t.resp ='尚未处理')
+		   order by createdate desc
+	</select>
+	<!-- 	查询考评机构工作资质申请列表总条数	 -->
+	<select id="getBookCountApply" parameterType="java.util.HashMap" resultType="int" >
+	select count(1) count from(
+		select distinct t.*, m.filetext typename
+		  from org_apply t, valuetext m
+		 where t.userid = #{userId}
+		   and t.bustype = m.fileid
+		    and ((t.applytype='1' and t.del='0')
+   			or t.applytype='2')
+		   ) tab
+	</select>
+	
+<!-- 	申请信息插入到申请表中 -->
+	<insert id="orgReg" parameterType="com.wr4.domain.OrgInfo">
+		insert into ORG_APPLY ( 
+			CREATEDATE,
+			MET,
+			CDATE,
+			PCODE,
+			PID,
+			ORGNAME,
+			RENEW,
+			STARTDATE,
+			PNS,
+			PROVINCE,
+			CID,
+			LEGALP,
+			GRADE,
+			EMAIL,
+			USERID,
+			BUSTYPE,
+			RESP,
+			FAX,
+			PNUMBER,
+			CONTACT,
+			ADDRESS,
+			MOBILE,
+			ADMINMOT,
+			TEL,
+			PNUMBER2,
+			RESPDATE,
+			APPLYTYPE,
+			MAN,
+			ORHER,
+			CITY,
+			DEL
+		)values(
+			#{createdate ,jdbcType=VARCHAR},
+			#{met ,jdbcType=VARCHAR},
+			#{cdate ,jdbcType=VARCHAR},
+			#{pcode ,jdbcType=VARCHAR},
+			#{pid ,jdbcType=VARCHAR},
+			#{orgname ,jdbcType=VARCHAR},
+			#{renew ,jdbcType=VARCHAR},
+			#{startdate ,jdbcType=VARCHAR},
+			#{pns ,jdbcType=VARCHAR},
+			#{province ,jdbcType=VARCHAR},
+			#{cid ,jdbcType=VARCHAR},
+			#{legalp ,jdbcType=VARCHAR},
+			#{grade ,jdbcType=VARCHAR},
+			#{email ,jdbcType=VARCHAR},
+			#{userId ,jdbcType=VARCHAR},
+			#{busType ,jdbcType=VARCHAR},
+			#{resp ,jdbcType=VARCHAR},
+			#{fax ,jdbcType=VARCHAR},
+			#{pnumber ,jdbcType=VARCHAR},
+			#{contact ,jdbcType=VARCHAR},
+			#{address ,jdbcType=VARCHAR},
+			#{mobile ,jdbcType=VARCHAR},
+			#{adminmot ,jdbcType=VARCHAR},
+			#{tel ,jdbcType=VARCHAR},
+			#{pnumber2 ,jdbcType=VARCHAR},
+			#{respdate ,jdbcType=VARCHAR},
+			#{applytype ,jdbcType=VARCHAR},
+			#{man ,jdbcType=VARCHAR},
+			#{orher ,jdbcType=VARCHAR},
+			#{city ,jdbcType=VARCHAR},
+			#{del ,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+<!-- 	获取申请表id -->
+	<select id="getOrgApplyId"  parameterType="com.wr4.domain.OrgInfo" resultMap="orgResult">
+			select t.* 
+	  from org_apply t
+	 where t.userid = #{userId}
+	   and t.del != '1'
+	   and t.cid is null
+	   and t.respdate is not null
+	   and t.bustype = #{busType}
+	    and （t.resp is null or t.resp = '同意'）
+	</select>
+	
+	<select id="getOrgApplyId1"  parameterType="com.wr4.domain.OrgInfo" resultMap="orgResult">
+			select p.*  from (
+			select t.*
+				  from org_apply t
+			   where t.userid = #{userId}
+			     and t.del != '1'
+			     and t.cid is null
+			     and t.respdate is  null
+			     and t.bustype = #{busType}
+			     order by t.createdate desc)p limit 1
+	</select>
+<!-- 	资质申请插入流程表数据 -->
+	<insert id="orgRegExm" parameterType="com.wr4.domain.Examine" >
+		insert into EXAMINE 
+			(
+			userid,usertype,status,auditdate,auditer_mot,audittype,pid,applyid
+			)
+			values
+			(
+			#{userid,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},#{auditdate,jdbcType=VARCHAR},
+			#{auditerMot,jdbcType=VARCHAR},#{audittype,jdbcType=VARCHAR},
+			#{pid,jdbcType=VARCHAR},#{applyId,jdbc=VARCHAR}
+			)
+	</insert>
+	
+<!-- 	变更申请查询 -->
+	<select id="getUpdateList" parameterType="java.util.HashMap" resultMap="exchangeMap">
+				select t.* from exchange t where t.userId=#{userId} and t.type=#{type}
+	</select>
+	
+<!-- 	变更申请插入	 -->
+	<insert id="insertUpdateContent" parameterType="java.util.HashMap">
+		insert into exchange(reason,content,pid,cdate,adminmot,userid,del,type)
+		values(#{reason,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},
+		#{cdate,jdbcType=VARCHAR},#{adminmot,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{del,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR})
+	</insert>
+	
+<!-- 	换证申请查询 -->
+	<select id="getBookChange" parameterType="java.util.HashMap" resultMap="certMap">
+		select distinct o.*, v.filetext
+     	from cert o,valuetext v
+	    where 
+	      o.del = '0'
+	      and o.certstatus = '1'
+	      and o.certtype=v.fileid
+	      and o.certnumber in (select distinct w.cid
+	                             from Org_Apply w,
+	                                  (select t.applyid, t.status
+	                                     from examine t
+	                                    where t.status = '已发证'
+	                                      and t.pid = #{pid}) r
+	                            where w.id = r.applyid
+	                              and w.del = '0'
+	                              and w.cid is not null) limit #{start},#{pagesize}
+	</select>
+	<!-- 	换证申请查询总数 -->
+	<select id="getBookCountChange" parameterType="java.util.HashMap" resultType="int" >
+	select count(1) count from (
+		select distinct o.*, v.filetext
+     	from cert o,valuetext v
+	    where 
+	      o.del = '0'
+	      and o.certstatus = '1'
+	      and o.certtype=v.fileid
+	      and o.certnumber in (select distinct w.cid
+	                             from Org_Apply w,
+	                                  (select t.applyid, t.status
+	                                     from examine t
+	                                    where t.status = '已发证'
+	                                      and t.pid = #{pid}) r
+	                            where w.id = r.applyid
+	                              and w.del = '0'
+	                              and w.cid is not null)
+	      ) ttab
+	</select>
+	<select id="getBookChange1" parameterType="java.util.HashMap" resultMap="certMap">
+		select distinct o.*,t.resp,t.id orgid, v.filetext
+       from cert o,valuetext v ,org_apply t
+      where 
+        o.del = '0'
+        and o.certtype=v.fileid
+        and t.APPLYTYPE='2'
+        and (t.del is null or t.del !=1)
+        and t.userid=o.userid
+        and o.certnumber in (select distinct w.cid
+                               from Org_Apply   w
+                              where 1=1
+                                and w.del = '0'
+                                and w.APPLYTYPE='2'
+                                and w.cid is not null
+                                and w.pid =#{pid})
+	</select>
+	<!-- 	换证申请查询总数 -->
+	<select id="getBookCountChange1" parameterType="java.util.HashMap" resultType="int" >
+	select count(1) count from (
+		select distinct o.*,t.resp,t.id orgid, v.filetext
+       from cert o,valuetext v ,org_apply t
+      where 
+        o.del = '0'
+        and o.certtype=v.fileid
+        and t.APPLYTYPE='2'
+        and (t.del is null or t.del !=1)
+        and t.userid=o.userid
+        and o.certnumber in (select distinct w.cid
+                               from Org_Apply   w
+                              where 1=1
+                                and w.del = '0'
+                                and w.APPLYTYPE='2'
+                                and w.cid is not null
+                                and w.pid =#{pid})
+	      ) ttab
+	</select>
+	<!-- 	获取所有证书 -->
+	<select id="getAllBookList" parameterType="java.util.HashMap" resultMap="certMap">
+		select o.*
+	          from cert o
+	         where o.certnumber in (select distinct w.cid
+	                                  from Org_Apply w,
+	                                       (select t.applyid, t.status
+	                                          from examine t
+	                                         where t.status = '已发证'
+	                                           and t.pid = #{pid}) r
+	                                 where w.id = r.applyid
+	                                      and (w.del !='1' or w.del is null)
+    							           and (w.applytype !='2' or w.applytype is null)
+	                                   and w.cid is not null)
+	         order by o.certstatus desc
+
+	</select>
+	<!-- 	获取所有证书总数 -->
+	<select id="getCountAllBookList" parameterType="java.util.HashMap" resultType="int" >
+		select count(*) count
+	          from cert o
+	         where o.certnumber in (select distinct w.cid
+	                                  from Org_Apply w,
+	                                       (select t.applyid, t.status
+	                                          from examine t
+	                                         where t.status = '已发证'
+	                                           and t.pid = #{pid}) r
+	                                 where w.id = r.applyid
+	                                      and (w.del !='1' or w.del is null)
+    							           and (w.applytype !='2' or w.applytype is null)
+    
+	                                   and w.cid is not null)
+	         order by o.certstatus desc
+
+	</select>
+	
+<!-- 	换证列表详细信息查询 -->
+	<select id="getBookDetailList" parameterType="java.util.HashMap" resultMap="orgResult">
+	  select distinct t.*, m.filetext typename,o.motname
+		  from org_apply t, valuetext m,mot o
+		 where t.pid=#{pid} and t.cid=#{cid}
+		   and t.bustype = m.fileid
+       and t.adminmot=o.motcode
+	</select>
+	
+	<select id="getBookCountDetailList" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+	  select distinct t.*, m.filetext typename,o.motname
+		  from org_apply t, valuetext m,mot o
+		 where t.pid=#{pid} and t.cid=#{cid}
+		   and t.bustype = m.fileid
+       and t.adminmot=o.motcode
+       ) ttab
+	</select>
+<!-- 	换证列表详细信息查询 -->
+	<select id="getBookDetailList1" parameterType="java.util.HashMap" resultMap="orgResult">
+	  select distinct t.*, m.filetext typename,o.motname
+		  from org_apply t, valuetext m,mot o
+		 where t.pid=#{pid} and t.cid=#{cid}
+		   and t.bustype = m.fileid
+       	   and t.adminmot=o.motcode
+       	   and t.applytype='2'
+       	   and t.id=#{orgid}
+	</select>
+	
+	<select id="getBookCountDetailList1" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+	  select distinct t.*, m.filetext typename,o.motname
+		  from org_apply t, valuetext m,mot o
+		 where t.pid=#{pid} and t.cid=#{cid}
+		   and t.bustype = m.fileid
+       	   and t.adminmot=o.motcode
+       	   and t.applytype='2'
+       ) ttab
+	</select>
+	<!-- 	资质证书列表查询 -->
+	<select id="getBookList" parameterType="java.util.HashMap" resultMap="certMap">
+		select * from cert o where o.certnumber in(
+		select distinct w.cid from Org_Apply w,(
+		select t.pid,t.status from examine t where 
+		pid=#{pid}
+		) r where w.pid=r.pid and w.cid is not null
+		)
+	</select>
+	<!-- 	年度工作报告列表查询 -->
+	<select id="getBookYearReportList" parameterType="java.util.HashMap" resultMap="yearMap">
+		 select distinct ye.id s, ye.*, en.orgname
+                  from org_report ye
+                  join  org_APPLY en
+                    on ye.userid = en.userid
+                 where en.adminmot in
+                       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+                        
+	</select>
+	<!-- 	年度工作报告列表查询 -->
+	<select id="getBookYearReportListCount" parameterType="java.util.HashMap" resultType="int" >
+		 select count(1) count from (
+		 select distinct ye.id s, ye.*, en.orgname
+                  from org_report ye
+                  join  org_APPLY en
+                    on ye.userid = en.userid
+                 where en.adminmot in
+                       (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+          ) ttab    
+	</select>
+	<!-- 	年度工作报告列表查询 -->
+	<select id="getBookYearReportListByUserId" parameterType="java.util.HashMap" resultMap="yearMap">
+		 select distinct ye.id s, ye.*, en.orgname
+                  from org_report ye
+                  join  org_APPLY en
+                    on ye.userid = en.userid
+                 where en.userid=#{userid} limit #{start},#{pagesize}
+                        
+	</select>
+	<!-- 	年度工作报告列表查询 总数-->
+	<select id="getBookYearReportListByUserIdCount" parameterType="java.util.HashMap" resultType="int">
+		 select count(1) count from (
+		 select distinct ye.id s, ye.*, en.orgname
+                  from org_report ye
+                  join  org_APPLY en
+                    on ye.userid = en.userid
+                 where en.userid=#{userid}
+         ) ttab   
+	</select>
+	
+<!-- 	插入数据到org_report年度工作报表 -->
+	<insert id="saveYearReport" parameterType="com.wr4.domain.OrgYearReport">
+		insert into org_report(freport,userid,year,createdate) values(#{freport},#{userid},#{year},#{createdate})
+	</insert>
+	
+<!-- 	根据motcode查询motInfo -->
+	<select id="getMotByCode" parameterType="java.util.HashMap" resultMap="motResult">
+		select * from mot where motcode=#{motcode}
+	</select>
+	
+<!-- 	更新换证原因 -->
+	<insert id="updateReason" parameterType="java.util.HashMap">
+		insert into org_apply(createdate,met,cdate,pcode,remark,advice,pid,orgname,renew,startdate,pns,province,cid,legalp,grade,email,userid,
+bustype,resp,fax,pnumber,contact,address,mobile,adminmot,tel,pnumber2,respdate,applytype,man,orher,del,respreview,otherreason,city) 
+select #{createdate},t.met,t.cdate,t.pcode,t.remark,'',t.pid,t.orgname,#{reason},t.startdate,t.pns,t.province,t.cid,t.legalp,t.grade,t.email,t.userid,
+t.bustype,'',t.fax,t.pnumber,t.contact,t.address,t.mobile,t.adminmot,t.tel,t.pnumber2,t.respdate,#{applyType},t.man,t.orher,t.del,t.respreview,t.otherreason,t.city
+  from org_apply t where t.id=#{id}
+	</insert>
+	<update id="updateOrgcert" parameterType="java.util.HashMap">
+		update cert t set t.certstatus = '2' where  t.userid=#{userid} and t.certnumber=#{cid} 
+	</update>
+</mapper>
+

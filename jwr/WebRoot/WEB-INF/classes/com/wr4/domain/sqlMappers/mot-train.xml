@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.PnTrainInfo">
+	<select id="selectAll" parameterType="com.wr4.domain.PnTrainInfo"
+		resultType="com.wr4.domain.PnInfo">
+		
+		select  v.* from (select b.*
+      from  pn_train b
+     join pn_apply pn on b.pn_id=pn.id   
+     where (pn.applytype !='2' or pn.applytype is null)
+          and (pn.del !='1' or pn.del is null)
+          and b.adminmot in
+      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+         <if test="pnname != null">  
+	        and b.pnname = #{pnname}
+         </if>
+          <if test="bustype != null">  
+            and b.bustype = #{bustype}
+         </if>  
+          <if test="train_id != null">  
+            and b.train_id = #{train_id}
+         </if>  
+                
+        )v limit #{start},#{pagesize}
+	</select>
+	<!-- 已录入考评员培训考试总数 -->
+	<select id="selectAllCount" parameterType="com.wr4.domain.PnTrainInfo"
+		resultType="int">
+		select count(1) count from (
+		select  v.* from (select b.*
+      from  pn_train b
+     join pn_apply pn on b.pn_id=pn.id   
+     where (pn.applytype !='2' or pn.applytype is null)
+          and (pn.del !='1' or pn.del is null)
+          and b.adminmot in
+      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+         <if test="pnname != null">  
+	        and b.pnname = #{pnname}
+         </if>
+          <if test="bustype != null">  
+            and b.bustype = #{bustype}
+         </if>  
+          <if test="train_id != null">  
+            and b.train_id = #{train_id}
+         </if>  
+                
+        )v
+        ) ttab
+	</select>
+	
+	<select id="selectAllpn" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.PnInfo">
+		select v.* from (select *
+		      from  pn_train b  
+		     where b.adminmot in
+		      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) and b.userid=#{userid}
+         <if test="pnname != null">  
+	        and b.pnname = #{pnname}
+	     </if>
+	      <if test="bustype != null">  
+	        and b.bustype = #{bustype}
+	     </if>  
+	      <if test="train_id != null">  
+	        and b.train_id = #{train_id}
+	     </if> 
+	     )v  limit #{start},#{pagesize}
+	</select>
+	<select id="selectAllpnCount" parameterType="java.util.HashMap"
+		resultType="int">
+		select count(1) count from (
+		select v.* from (select *
+		      from  pn_train b  
+		     where b.adminmot in
+		      (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) and b.userid=#{userid}
+         <if test="pnname != null">  
+	        and b.pnname = #{pnname}
+	     </if>
+	      <if test="bustype != null">  
+	        and b.bustype = #{bustype}
+	     </if>  
+	      <if test="train_id != null">  
+	        and b.train_id = #{train_id}
+	     </if> 
+	     )v
+	     ) tab
+	</select>
+	<select id="selectAllTrain" parameterType="java.util.HashMap"
+		resultType="com.wr4.domain.PnTrainInfo">
+  		select * from pn_train pt where 1=1  
+  		 <if test="adminmot != null">  
+	        and pt.adminmot = #{adminmot}
+	     </if>
+	      <if test="pnname != null">  
+	        and pt.pnname = #{pnname}
+	     </if>
+	      <if test="bustype != null">  
+	        and pt.bustype = #{bustype}
+	     </if>  
+	      <if test="train_id != null">  
+	        and pt.train_id = #{train_id}
+	     </if>  
+	</select>
+	<select id="orgPnTrain" parameterType="com.wr4.domain.PnTrainInfo"  resultType="com.wr4.domain.PnTrainInfo">
+		 select p.*
+		  from pn_train p
+		 where p.userid in
+		       (select t.userid from pn_apply t where t.attrorg = #{byzd}) limit #{start},#{pagesize}
+	</select>
+	
+	<select id="orgPnTrainCount" parameterType="com.wr4.domain.PnTrainInfo" resultType="int">
+	select count(1) count from(
+		 select  d.*
+          from (select p.*
+		  from pn_train p
+		 where p.userid in
+		       (select t.userid from pn_apply t where t.attrorg = #{byzd})) d
+		 ) ttab
+	</select>
+	<select id="getAllNoTrain" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnInfo">
+		 select c.*
+	 	 from (select *
+	          from pn_apply a,
+	               (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+	         where a.adminmot = b.motcode) c
+	         
+	         where (c.applytype!='2' or c.applytype is null)
+	               and (c.del !='1' or c.del is null)
+	               order by c.createdate desc  limit #{start},#{pagesize}
+	</select>
+	
+	<select id="getAllNoTrainCount" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+		 select c.*
+	 	 from (select *
+	          from pn_apply a,
+	               (SELECT motcode FROM mot WHERE motcode like CONCAT(#{mot},'%')) b
+	         where a.adminmot = b.motcode) c
+	         
+	         where (c.applytype!='2' or c.applytype is null)
+	               and (c.del !='1' or c.del is null)
+	               order by c.createdate desc
+	     ) ttab
+	</select>
+	<insert id="com.wr4.domain.PnTrainInfo.pnTrainSave" parameterType="java.util.HashMap">
+		insert into pn_train
+		  (PN_ID,
+		   PNNAME,
+		   TRAIN_START,
+		   TRAIN_END,
+		   TRAIN_HOUR,
+		   EXAM_SCORE,
+		   EXAM_DATE,
+		   TRAIN_ID,
+		   BUSTYPE,
+		   ADMINMOT,
+		   USERID)
+		values
+		  (#{pnid,jdbcType=VARCHAR},
+		   #{username,jdbcType=VARCHAR},
+		   #{train_start,jdbcType=VARCHAR},
+		   #{train_end,jdbcType=VARCHAR},
+		   #{train_hour,jdbcType=VARCHAR},
+		   #{exam_score,jdbcType=VARCHAR},
+		   #{exam_date,jdbcType=VARCHAR},
+		   #{train_id,jdbcType=VARCHAR},
+		   #{bustype,jdbcType=VARCHAR},
+		   #{admin,jdbcType=VARCHAR},
+		   #{userid,jdbcType=VARCHAR})
+		
+	</insert>
+	<select id="applyAcceptGetTrain" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from pn_train t where t.userid = #{userid} and t.bustype=#{bustype} and t.adminmot = #{adminmot}
+	</select>
+</mapper>

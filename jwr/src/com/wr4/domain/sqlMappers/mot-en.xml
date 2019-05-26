@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.MotEnInfo">
+	<resultMap id="enResult1" type="com.wr4.domain.EnInfo">
+		<result property="id" jdbcType="INTEGER" column="ID" />
+		<result property="license" column="LICENSE" />
+		<result property="tax" column="TAX" />
+		<result property="date" column="CREATEDATE" />
+		<result property="cDate" column="CDATE" />
+		<result property="comment" column="REMARKS" />
+		<result property="orgId1" column="ORGID1" />
+		<result property="advice" column="ADVICE" />
+		<result property="pid" column="PID" />
+		<result property="del" column="DEL" />
+		<result property="enname" column="ENNAME" />
+		<result property="safe" column="SAFE" />
+		<result property="reNew" column="RENEW" />
+		<result property="zpreport" column="ZPREPORT" />
+		<result property="province" column="PROVINCE" />
+		<result property="cid" column="CID" />
+		<result property="legalp" column="LEGALP" />
+		<result property="grade" column="GRADE" />
+		<result property="email" column="EMAIL" />
+		<result property="bustype" column="BUSTYPE" />
+		<result property="resp" column="RESP" />
+		<result property="respDateReview" column="RESPDATE_REVIEW" />
+		<result property="type2" column="TYPE2" />
+		<result property="contact" column="CONTACT" />
+		<result property="adviceReview" column="ADVICE_REVIEW" />
+		<result property="address" column="ADDRESS" />
+		<result property="mobile" column="MOBILE" />
+		<result property="qual" column="QUAL" />
+		<result property="adminmot" column="ADMINMOT" />
+		<result property="respReview" column="RESP_REVIEW" />
+		<result property="tel" column="TEL" />
+		<result property="respDate" column="RESPDATE" />
+		<result property="auditDate" column="AUDITDATE" />
+		<result property="fzDate" column="FZDATE" />
+		<result property="auditAdvice" column="AUDITADVICE" />
+		<result property="results" column="RESULTS" />
+		<result property="userId" column="USERID" />
+		<result property="orgId" column="ORGID" />
+		<result property="applyType" column="APPLYTYPE" />
+		<result property="provinceName" column="provinceName" />
+		<result property="adminMotName" column="adminMotName" />
+		<result property="filetext" column="filetext" />
+		<result property="uppername" column="uppername" />
+		<result property="results" column="results" />
+		<result property="auditdate" column="auditdate" />
+		<result property="respResult" column="respResult" />
+		<result property="respAdvice" column="respAdvice" />
+		<result property="respdate" column="respdate1" />
+		<result property="orgresult" column="orgresult" />
+		<result property="orgadvice" column="orgadvice" />
+		<result property="orgdate" column="orgdate" />
+		<result property="auditResult" column="auditResult" />
+		<result property="selfScore" column="selfScore" />
+		<result property="kaoScore" column="kaoScore" />
+		<result property="changedate" column="changedate" />
+		<result property="changeresault" column="changeresault" />
+		<result property="changereason" column="changereason" />
+		<result property="apporg" column="APPORG" />
+		<result property="city" column="CITY" />
+		<result property="area" column="AREA" />
+		<result property="apporgname" column="apporgname"/>
+		<result property="auditername" column="auditername"/>
+		
+	</resultMap>
+	
+	<select id="getOrgName" parameterType="String" resultType="String">
+	select * from (
+	select commonname from userregister  where paperid=#{sorg}  order by  REGISTERDATE desc
+	) tab limit 1
+		 
+	</select>
+	<select id="getEnList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select license,tax,createdate,cdate,remarks,orgid1,advice,pid,del,enname,safe,renew,zpreport,
+		province,cid,legalp,grade,email,bustype,(select filetext from valuetext where fileid=bustype) as uppername,
+		resp,respdate_review,type2,(select filetext from valuetext where fileid=type2) as filetext,contact,advice_review,address,
+		mobile,qual,adminmot,(select motname from mot where motcode=adminmot) as adminMotName,
+		resp_review,tel,respdate,userid,applytype,id,zpscore,busclass,pncidlist,city
+		from EN_APPLY where 
+		cid is not null
+		and ( del !='1' or  del is null)
+	   and ( applytype!='2' or  applytype is null)
+	   and  cdate is not null
+	   <if test="adminMotName!=null ">   
+          and  adminmot=#{adminMotName}   
+        </if> 
+	    <if test="bustype!=null ">   
+          and  type2=#{bustype}   
+        </if> 
+	    <if test="grade!=null ">   
+          and  grade=#{grade}   
+        </if> 
+	    <if test="enname!=null ">   
+          and  enname like CONCAT('%',#{enname},'%')  
+        </if> 
+	    <if test="cid!=null ">   
+          and  cid like CONCAT('%',#{cid},'%')
+        </if> 
+        and adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+	   and cid in(select certnumber from cert where (del !='1' or del is null) )
+	</select>
+	<select id="getEnListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+	select count(1) count from (
+		select license,tax,createdate,cdate,remarks,orgid1,advice,pid,del,enname,safe,renew,zpreport,
+		province,cid,legalp,grade,email,bustype,(select filetext from valuetext where fileid=bustype) as uppername,
+		resp,respdate_review,type2,(select filetext from valuetext where fileid=type2) as filetext,contact,advice_review,address,
+		mobile,qual,adminmot,(select motname from mot where motcode=adminmot) as adminMotName,
+		resp_review,tel,respdate,userid,applytype,id,zpscore,busclass,pncidlist
+		from EN_APPLY where 
+		cid is not null
+		and ( del !='1' or  del is null)
+	   and ( applytype!='2' or  applytype is null)
+	   and  cdate is not null
+	   <if test="adminMotName!=null ">   
+          and  adminmot=#{adminMotName}   
+        </if> 
+	    <if test="bustype!=null ">   
+          and  type2=#{bustype}   
+        </if> 
+	    <if test="grade!=null ">   
+          and  grade=#{grade}   
+        </if> 
+	    <if test="enname!=null ">   
+          and  enname like CONCAT('%',#{enname},'%')
+        </if> 
+	    <if test="cid!=null ">   
+          and  cid like CONCAT('%',#{cid},'%')
+        </if> 
+        and adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+	   and cid in(select certnumber from cert where (del !='1' or del is null) )
+	   ) ttab
+	</select>
+	<update id="delApplyInfo" parameterType="int" >
+				update en_apply t
+		   set t.del='1'
+		 where t.id=#{id}
+	</update>
+	<select id="getEnChangeList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select  license,tax,createdate,cdate,remarks,orgid1,advice,pid,del,enname,safe,renew,zpreport,
+		province,cid,legalp,grade,email,bustype,(select filetext from valuetext where fileid=bustype) as uppername,
+		resp,respdate_review,type2,(select filetext from valuetext where fileid=type2) as filetext,contact,advice_review,address,
+		mobile,qual,adminmot,(select motname from mot where motcode=adminmot) as adminMotName,
+		resp_review,tel,respdate,userid,applytype,id,zpscore,busclass,pncidlist,changeresault ,changedate  ,changereason,city
+		from EN_APPLY where 
+		cid is not null
+		and applytype='2'
+		and (del != '1' or del is null)
+		and adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))
+	</select>
+	<select id="getEnApplyList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+	  select en.license,en.tax,en.createdate,en.cdate,en.remarks,en.orgid1,en.advice,en.pid,en.del,en.enname,en.safe,en.renew,en.zpreport,
+      en.province,en.cid,en.legalp,en.grade,en.email,en.bustype,(select filetext from valuetext where fileid=en.bustype) as uppername,
+      en.resp,en.respdate_review,en.type2,(select filetext from valuetext where fileid=en.type2) as filetext,en.contact,en.advice_review,en.address,
+      en.mobile,en.qual,en.adminmot,(select motname from mot where motcode=en.adminmot) as adminMotName,en.apporg,
+      en.resp_review,en.tel,en.respdate,en.userid,en.applytype,en.id,en.zpscore,en.type2 busclass,en.pncidlist,en.city,aa.results,aa.auditdate
+      from en_apply en,examine aa
+      where en.id = aa.applyid and  aa.userid=#{userId}  
+      and (en.del !='1' or en.del is null)
+               and (en.applytype !='2' or en.applytype is null)
+    
+	</select>
+	<!-- 判断该次企业申请的 类别 主管机关是否已拒绝 -->
+	<select id="getEnApplyShIsBolList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select en.userid from en_apply en
+		join examine sh on en.id=sh.applyid and sh.handletype='en' and sh.results='0'
+		where en.userid=#{userId} and en.type2=#{type2}  and en.grade=#{grade}
+	</select>
+	<select id="getEnApplyIsBolList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+	  select en.license,
+       en.tax,
+       en.createdate,
+       en.cdate,
+       en.remarks,
+       en.orgid1,
+       en.advice,
+       en.pid,
+       en.del,
+       en.enname,
+       en.safe,
+       en.renew,
+       en.zpreport,
+       en.province,
+       en.cid,
+       en.legalp,
+       en.grade,
+       en.email,
+       en.bustype,
+       (select filetext from valuetext where fileid = en.bustype) as uppername,
+       en.resp,
+       en.respdate_review,
+       en.type2,
+       (select filetext from valuetext where fileid = en.type2) as filetext,
+       en.contact,
+       en.advice_review,
+       en.address,
+       en.mobile,
+       en.qual,
+       en.adminmot,
+       (select motname from mot where motcode = en.adminmot) as adminMotName,
+       en.resp_review,
+       en.tel,
+       en.respdate,
+       en.userid,
+       en.applytype,
+       en.id,
+       en.zpscore,
+       en.type2 busclass,
+       en.pncidlist,
+       aa.results,
+       aa.auditdate
+  from en_apply en, examine aa
+ where en.id = aa.applyid
+   and aa.userid = #{userId}
+   and (en.del != '1' or en.del is null)
+   and (en.applytype != '2' or en.applytype is null)
+   and en.type2=#{type2}
+   and en.grade=#{grade}
+   and (aa.results='1' or aa.results is null)
+	</select>
+	<select id="getEnApplyListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+	select count(1) count from (
+	  select en.license,en.tax,en.createdate,en.cdate,en.remarks,en.orgid1,en.advice,en.pid,en.del,en.enname,en.safe,en.renew,en.zpreport,
+      en.province,en.cid,en.legalp,en.grade,en.email,en.bustype,(select filetext from valuetext where fileid=en.bustype) as uppername,
+      en.resp,en.respdate_review,en.type2,(select filetext from valuetext where fileid=en.type2) as filetext,en.contact,en.advice_review,en.address,
+      en.mobile,en.qual,en.adminmot,(select motname from mot where motcode=en.adminmot) as adminMotName,
+      en.resp_review,en.tel,en.respdate,en.userid,en.applytype,en.id,en.zpscore,en.type2 busclass,en.pncidlist,aa.results,aa.auditdate
+      from en_apply en,examine aa
+      where en.id = aa.applyid and  aa.userid=#{userId}  
+      and (en.del !='1' or en.del is null)
+               and (en.applytype !='2' or en.applytype is null)
+    ) ttab
+	</select>
+	<select id="getEnDetail" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select a.*,c.fzdate,e.auditDate,e.advice as auditadvice,e.results from en_apply a, cert c,
+			(select q.* from 
+   		 	(select t.* from examine t,en_apply p where t.userid=p.userid and t.bustype = p.type2 order by t.auditdate desc) q limit 1) e
+		where a.cid = c.certnumber and c.certnumber=#{cid} and (a.del != '1' or a.del is null)
+  		and (a.applytype != '2' or a.applytype is null)
+	</select>
+	<select id="getEnRegInfo" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select userid,userpass,license,tax,pid,username as enname,safe,renew,myreport,
+		(select motname from mot where motcode=province) as provinceName,province,legalp,grade,
+		email,celltype type2,bustype,contact,address,mobile,qual,
+		(select motname from mot where motcode=adminmot) as adminMotName,adminmot,tel,buslicense,
+		orgcodecert,othercert,cpid,regresp,regrespremark,regrespuser,beiyong,beiyong1,createdate,del,id,orgid,city
+		from en_reg where userid=#{userId} and regresp='1' and  (del !='1' or del is null)
+	</select>
+	
+	<select id="getQypf_tables" parameterType="java.util.HashMap" resultType="int">
+		select count(*)  from qypf_table q where q.createuser=#{userid} and q.busclass=#{type2} and q.leval=#{grade}
+	</select>
+	<insert id="saveOrg">
+		insert into check_org(ORGID,BUSTYPE,CID,CREATEUSER,CREATEDATE) VALUES(#{orgId},#{busType},#{cid},#{createUser},#{createDate})
+	</insert>
+	<update id="update" parameterType="com.wr4.domain.EnInfo">
+	 UPDATE en_apply    
+    <set>   
+        <if test="orgId!=null and orgId!='' ">   
+            en_apply.ORGID = #{orgId},    
+        </if>   
+        <if test="applyType!=null and applyType!='' ">   
+            en_apply.APPLYTYPE = #{applyType},    
+        </if>   
+    </set>   
+	where ID=#{id}
+	</update>
+	<select id="getEnByUserIdAndBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnBaseInfo">
+		select b.* from (select a.enname,a.bustype,a.adminmot from en_apply a where 1=1 
+		and  (a.applytype != '2' or a.applytype is null) and (a.del !='1' or a.del is null)
+		and a.cid is not null
+		<if test="enname != null">  
+	       and a.enname = #{enname}
+	    </if>  
+		<if test="cid != null">  
+	       and a.cid = #{cid}
+	    </if>  
+	    ) b limit #{start},#{pagesize}
+	</select>
+	<!-- 获取企业的自评记录 -->
+	<select id="getEnZpListIsBol" parameterType="com.wr4.domain.EnInfo" resultType="com.wr4.domain.EnPFInfo">
+		select t.*,v.filetext bustext from qypf_table  t 
+     	left join valuetext v on t.busclass=v.fileid  and v.filetype='busclass'
+    	where t.createuser= #{userId} and t.busclass =#{type2} and t.leval=#{grade}
+	</select>
+	<!-- 企业基本信息查询总数 -->
+	<select id="getEnByUserIdAndBustypeCount" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+		select b.* from (select a.enname,a.bustype,a.adminmot from en_apply a where 1=1 
+		and  (a.applytype != '2' or a.applytype is null) and (a.del !='1' or a.del is null)
+		and a.cid is not null
+		<if test="enname != null">  
+	       and a.enname = #{enname}
+	    </if>  
+		<if test="cid != null">  
+	       and a.cid = #{cid}
+	    </if>  
+	    ) b
+	    ) ttab
+	</select>
+	
+	<!-- 获取所有业务类别 -->
+	<select id="getFileClass" parameterType="String" resultType="com.wr4.domain.FieldValueInfo">
+		select a.* from valuetext a where a.filetype= #{fileType}
+	</select>
+	
+	<!-- 获取企业的自评记录 -->
+	<select id="getEnZpList" parameterType="String" resultType="com.wr4.domain.EnPFInfo">
+		select a.*,v.filetext bustext from qypf_table  a 
+		 left join valuetext v on a.busclass=v.fileid  and v.filetype='busclass'
+		where a.createuser= #{userid}
+	</select>
+	<!-- 获取第一列的显示文本 -->
+	<select id="getTd1Name" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+		select a.i,a.name from indic1 a where a.detailtype= #{typeid}
+	</select>
+	
+	<!-- 获取考核内容获取考核要点左侧子项-->
+	<select id="getKhydzuoByPid" parameterType="java.util.HashMap" resultType="com.wr4.domain.IndicInfo">
+		select * from indic2 a where a.DETAILTYPE=#{busclass} and  a.I=#{i}
+	</select>
+	<!-- 获取考核内容获取考核要点右侧子项-->
+	<select id="getKhydyouByPid" parameterType="java.util.HashMap" resultType="com.wr4.domain.IndicInfo">
+		select * from indic3 a where a.DETAILTYPE=#{busclass} and  a.I=#{i} and a.j=#{j}
+	</select>
+	<!-- 获取考核要点获取考评细则-->
+	<select id="getKpxzByPid" parameterType="java.util.HashMap" resultType="com.wr4.domain.IndicInfo">
+		select * from indic4 a where a.DETAILTYPE=#{busclass} and  a.I=#{i} and a.j=#{j}
+	</select>
+	 
+	 <!-- 修改考核要点-->
+	<update id="updateKhyd" parameterType="java.util.HashMap">
+		update indic3 set name=#{khyd},star=#{xj},score=#{fs} where DETAILTYPE=#{busclass} and i=#{i} and j=#{j} and k=#{k}
+	</update>
+	<!-- 修改考评细则-->
+	<update id="updateKpxz" parameterType="java.util.HashMap">
+		update indic4 set name=#{kpxz} where DETAILTYPE=#{busclass} and i=#{i} and j=#{j} and k=#{k}
+	</update>
+	
+	<!-- 添加考核要点-->
+    <insert id="insertKhyd" parameterType="java.util.HashMap">
+      insert into indic3(I,J,K,NAME,STAR,SCORE,DETAILTYPE,NAME2) values
+      (#{i},#{j},#{k},#{khyd},#{xj},#{fs},#{busclass},'')
+	</insert>
+    <!-- 添加考评细则-->
+    <insert id="insertKpxz" parameterType="java.util.HashMap">
+      insert into indic4(I,J,K,L,NAME,STAR,SCORE,DETAILTYPE) values
+      (#{i},#{j},#{k},'',#{kpxz},'','',#{busclass})
+	</insert>
+	<!-- 删除考核要点-->
+	<delete id="deleteKhyd" parameterType="java.util.HashMap">
+		delete from indic3 where I=#{i} and J=#{j} and K=#{k} and detailtype=#{busclass}
+	</delete>
+	<!-- 删除考评细则-->
+	<delete id="deleteKpxz" parameterType="java.util.HashMap">
+		delete from indic4 where I=#{i} and J=#{j} and K=#{k} and detailtype=#{busclass}
+	</delete>
+	 
+	<!-- 获取第二列的显示文本 -->
+	<select id="getTd2Name" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+	select b.*
+		  from indic2 b
+		 where b.detailtype = #{busclass}
+		 order by b.i,b.j  asc
+	</select>
+	<!-- 获取第三列的显示文本 -->
+	<select id="getTd3Name" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+		select b.*
+		  from indic3 b
+		 where b.detailtype = #{busclass}
+		 order by b.i, b.j, b.k asc
+	</select>
+	<!-- 获取第四列的显示文本 -->
+	<select id="getTd4Name" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+		select b.*
+		  from indic4 b
+		 where b.detailtype = #{busclass}
+		 order by b.i, b.j, b.k asc
+	</select>	
+	<!-- 获取第一列的rowspan -->
+	<select id="getTd1Rowspan" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+		select count(*) i from indic1  a   
+		 join indic3 z  on z.i=a.i and z.detailtype=a.detailtype
+		where a.detailtype=#{type}
+		group by a.i ,a.name
+		order by a.i   asc
+	</select>
+	<!-- 获取第er列的rowspan -->
+	<select id="getTd2Rowspan" parameterType="String" resultType="com.wr4.domain.IndicInfo">
+		select count(*) j from (select z.i,z.j,z.k,z.name from indic2  a   
+     join indic3 z  on z.i=a.i and z.detailtype=a.detailtype
+    where a.detailtype=#{type}
+      group by z.i ,z.j,z.k,z.name
+    order by  z.i, z.j, z.k asc) s
+    group by s.i,s.j
+   order by s.i ,s.j asc
+	</select>
+		<!-- 获取第一列的rowspan -->
+	<select id="getDetailScore" parameterType="String" resultType="com.wr4.domain.EnPFInfo">
+	  select  *  from  qypf_table  a   where a.createpid=#{pid}  and a.createdate= (  select max(a.createdate) maxdate from  qypf_table  a  where a.createpid=#{pid})
+	</select>
+	<select id="selectByPid" parameterType="com.wr4.domain.EnInfo" resultType="int">
+		select count(*)  from en_apply a where a.pid = #{pid}
+	</select>
+	<insert id="insertEnApply" parameterType="com.wr4.domain.EnInfo">
+	insert into en_apply
+	(LICENSE,TAX,CREATEDATE,CDATE,REMARKS,ORGID1,ADVICE,PID,DEL,ENNAME,SAFE,RENEW,ZPREPORT,PROVINCE,CID,LEGALP,GRADE,
+	EMAIL,BUSTYPE,RESP,RESPDATE_REVIEW,TYPE2,CONTACT,ADVICE_REVIEW,ADDRESS,MOBILE,QUAL,ADMINMOT,RESP_REVIEW,TEL,RESPDATE,
+	USERID,APPLYTYPE,APPORG,city)
+	values
+	(#{license,jdbcType=VARCHAR},#{tax,jdbcType=VARCHAR},#{date,jdbcType=VARCHAR},#{cDate,jdbcType=VARCHAR},
+	#{remarks,jdbcType=VARCHAR},#{orgId1,jdbcType=VARCHAR},#{advice,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},
+	#{del,jdbcType=VARCHAR},#{enname,jdbcType=VARCHAR},#{safe,jdbcType=VARCHAR},#{reNew,jdbcType=VARCHAR},
+	#{report,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{cid,jdbcType=VARCHAR},#{legalp,jdbcType=VARCHAR},
+	#{grade,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{busType,jdbcType=VARCHAR},#{resp,jdbcType=VARCHAR},
+	#{respDateReview,jdbcType=VARCHAR},#{type2,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{adviceReview,jdbcType=VARCHAR},
+	#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{qual,jdbcType=VARCHAR},#{adminmot,jdbcType=VARCHAR},
+	#{respReview,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{respDate,jdbcType=VARCHAR},
+	#{userId,jdbcType=VARCHAR},#{applyType,jdbcType=VARCHAR},#{apporg,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
+	)
+	</insert>
+	<insert id="insertPingfen" parameterType="com.wr4.domain.EnPFInfo" >
+		insert into qypf_table (createdate,createuser,createpid,busclass,scoresum,leval,reportname,score,applyId,kpresult,kpadvice)
+		values  (#{createdate,jdbcType=VARCHAR},#{createuser,jdbcType=VARCHAR},#{createpid,jdbcType=VARCHAR},
+		 #{busclass,jdbcType=VARCHAR},#{scoresum,jdbcType=VARCHAR},#{leval,jdbcType=VARCHAR},#{reportname,jdbcType=VARCHAR},
+		 #{score,jdbcType=VARCHAR},#{applyId,jdbcType=VARCHAR},#{kpresult,jdbcType=VARCHAR},#{kpadvice,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="updateKaoPingfen" parameterType="com.wr4.domain.EnPFInfo" >
+	update qypf_table kp set kp.kpresult= #{kpresult},  kp.kpadvice=#{kpadvice}
+		where kp.applyid=#{applyId} and kp.createuser=#{createuser} 
+		      and kp.createpid=#{createpid} and kp.busclass=#{busclass}
+	</update>
+	<select id="getApplyList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		<!-- select e.*,(select motname from mot where motcode=e.adminmot) as adminMotName,
+		(select filetext from valuetext where fileid=e.type2) as filetext,
+		(select filetext from valuetext where fileid=e.bustype) as uppername 
+		from en_apply e
+		由 join  改为 left join
+		left    join examine ex on ex.applyid =e.id and ex.usertype='en'
+		
+		 and ex.status='已申请'
+		 
+		 
+		  and ex.auditdate is null
+		where e.adminmot in(select motcode from mot
+                  START WITH motcode = #{adminmot}
+                    CONNECT BY PRIOR motcode = motupper
+                 )
+                 and (e.del !='1' or e.del is null)
+               and (e.applytype !='2' or e.applytype is null) --><!--
+        select distinct e.*,(select motname from mot where motcode=e.adminmot) as adminMotName,
+      (select filetext from valuetext where fileid=e.type2) as filetext,
+      (select filetext from valuetext where fileid=e.bustype) as uppername,
+        kp.results orgresult ,exa.auditername auditername
+        from en_apply e 
+      left    join examine ex on 
+      ex.applyid =e.id 
+      and ex.usertype='en'
+      and ex.auditdate is null 
+       left    join examine kp on 
+      kp.applyid =e.id   
+      and kp.status='已考评'
+      left    join examine exa on 
+      exa.applyid =e.id   
+      and exa.status='已处理'
+      and exa.usertype='en'
+      and exa.auditdate is not null 
+      where (e.del !='1' or e.del is null)
+      and (e.applytype !='2' or e.applytype is null) 
+      	-->
+      	SELECT DISTINCT t.*, kp.results   orgresult
+FROM (SELECT DISTINCT e.*, mo.motname      adminMotName, vt1.filetext, vt1.uppername    
+      FROM en_apply e, mot mo, valuetext vt1
+      WHERE e.adminmot = mo.motcode
+          AND vt1.fileid = e.type2 AND (e.del != '1'
+        OR e.del IS NULL) AND (e.applytype != '2'
+          OR e.applytype IS NULL)
+          <if test="city !=null">
+			and e.city =  #{city} 
+		</if>
+    	<if test="uno =='0702'">
+			and (e.bustype='1' or e.bustype='4' )
+		</if>
+    	<if test="uno =='0703'">
+			and (e.bustype='2' or e.bustype='3' )
+		</if>
+    	<if test="uno =='0704'">
+			and (e.bustype='5')
+		</if> 
+		<if test="adminMotName !=null">
+			and e.adminmot = #{adminMotName}
+		</if>
+	    <if test="enname != null  ">  
+	       and e.enname like CONCAT('%',#{enname},'%')
+	    </if>
+	    <if test="pid != null  ">  
+	       and e.pid like CONCAT('%',#{pid},'%')
+	    </if>
+	     <if test="grade != null  ">  
+	       and e.grade =  #{grade}
+	    </if>
+	    <if test="resp == 2 ">  
+	       and e.resp is null
+	    </if>
+	    <if test="resp == 1  ">  
+	       and (e.resp='1' or e.resp='同意')
+	    </if>
+	    <if test="resp == 0  ">  
+	       and (e.resp='0' or e.resp='不同意')
+	    </if>
+	    <if test="adminmot !=null">
+			and mo.motcode like CONCAT(#{adminmot},'%')
+		</if>
+		<if test="type2 !=null">
+			and e.type2 in (${type2}) 
+		</if>
+		and e.del is null
+	    ) t
+	    <!-- LEFT JOIN (SELECT ex.applyid,ex.RESULTS FROM examine ex WHERE ex.usertype = 'en'  AND ex.status = '已考评' AND ex.auditdate IS NULL) kp -->
+	    LEFT JOIN (SELECT ex.applyid,ex.RESULTS FROM examine ex WHERE ex.usertype = 'mot'  AND ex.status = '已考评' ) kp
+    ON kp.applyid = t.id
+		order by t.createdate desc limit #{start},#{pagesize}
+	</select>
+	<select id="getApplyListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+		SELECT count(*) count
+FROM (SELECT DISTINCT e.*, mo.motname      adminMotName, vt1.filetext, vt1.uppername    
+      FROM en_apply e, mot mo, valuetext vt1
+      WHERE e.adminmot = mo.motcode
+          AND vt1.fileid = e.type2 AND (e.del != '1'
+        OR e.del IS NULL) AND (e.applytype != '2'
+          OR e.applytype IS NULL)
+          <if test="city !=null">
+			and e.city =  #{city} 
+		</if>
+    	<if test="uno =='0702'">
+			and (e.bustype='1' or e.bustype='4' )
+		</if>
+    	<if test="uno =='0703'">
+			and (e.bustype='2' or e.bustype='3' )
+		</if>
+    	<if test="uno =='0704'">
+			and (e.bustype='5')
+		</if> 
+		<if test="adminMotName !=null">
+			and e.adminmot = #{adminMotName}
+		</if>
+	    <if test="enname != null  ">  
+	       and e.enname like CONCAT('%',#{enname},'%')
+	    </if>
+	    <if test="pid != null  ">  
+	       and e.pid like CONCAT('%',#{pid},'%')
+	    </if>
+	     <if test="grade != null  ">  
+	       and e.grade =  #{grade}
+	    </if>
+	    <if test="resp == 2 ">  
+	       and e.resp is null
+	    </if>
+	    <if test="resp == 1  ">  
+	       and (e.resp='1' or e.resp='同意')
+	    </if>
+	    <if test="resp == 0  ">  
+	       and (e.resp='0' or e.resp='不同意')
+	    </if>
+	    <if test="adminmot !=null">
+			and mo.motcode like CONCAT(#{adminmot},'%')
+		</if>
+		<if test="type2 !=null">
+			and e.type2 in (${type2}) 
+		</if>
+		and e.del is null
+	    ) t
+	    LEFT JOIN (SELECT ex.applyid,ex.RESULTS FROM examine ex WHERE ex.usertype = 'mot'  AND ex.status = '已考评') kp
+    ON kp.applyid = t.id
+	</select>
+	
+	<select id="getEnApplyByCityAndType" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnApplyDetail">
+	  select * from en_apply e where 1=1 
+	    <if test="city !=null">
+			and city =  #{city} 
+		</if>
+		<if test="type2 !=null">
+			and type2 in (${type2}) 
+		</if>
+	</select>
+	
+	<select id="getApplyId" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		 select * from en_apply t where t.userid=#{userId} and t.bustype=#{busType} and t.cid is null  order by createdate desc limit 1
+	</select>
+	<select id="getExamineByApplyId" parameterType="java.util.HashMap" resultType="com.wr4.domain.Examine">
+		 select e.usertype, e.status, e.advice,u.CONTACT userid, u.commonname auditername,(select og.orgname from org_reg og where e.auditer=og.pid) auditer,e.results,e.auditdate
+		   from examine e
+		   left join userregister u
+		     on u.user_id = e.userid
+		  where e.applyid =#{applyId} order by e.auditerdate asc 
+	</select>
+	<update id="updateReg" parameterType="java.util.HashMap">
+	 UPDATE en_reg    
+    <set>   
+        <if test="legalp!=null and legalp!='' ">   
+            en_reg.LEGALP = #{legalp},    
+        </if>   
+        <if test="enname!=null and enname!='' ">   
+            en_reg.USERNAME = #{enname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            en_reg.ADDRESS = #{address},    
+        </if>  
+    </set>   
+	where userid=#{userId}
+	</update>
+	<update id="updateApply" parameterType="java.util.HashMap">
+	 UPDATE en_apply    
+    <set>   
+         <if test="legalp!=null and legalp!='' ">   
+            en_apply.LEGALP = #{legalp},    
+        </if>   
+        <if test="enname!=null and enname!='' ">   
+            en_apply.ENNAME = #{enname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            en_apply.ADDRESS = #{address},    
+        </if>   
+    </set>   
+	where userid=#{userId}
+	</update>
+	<update id="updateuser" parameterType="java.util.HashMap">
+	 UPDATE userregister    
+    <set>   
+        <if test="legalp!=null and legalp!='' ">   
+            userregister.LEGALP = #{legalp},    
+        </if>   
+        <if test="enname!=null and enname!='' ">   
+            userregister.COMMONNAME = #{enname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            userregister.ADDRESS = #{address},    
+        </if>  
+    </set>   
+	where user_id=#{userId}
+	</update>
+	<select id="getEnAuditList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+			select distinct c.id sss,c.* from 
+( 
+select tab.*,
+                ex.results     as respResult,
+                ex.advice      as respAdvice,
+                ex.auditdate   as respdate1,
+                ey.results     as orgresult,
+                ey.advice      as orgadvice,
+                ey.auditdate   as orgdate,
+                aa.results     as auditResult,
+                aa.advice      as auditAdvice,
+                aa.auditdate   as auditdate,
+                zp.scoresum    selfScore,
+                zp.createdate  zpcreatedate,
+                kp.scoresum    kaoScore,
+                kp.createdate  kpcreatedate,
+                kp.applyid,
+                aa.auditer_mot
+          from (select en.*,
+                        vt1.uppername,
+                        vt1.filetext,
+                        mo.motname adminMotName
+                   from en_apply en, valuetext vt1, mot mo
+                  where en.adminmot = mo.motcode
+                    <if test="adminmot !=null">
+						and en.adminmot like CONCAT(#{adminmot},'%')
+					</if>
+                    and en.type2 = vt1.fileid) tab
+   join (SELECT ex1.applyid,ex1.results,ex1.advice,ex1.auditdate,ex1.auditer_mot FROM examine ex1 WHERE ex1.status = '待审核' AND ex1.handletype = 'en' ) aa on tab.id = aa.applyid
+           and (tab.applytype != '2' or tab.applytype is null)
+           and (tab.del != '1' or tab.del is null) 
+	        <if test="uno =='0702'">
+				and (tab.bustype='1' or tab.bustype='4' )
+			</if>
+	    	<if test="uno =='0703'">
+				and (tab.bustype='2' or tab.bustype='3' )
+			</if>
+	    	<if test="uno =='0704'">
+				and (tab.bustype='5')
+			</if>
+			<if test="city !=null">
+				and tab.city =  #{city} 
+			</if>
+			<if test="type2 !=null">
+				and tab.type2 in (${type2}) 
+			</if>
+    join (SELECT qy2.busclass,qy2.LEVAL,qy2.CREATEUSER,qy2.scoresum,qy2.createdate FROM qypf_table qy2 WHERE qy2.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  createuser,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE createuser IS NOT NULL
+                                GROUP BY createuser,busclass,leval) t2)) zp 
+                        on zp.createuser = tab.userid
+                        and zp.busclass = tab.type2   
+                        and zp.leval=tab.grade  
+    join (SELECT qy1.busclass,qy1.LEVAL,qy1.APPLYID,qy1.scoresum,qy1.createdate FROM qypf_table qy1 WHERE qy1.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  applyid,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE applyid IS NOT NULL
+                                GROUP BY applyid,busclass,leval) t1)) kp on kp.applyid = tab.id
+   and kp.busclass = tab.type2
+     and kp.leval=tab.grade  
+   join (SELECT ex2.APPLYID,ex2.results,ex2.auditdate,ex2.advice  FROM examine ex2 WHERE ex2.status='已处理' AND ex2.USERTYPE='en') ex on tab.id = ex.applyid
+   join (SELECT ex3.applyid,ex3.results,ex3.advice,ex3.auditdate FROM examine ex3 WHERE ex3.status = '已考评' AND ex3.handletype = 'en') ey on tab.id = ey.applyid
+     )c
+    limit #{start},#{pagesize}
+		 
+	</select>
+	<select id="getEnAuditListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+select count(*) count from 
+( 
+select tab.*,
+                ex.results     as respResult,
+                ex.advice      as respAdvice,
+                ex.auditdate   as respdate1,
+                ey.results     as orgresult,
+                ey.advice      as orgadvice,
+                ey.auditdate   as orgdate,
+                aa.results     as auditResult,
+                aa.advice      as auditAdvice,
+                aa.auditdate   as auditdate,
+                zp.scoresum    selfScore,
+                zp.createdate  zpcreatedate,
+                kp.scoresum    kaoScore,
+                kp.createdate  kpcreatedate,
+                kp.applyid,
+                aa.auditer_mot
+          from (select en.*,
+                        vt1.uppername,
+                        vt1.filetext,
+                        mo.motname adminMotName
+                   from en_apply en, valuetext vt1, mot mo
+                  where en.adminmot = mo.motcode
+                  <if test="adminmot !=null">
+					and en.adminmot like CONCAT(#{adminmot},'%')
+				</if>
+                    and en.type2 = vt1.fileid) tab
+   join (SELECT ex1.applyid,ex1.results,ex1.advice,ex1.auditdate,ex1.auditer_mot FROM examine ex1 WHERE ex1.status = '待审核' AND ex1.handletype = 'en' ) aa on tab.id = aa.applyid
+           and (tab.applytype != '2' or tab.applytype is null)
+           and (tab.del != '1' or tab.del is null) 
+	        <if test="uno =='0702'">
+				and (tab.bustype='1' or tab.bustype='4' )
+			</if>
+	    	<if test="uno =='0703'">
+				and (tab.bustype='2' or tab.bustype='3' )
+			</if>
+	    	<if test="uno =='0704'">
+				and (tab.bustype='5')
+			</if>
+			<if test="city !=null">
+				and tab.city =  #{city} 
+			</if>
+			<if test="type2 !=null">
+				and tab.type2 in (${type2}) 
+			</if>
+			
+    join (SELECT qy2.busclass,qy2.LEVAL,qy2.CREATEUSER,qy2.scoresum,qy2.createdate FROM qypf_table qy2 WHERE qy2.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  createuser,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE createuser IS NOT NULL
+                                GROUP BY createuser,busclass,leval) t2)) zp 
+                        on zp.createuser = tab.userid
+                        and zp.busclass = tab.type2   
+                        and zp.leval=tab.grade  
+    join (SELECT qy1.busclass,qy1.LEVAL,qy1.APPLYID,qy1.scoresum,qy1.createdate FROM qypf_table qy1 WHERE qy1.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  applyid,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE applyid IS NOT NULL
+                                GROUP BY applyid,busclass,leval) t1)) kp on kp.applyid = tab.id
+   and kp.busclass = tab.type2
+     and kp.leval=tab.grade
+   join (SELECT ex2.APPLYID,ex2.results,ex2.auditdate,ex2.advice  FROM examine ex2 WHERE ex2.status='已处理' AND ex2.USERTYPE='en') ex on tab.id = ex.applyid
+   join (SELECT ex3.applyid,ex3.results,ex3.advice,ex3.auditdate FROM examine ex3 WHERE ex3.status = '已考评' AND ex3.handletype = 'en') ey on tab.id = ey.applyid
+   )c 
+	</select>
+	<select id="getEnProduceList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+ 			select aa.*  from(	select distinct b.id          s,
+                                b.*,
+                                ex.results    as respResult,
+                                ex.advice     as respAdvice,
+                                ex.auditdate  as respdate1,
+                                ey.results    as orgresult,
+                                ey.advice     as orgadvice,
+                                ey.auditdate  as orgdate,
+                                ez.results    as auditResult,
+                                ez.advice     as auditAdvice,
+                                ez.auditdate  as auditdate,
+                                zp.scoresum   selfScore,
+                                kp.scoresum   kaoScore,
+                                kp.kpadvice   kpadvice,
+                                kp.kpresult   kpresult,
+                                kp.createdate kpdate
+                  from (select en.license,
+                               en.tax,
+                               en.createdate,
+                               en.cdate,
+                               en.remarks,
+                               en.orgid1,
+                               en.advice,
+                               en.pid,
+                               en.del,
+                               en.enname,
+                               en.safe,
+                               en.renew,
+                               en.zpreport,
+                               en.province,
+                               en.cid,
+                               en.legalp,
+                               en.grade,
+                               en.email,
+                               en.bustype,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.bustype) as uppername,
+                               en.resp,
+                               en.respdate_review as respdateReview,
+                               en.type2,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.type2) as filetext,
+                               en.contact,
+                               en.advice_review,
+                               en.address,
+                               en.mobile,
+                               en.qual,
+                               en.adminmot,
+                               (select motname
+                                  from mot
+                                 where motcode = en.adminmot) as adminMotName,
+                               en.resp_review as respReview,
+                               en.tel,
+                               en.respdate,
+                               en.userid,
+                               en.applytype,
+                               en.id,
+                               en.zpscore,
+                               en.type2 busclass,
+                               en.pncidlist,
+                               en.city,
+                               en.advice_review as adviceReview
+                          from en_apply en, examine aa
+                         where en.id = aa.applyid
+                           and (en.del !='1' or en.del is null)
+                           and (en.applytype !='2' or en.applytype is null)
+                           and aa.auditer = #{pid}
+                           and aa.status = '待发证'
+                           and aa.handletype = 'en') b
+                  join qypf_table kp
+                    on kp.applyid = b.id
+                     <!-- and 
+                    kp.createdate =
+                       (select max(qyw.createdate)
+                          from qypf_table qyw
+                         where qyw.applyid = kp.applyid
+                           and qyw.busclass =  kp.busclass) -->
+                	and kp.kpresult='同意'
+                  left join examine ex
+                    on b.id = ex.applyid
+                   and ex.status = '已处理'
+                   and ex.usertype = 'en'
+                  left join examine ey
+                    on b.id = ey.applyid
+                   and ey.status = '已考评'
+                   and ey.handletype = 'en'
+                  left join examine ez
+                    on b.id = ez.applyid
+                   and ez.status = '已审核'
+                   and ez.handletype = 'en'
+                  left join qypf_table zp
+                    on zp.createuser = b.userid
+                   and zp.busclass = b.type2 
+                   <!-- where   zp.createdate =
+                       (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.createuser = b.userid
+                           and qy.busclass = b.type2) -->
+                   limit #{start},#{pagesize}
+                  )aa
+
+	
+	</select>
+	
+	<select id="getEnProduceListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+	select count(1) count from (
+ 			select aa.* from(	select distinct b.id          s,
+                                b.*,
+                                ex.results    as respResult,
+                                ex.advice     as respAdvice,
+                                ex.auditdate  as respdate1,
+                                ey.results    as orgresult,
+                                ey.advice     as orgadvice,
+                                ey.auditdate  as orgdate,
+                                ez.results    as auditResult,
+                                ez.advice     as auditAdvice,
+                                ez.auditdate  as auditdate,
+                                zp.scoresum   selfScore,
+                                kp.scoresum   kaoScore,
+                                kp.kpadvice   kpadvice,
+                                kp.kpresult   kpresult,
+                                kp.createdate kpdate
+                  from (select en.license,
+                               en.tax,
+                               en.createdate,
+                               en.cdate,
+                               en.remarks,
+                               en.orgid1,
+                               en.advice,
+                               en.pid,
+                               en.del,
+                               en.enname,
+                               en.safe,
+                               en.renew,
+                               en.zpreport,
+                               en.province,
+                               en.cid,
+                               en.legalp,
+                               en.grade,
+                               en.email,
+                               en.bustype,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.bustype) as uppername,
+                               en.resp,
+                               en.respdate_review as respdateReview,
+                               en.type2,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.type2) as filetext,
+                               en.contact,
+                               en.advice_review,
+                               en.address,
+                               en.mobile,
+                               en.qual,
+                               en.adminmot,
+                               (select motname
+                                  from mot
+                                 where motcode = en.adminmot) as adminMotName,
+                               en.resp_review as respReview,
+                               en.tel,
+                               en.respdate,
+                               en.userid,
+                               en.applytype,
+                               en.id,
+                               en.zpscore,
+                               en.type2 busclass,
+                               en.pncidlist,
+                               en.advice_review as adviceReview
+                          from en_apply en, examine aa
+                         where en.id = aa.applyid
+                           and (en.del !='1' or en.del is null)
+                           and (en.applytype !='2' or en.applytype is null)
+                           and aa.auditer = #{pid}
+                           and aa.status = '待发证'
+                           and aa.handletype = 'en') b
+                  join qypf_table kp
+                    on kp.applyid = b.id
+                   <!--  and 
+                    kp.createdate =
+                       (select max(qyw.createdate)
+                          from qypf_table qyw
+                         where qyw.applyid = kp.applyid
+                           and qyw.busclass =  kp.busclass) -->
+                	and kp.kpresult='同意'
+                  left join examine ex
+                    on b.id = ex.applyid
+                   and ex.status = '已处理'
+                   and ex.usertype = 'en'
+                  left join examine ey
+                    on b.id = ey.applyid
+                   and ey.status = '已考评'
+                   and ey.handletype = 'en'
+                  left join examine ez
+                    on b.id = ez.applyid
+                   and ez.status = '已审核'
+                   and ez.handletype = 'en'
+                  left join qypf_table zp
+                    on zp.createuser = b.userid
+                   and zp.busclass = b.type2
+                  <!-- where   zp.createdate =
+                       (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.createuser = b.userid
+                           and qy.busclass = b.type2)  -->)aa
+
+		) ttab
+	</select>
+	<update id="updateApplyCertNo" parameterType="java.util.HashMap" >
+				update en_apply t
+		   set t.cid = CONCAT(#{curDate}, #{NoNum}),
+		   t.cdate=#{curDate}
+		 where t.id = #{applyid}
+	</update>
+	<update id="checkOrg"  parameterType="com.wr4.domain.EnInfo">
+	 	UPDATE en_reg  set orgid=#{orgId} where userid=#{userId}
+    </update>
+    
+    <select id="getPnByUserIdAndBustype" parameterType="java.util.HashMap" resultType="com.wr4.domain.PnBaseInfo">
+		select  b.*
+		  from (select a.pnname, v.filetext bustype, m.motname adminmot
+		          from pn_apply a, mot m,valuetext v
+		         where 1 = 1
+		           and m.motcode = a.adminmot
+		           and a.bussinestype=v.fileid
+		           <!-- and a.createdate= (select max(createdate) from pn_apply where a.bussinestype=bussinestype and a.userid=userid ) -->
+		           and  (a.applytype != '2' or a.applytype is null) and (a.del !='1' or a.del is null)
+				   and a.cid is not null
+		        <if test = "enname != null" >
+		         and a.pnname = #{enname}
+		      </if>  
+		  	<if test="cid != null">  
+			       and a.cid = #{cid}
+			    </if>  
+			    ) b limit #{start},#{pagesize}
+	</select>
+	<!--  考评员基本信息查询获取总数-->
+	 <select id="getPnByUserIdAndBustypeCount" parameterType="java.util.HashMap" resultType="int">
+	 select count(1) count from (
+		select  b.*
+		  from (select a.pnname, v.filetext bustype, m.motname adminmot
+		          from pn_apply a, mot m,valuetext v
+		         where 1 = 1
+		           and m.motcode = a.adminmot
+		           and a.bussinestype=v.fileid
+		           <!-- and a.createdate= (select max(createdate) from pn_apply where a.bussinestype=bussinestype and a.userid=userid ) -->
+		           and  (a.applytype != '2' or a.applytype is null) and (a.del !='1' or a.del is null)
+				   and a.cid is not null
+		        <if test = "enname != null" >
+		         and a.pnname = #{enname}
+		      </if>  
+		  	<if test="cid != null">  
+			       and a.cid = #{cid}
+			    </if>  
+			    ) b
+		) ttab
+	</select>
+	  
+	<select id="getSchedule" parameterType="com.wr4.domain.Examine" resultType="com.wr4.domain.Examine">
+	select * from (
+	select * from (
+	select distinct ex.status,
+                    us.commonname as auditname,
+                    ex.usertype,
+                    ex.auditdate,
+                    ex.advice,
+                    ex.results,
+                    ex.pid,
+                    ex.applyid,
+                    (select filetext from valuetext where fileid = ex.bustype) as bustype,
+                    ex.auditer,
+                    ex.userid,
+                    ex.auditername,
+                    ex.auditerdate
+      from examine ex
+      join en_apply en
+        on en.id = ex.applyid
+          join userregister us
+        on ex.userid = us.user_id
+      where ex.auditer is null
+      and ex.applyid=#{applyId}
+					   and ex.bustype=#{bustype}	
+		 
+ union  
+select distinct ex.status,
+                    us.commonname as auditname,
+                    ex.usertype,
+                    ex.auditdate,
+                    ex.advice,
+                    ex.results,
+                    ex.pid,
+                    ex.applyid,
+                    (select filetext from valuetext where fileid = ex.bustype) as bustype,
+                    ex.auditer,
+                    ex.userid,
+                    ex.auditername,
+                    ex.auditerdate 
+      from examine ex
+      join en_apply en
+        on en.id = ex.applyid
+      join userregister us
+        on ex.auditer = us.paperid
+	 where        ex.applyid=#{applyId}
+					   and ex.bustype=#{bustype}	 
+	           and ex.status != '已发证'
+	            ) tab order by  auditerdate asc 
+	           ) ttab
+   union all 
+ 
+             select distinct ex.status,
+ us.commonname as auditname,
+                    ex.usertype,
+                    ex. auditdate,
+                    ex.advice,
+                    ex.results,
+                    ex.pid,
+                    ex.applyid,
+                    (select filetext from valuetext where fileid = ex.bustype) as bustype,
+                    ex.auditer,
+                    ex.userid,
+                   ex.auditername,
+                   ex.auditerdate
+      from examine ex
+      join en_apply en
+        on en.id = ex.applyid
+      join userregister us
+        on ex.userid = us.user_id
+   where       ex.applyid=#{applyId}
+					   and ex.bustype=#{bustype}
+             and ex.status  = '已发证'
+             
+               
+	</select>
+		<!-- 获取企业的相对应的业务类别的自评记录 -->
+	<select id="getEnZpListByBusClass" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnPFInfo">
+	select * from (
+		select a.*,v.filetext bustext from qypf_table  a 
+		 left join valuetext v on a.busclass=v.fileid  and v.filetype='busclass'
+		where a.createuser= #{userid}  and a.busclass=#{type2}    order by a.createdate desc
+		) tab  limit 1
+	</select>
+		<!-- 获取企业的相对应的业务类别的考评记录 -->
+	<select id="getEnKpListByBusClass" parameterType="java.util.HashMap" resultType="com.wr4.domain.EnPFInfo">
+		select *
+  	from (select a.*,v.filetext bustext from qypf_table  a 
+		 left join valuetext v on a.busclass=v.fileid  and v.filetype='busclass'
+		where a.applyid=#{applyid}   order by a.createdate desc
+		)  tab limit 1
+	</select>
+	<insert id="insertEnExchangeApply" parameterType="com.wr4.domain.EnInfo">
+	insert into en_apply
+	(LICENSE,TAX,CREATEDATE,CDATE,REMARKS,ORGID1,ADVICE,PID,DEL,ENNAME,SAFE,RENEW,ZPREPORT,PROVINCE,CID,LEGALP,GRADE,
+	EMAIL,BUSTYPE,RESP,RESPDATE_REVIEW,TYPE2,CONTACT,ADVICE_REVIEW,ADDRESS,MOBILE,QUAL,ADMINMOT,RESP_REVIEW,TEL,RESPDATE,
+	USERID,APPLYTYPE,CITY)
+	values
+	(#{license,jdbcType=VARCHAR},#{tax,jdbcType=VARCHAR},#{date,jdbcType=VARCHAR},#{cDate,jdbcType=VARCHAR},#{comment,jdbcType=VARCHAR},
+	#{orgId1,jdbcType=VARCHAR},#{advice,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},#{del,jdbcType=VARCHAR},#{enname,jdbcType=VARCHAR},
+	#{safe,jdbcType=VARCHAR},#{reNew,jdbcType=VARCHAR},#{zpreport,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},
+	 #{cid,jdbcType=VARCHAR},#{legalp,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{bustype,jdbcType=VARCHAR},
+	 #{resp,jdbcType=VARCHAR},#{respDateReview,jdbcType=VARCHAR},#{type2,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{adviceReview,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+	 #{qual,jdbcType=VARCHAR},#{adminmot,jdbcType=VARCHAR},#{respReview,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{respDate,jdbcType=VARCHAR},
+	 #{userId,jdbcType=VARCHAR},#{applyType,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR} 
+	)
+	</insert>
+	<!-- 更新原证书申请数据 en_apply 中的数据   del=1 -->
+	<update id="updateOldEnApplyChange" parameterType="java.util.HashMap" >
+				update en_apply t
+		   set t.del='1'
+		 where t.cid = #{cid} and (t.applytype !='2' or t.applytype is null)
+	</update>
+		<!-- 更新原证书 cert   del=1 -->
+	<update id="updateOldEnCertChange" parameterType="java.util.HashMap" >
+				update cert t
+		   set t.del='1'
+		 where t.certnumber = #{cid}  
+	</update>
+		<!-- 更新该条换证申请  审批状态  意见  及日期-->
+	<update id="updateEnApplyChange" parameterType="java.util.HashMap" >
+				update en_apply t
+		   set t.changereason=#{changereason} ,t.changeresault=#{changeresault},t.changedate=#{changedate}
+		 where t.id=#{id}
+	</update>
+	 <select id="queryNoNum" parameterType="java.util.HashMap" resultType="string">
+		select count(*) num from en_apply t where t.applyno  like CONCAT('%',#{applyno},'%') 
+	</select>
+	<select id="getEnDetailFromId" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select a.* from  en_apply a 
+		where a.id=#{id}
+	</select>
+	<!--企业等级申请修改 -->
+	<update id="updateForEnApply" parameterType="com.wr4.domain.EnInfo">
+		update en_apply  set 
+			license=#{license},TAX=#{tax}, 
+			PID=#{pid},ENNAME=#{enname},
+			SAFE=#{safe},RENEW=#{reNew},
+			ZPREPORT=#{report},PROVINCE=#{province},
+			LEGALP=#{legalp},GRADE=#{grade},
+			EMAIL=#{email},BUSTYPE=#{busType},
+			TYPE2=#{type2},CONTACT=#{contact},
+			ADDRESS=#{address},MOBILE=#{mobile},
+			QUAL=#{qual},ADMINMOT=#{adminmot},
+			TEL=#{tel},orgId1=#{orgId1},
+			remarks=#{remarks},
+			city=#{city}
+		where id =#{id}
+	</update>
+	<!-- 获取企业公示列表 -->
+	<select id="getEnPublicityList" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+			select distinct c.id sss,c.* from 
+( 
+
+        
+        select tab.*,
+                ex.results     as respResult,
+                ex.advice      as respAdvice,
+                ex.auditdate   as respdate1,
+                ey.results     as orgresult,
+                ey.advice      as orgadvice,
+                ey.auditdate   as orgdate,
+                aa.results     as auditResult,
+                aa.advice      as auditAdvice,
+                aa.auditdate   as auditdate,
+                zp.scoresum    selfScore,
+                zp.createdate  zpcreatedate,
+                kp.scoresum    kaoScore,
+                kp.createdate  kpcreatedate,
+                kp.applyid,
+                aa.auditer_mot
+          from (select en.license,
+                        en.tax,
+                        en.createdate,
+                        en.cdate,
+                        en.remarks,
+                        en.orgid1,
+                        en.advice,
+                        en.pid,
+                        en.del,
+                        en.enname,
+                        en.safe,
+                        en.renew,
+                        en.zpreport,
+                        en.province,
+                        en.cid,
+                        en.legalp,
+                        en.grade,
+                        en.email,
+                        en.bustype,
+                        vt1.uppername,
+                        en.resp,
+                        en.respdate_review,
+                        en.type2,
+                        vt1.filetext,
+                        en.contact,
+                        en.advice_review,
+                        en.address,
+                        en.mobile,
+                        en.qual,
+                        en.adminmot,
+                        mo.motname         as adminMotName,
+                        en.resp_review,
+                        en.tel,
+                        en.respdate,
+                        en.userid,
+                        en.applytype,
+                        en.id,
+                        en.zpscore,
+                        en.city,
+                        en.type2           busclass,
+                        en.pncidlist
+                   from en_apply en, valuetext vt1, mot mo
+                  where en.type2 = vt1.fileid
+                    and en.adminmot = mo.motcode) tab
+          join (SELECT ex1.applyid,ex1.results,ex1.advice,ex1.auditdate,ex1.auditer_mot 
+           FROM examine ex1 WHERE ex1.status = '已审核' AND ex1.handletype = 'en' AND ex1.auditer_mot IN (SELECT
+                                    motcode
+                                  FROM mot
+                                  WHERE motcode LIKE CONCAT(#{adminmot},'%'))) aa
+            on tab.id = aa.applyid
+           and (tab.applytype != '2' or tab.applytype is null)
+           and (tab.del != '1' or tab.del is null)
+          join (SELECT qy2.busclass,qy2.LEVAL,qy2.CREATEUSER,qy2.scoresum,qy2.createdate FROM qypf_table qy2 WHERE qy2.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  createuser,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE createuser IS NOT NULL
+                                GROUP BY createuser,busclass,leval) t2)) zp
+            on zp.createuser = tab.userid
+           and zp.busclass = tab.type2
+           and zp.leval = tab.grade
+          join (SELECT qy1.busclass,qy1.LEVAL,qy1.APPLYID,qy1.scoresum,qy1.createdate FROM qypf_table qy1 WHERE qy1.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  applyid,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE applyid IS NOT NULL
+                                GROUP BY applyid,busclass,leval) t1)) kp
+            on kp.applyid = tab.id
+           and kp.busclass = tab.type2
+           and kp.leval = tab.grade
+          join (SELECT ex2.APPLYID,ex2.results,ex2.auditdate,ex2.advice  FROM examine ex2 WHERE ex2.status='已处理' AND ex2.USERTYPE='en') ex
+            on tab.id = ex.applyid
+          join (SELECT ex3.applyid,ex3.results,ex3.advice,ex3.auditdate FROM examine ex3 WHERE ex3.status = '已考评' AND ex3.handletype = 'en') ey
+            on tab.id = ey.applyid
+          )c
+         where 1=1 and  c.cid is null 
+         and c.resp_review ='1'
+	<if test="enname != null">
+   	 	and c.enname like CONCAT('%',#{enname},'%')
+     </if>
+     <if test="bustype != null">
+   	 	and c.type2 = #{bustype}
+     </if>
+     <if test="grade != null">
+     	and c.grade = #{grade}
+   	 </if>
+   	 <if test=" resp ==2">
+     	and c.resp is null
+   	 </if>            
+     <if test="resp != null and resp !=2" >
+     	and c.resp = #{resp}
+   	 </if>            
+   	 <if test="respReview ==2">
+     	and c.auditResult is null
+   	 </if>            
+     <if test="respReview != null and respReview !=2" >
+     	and c.auditResult = #{respReview}
+   	 </if>            
+   	 <if test="resp_eval ==2">
+     	and c.orgresult is null
+   	 </if>            
+     <if test="resp_eval != null and resp_eval !=2" >
+     	and c.orgresult = #{resp_eval}
+   	 </if>	                           
+		limit #{start},#{pagesize}           
+	</select>
+	<select id="getEnPublicityListCount" parameterType="com.wr4.domain.EnInfo" resultType="int">
+			select count(*) count from 
+( 
+select tab.*,
+                ex.results     as respResult,
+                ex.advice      as respAdvice,
+                ex.auditdate   as respdate1,
+                ey.results     as orgresult,
+                ey.advice      as orgadvice,
+                ey.auditdate   as orgdate,
+                aa.results     as auditResult,
+                aa.advice      as auditAdvice,
+                aa.auditdate   as auditdate,
+                zp.scoresum    selfScore,
+                zp.createdate  zpcreatedate,
+                kp.scoresum    kaoScore,
+                kp.createdate  kpcreatedate,
+                kp.applyid,
+                aa.auditer_mot
+          from (select en.license,
+                        en.tax,
+                        en.createdate,
+                        en.cdate,
+                        en.remarks,
+                        en.orgid1,
+                        en.advice,
+                        en.pid,
+                        en.del,
+                        en.enname,
+                        en.safe,
+                        en.renew,
+                        en.zpreport,
+                        en.province,
+                        en.cid,
+                        en.legalp,
+                        en.grade,
+                        en.email,
+                        en.bustype,
+                        vt1.uppername,
+                        en.resp,
+                        en.respdate_review,
+                        en.type2,
+                        vt1.filetext,
+                        en.contact,
+                        en.advice_review,
+                        en.address,
+                        en.mobile,
+                        en.qual,
+                        en.adminmot,
+                        mo.motname         as adminMotName,
+                        en.resp_review,
+                        en.tel,
+                        en.respdate,
+                        en.userid,
+                        en.applytype,
+                        en.id,
+                        en.zpscore,
+                        en.city,
+                        en.type2           busclass,
+                        en.pncidlist
+                   from en_apply en, valuetext vt1, mot mo
+                  where en.type2 = vt1.fileid
+                    and en.adminmot = mo.motcode) tab
+          join (SELECT ex1.applyid,ex1.results,ex1.advice,ex1.auditdate,ex1.auditer_mot 
+           FROM examine ex1 WHERE ex1.status = '已审核' AND ex1.handletype = 'en' AND ex1.auditer_mot IN (SELECT
+                                    motcode
+                                  FROM mot
+                                  WHERE motcode LIKE CONCAT(#{adminmot},'%'))) aa
+            on tab.id = aa.applyid
+           and (tab.applytype != '2' or tab.applytype is null)
+           and (tab.del != '1' or tab.del is null)
+          join (SELECT qy2.busclass,qy2.LEVAL,qy2.CREATEUSER,qy2.scoresum,qy2.createdate FROM qypf_table qy2 WHERE qy2.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  createuser,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE createuser IS NOT NULL
+                                GROUP BY createuser,busclass,leval) t2)) zp
+            on zp.createuser = tab.userid
+           and zp.busclass = tab.type2
+           and zp.leval = tab.grade
+          join (SELECT qy1.busclass,qy1.LEVAL,qy1.APPLYID,qy1.scoresum,qy1.createdate FROM qypf_table qy1 WHERE qy1.CREATEDATE IN (SELECT
+                            createdate
+                          FROM (SELECT
+                                  applyid,
+                                  busclass,
+                                  leval,
+                                  MAX(createdate)    createdate
+                                FROM qypf_table
+                                WHERE applyid IS NOT NULL
+                                GROUP BY applyid,busclass,leval) t1)) kp
+            on kp.applyid = tab.id
+           and kp.busclass = tab.type2
+           and kp.leval = tab.grade
+          join (SELECT ex2.APPLYID,ex2.results,ex2.auditdate,ex2.advice  FROM examine ex2 WHERE ex2.status='已处理' AND ex2.USERTYPE='en') ex
+            on tab.id = ex.applyid
+          join (SELECT ex3.applyid,ex3.results,ex3.advice,ex3.auditdate FROM examine ex3 WHERE ex3.status = '已考评' AND ex3.handletype = 'en') ey
+            on tab.id = ey.applyid
+          )c
+         where 1=1 and  c.cid is null 
+         and c.resp_review ='1'
+		 <if test="enname != null">
+	   	 	and c.enname like CONCAT('%',#{enname},'%')
+	     </if>
+	     <if test="bustype != null">
+	   	 	and c.type2 = #{bustype}
+	     </if>
+	     <if test="grade != null">
+	     	and c.grade = #{grade}
+	   	 </if>
+	   	 <if test=" resp ==2">
+	     	and c.resp is null
+	   	 </if>            
+	     <if test="resp != null and resp !=2" >
+	     	and c.resp = #{grade}
+	   	 </if>            
+	   	 <if test="respReview ==2">
+	     	and c.auditResult is null
+	   	 </if>            
+	     <if test="respReview != null and respReview !=2" >
+	     	and c.auditResult = #{respReview}
+	   	 </if>            
+	   	 <if test="resp_eval ==2">
+	     	and c.orgresult is null
+	   	 </if>            
+	     <if test="resp_eval != null and resp_eval !=2" >
+	     	and c.orgresult = #{resp_eval}
+	   	 </if>
+	</select>
+	<!-- 企业公示导出数据 -->
+	<select id="getEnPublicityList1" parameterType="com.wr4.domain.EnInfo" resultMap="enResult1">
+		select distinct c.id sss,c.* ,c.orgname as apporg from 
+	( 
+			select en.license,
+				   en.id,
+	               en.tax,
+	               en.createdate,
+	               en.cdate,
+	               en.remarks,
+	               en.orgid1,
+	               (select t.commonname from userregister t 
+											where t.paperid=orgid1 and t.usertype='org'  limit 1) as orgname,
+	               en.advice,
+	               en.pid,
+	               en.del,
+	               en.enname,
+	               en.safe,
+	               en.renew,
+	               en.zpreport,
+	               en.province,
+	               en.cid,
+	               en.legalp,
+	               en.grade,
+	               en.email,
+	               en.bustype,
+	               (select filetext from valuetext where fileid = en.bustype) as uppername,
+	               en.resp,
+	               en.respdate_review,
+	               en.type2,
+	               (select filetext from valuetext where fileid = en.type2) as filetext,
+	               en.contact,
+	               en.advice_review,
+	               en.address,
+	               en.mobile,
+	               en.qual,
+	               en.adminmot,
+	               (select motname from mot where motcode = en.adminmot) as adminMotName,
+	               en.resp_review,
+	               en.tel,
+	               en.respdate,
+	               en.userid,
+	               en.applytype,
+	               en.zpscore,
+	               en.city,
+	               en.type2 busclass,
+	               en.pncidlist,
+	               
+	                ex.results as respResult,
+	                ex.advice as respAdvice,
+	                ex.auditdate as respdate1,
+	                ey.results as orgresult,
+	                ey.advice as orgadvice,
+	                ey.auditdate as orgdate,
+	                aa.results as auditResult,
+	               aa.advice as auditAdvice,
+	               aa.auditdate as auditdate,
+	                 zp.scoresum selfScore,
+	                 zp.createdate zpcreatedate,
+	                kp.scoresum kaoScore,
+	                kp.createdate kpcreatedate,
+	                kp.applyid,
+	                aa.auditer_mot
+	          from en_apply en
+	   join examine aa on en.id = aa.applyid
+	                        and aa.status = '已审核'
+	                        and aa.handletype = 'en'
+	                         and (en.applytype != '2' or en.applytype is null)
+	           and (en.del != '1' or en.del is null) 
+	             and aa.auditer_mot in
+	               (SELECT motcode FROM mot WHERE motcode like CONCAT(#{adminmot},'%'))     
+	    join qypf_table zp on zp.createuser = en.userid
+	                        and zp.busclass = en.type2   
+	                        and zp.leval=en.grade  
+	    join qypf_table kp on kp.applyid = en.id
+	   and kp.busclass = en.type2
+	     and kp.leval=en.grade  
+	   join examine ex on en.id = ex.applyid
+	                     and ex.status = '已处理'
+	                     and ex.usertype = 'en'
+	     join examine ey on en.id = ey.applyid
+	                        and ey.status = '已考评'
+	                        and ey.handletype = 'en' 
+	               
+	             )c
+	        
+	         where 1=1 and  c.cid is null 
+	         and c.resp_review ='1'
+	        <!--  and  c.kpcreatedate in 
+	         
+	       (
+	            select createdate from(
+	            select applyid,busclass,leval, max(createdate) createdate
+	            from  qypf_table
+	            where applyid is not null
+	            group by applyid,busclass,leval 
+	          )
+	       )  -->  
+	       
+	    <!--  and  c.zpcreatedate  in  
+	            (
+	            select createdate from(
+	            select createuser,busclass,leval, max(createdate) createdate
+	            from  qypf_table
+	            where createuser is not null
+	            group by createuser,busclass,leval 
+	          ) ) -->
+		<if test="enname != null">
+	   	 	and c.enname like CONCAT('%',#{enname},'%')
+	     </if>
+	     <if test="bustype != null">
+	   	 	and c.type2 = #{bustype}
+	     </if>
+	     <if test="grade != null">
+	     	and c.grade = #{grade}
+	   	 </if>
+	   	 <if test=" resp ==2">
+	     	and c.resp is null
+	   	 </if>            
+	     <if test="resp != null and resp !=2" >
+	     	and c.resp = #{grade}
+	   	 </if>            
+	   	 <if test="respReview ==2">
+	     	and c.auditResult is null
+	   	 </if>            
+	     <if test="respReview != null and respReview !=2" >
+	     	and c.auditResult = #{respReview}
+	   	 </if>            
+	   	 <if test="resp_eval ==2">
+	     	and c.orgresult is null
+	   	 </if>            
+	     <if test="resp_eval != null and resp_eval !=2" >
+	     	and c.orgresult = #{resp_eval}
+	   	 </if>
+	</select>
+</mapper>
+

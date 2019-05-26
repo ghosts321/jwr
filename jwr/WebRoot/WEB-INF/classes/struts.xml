@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	 <constant name="struts.i18n.encoding" value="UTF-8"/>
+	 		<!-- 指定默认编码集 ，作用于HttpServletRequest的setCharacterEncoding（）和freemarker，vilocity的输出 -->
+	<constant name="struts.configuration.xmlreload" value="true"/>
+			<!-- 当struts配置文件修改时是否自动加载 -->
+	<constant name="struts.devMode" value="false"/>
+			<!-- 开发模式下打印详细的错误信息 -->
+	<constant name="struts.ui.theme" value="xhtml"/>
+			<!--配置上传 下载  -->
+	<constant name="struts.multipart.saveDir" value="c:/tempImg"></constant>  
+	<!-- 修改Struts 最大上传文件限制为 240M以为 -->
+	<constant name="struts.multipart.maxSize" value="299900000"/> 
+	 <package name="struts-base" extends="struts-default" abstract="true" namespace="/">
+	      <!-- 定义一个拦截器 -->  
+	        <interceptors>  
+	            <interceptor name="sessiontimeout"  
+	             class="com.wr4.interceptor.LoginInterceptor">
+	             </interceptor>
+	            <!-- 拦截器栈 -->  
+	            <interceptor-stack name="mydefault">  
+	                <interceptor-ref name="defaultStack" />  
+	                <interceptor-ref name="sessiontimeout"/>  
+	            </interceptor-stack>  
+	        </interceptors>  
+	        	
+		<default-interceptor-ref name="mydefault"/>
+		
+	        <!-- 定义全局Result -->  
+			<global-results>  
+	            <!-- 当返回login视图名时，转入/login.jsp页面 -->  
+	            <result name="sysindex">/sysindex.jsp</result>  
+	        </global-results>
+	       
+        </package>  
+        <package name="updown" namespace="/updown" extends="struts-base">  
+        <!-- 文件上传 -->  
+            <action name="*Action" class="uploadAction"  method="{1}" >  
+               <result name="input">/JSP/pn/pnupload.jsp</result>  
+               <result name="upload">/JSP/pn/uploadTemplate.jsp</result>  
+            </action>  
+        </package>  
+          <package name="down" namespace="/down" extends="struts-base">  
+          <!-- 文件下载 -->  
+            <action name="*Action" class="com.wr4.util.DownloadAction" method="{1}">  
+                <result name="{1}-success">{1}-success.jsp</result>  
+                <result name="get-success" type="stream"></result>  
+            </action>  
+              </package>  
+	<package name="user" namespace="/user" extends="struts-default">
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="success" type="redirectAction">user_queryAllUser.action</result>
+			<result name="input">/index.jsp</result>
+			<result name="userList">/userList.jsp</result>
+			<result name="addUser">/userAdd.jsp</result>
+			<result name="updateUser">/userUpdate.jsp</result>
+		</action>
+	</package>
+	<package name="menu" namespace="/menu" extends="struts-base">
+		<action name="*Action" class="menuInfoAction" method="{1}">
+		</action>
+	</package>
+	<package name="userlogin" namespace="/userlogin" extends="struts-default">
+	  
+		<action name="*Action" class="loginAction" method="{1}">
+			<result name="success" >../index.jsp</result>
+			<result name="userLogin" >/WEB-INF/login_pn.jsp</result>
+			<result name="error" >../login.jsp</result>
+		</action>
+	</package>
+	<package name="role" namespace="/role" extends="struts-base">
+		<action name="*Action" class="roleInfoAction" method="{1}">
+			<result name="success" >/JSP/ajaxdemo.html</result>
+			<result name="userLogin" >/WEB-INF/login.jsp</result>
+		</action>
+	</package>
+	
+	 
+	
+	<!-- 考评员操作页面流程控制Action -->
+	<package name="pnControl" namespace="/pnControl" extends="struts-base">
+		<action name="*Action" class="pnHandAction" method="{1}">
+		</action>
+	</package>
+	<include file="struts-zhangli.xml"></include>
+	<include file="struts-mot-pn.xml"></include>
+	<include file="struts-mot-org.xml"></include>
+	<include file="struts-mot-en.xml"></include>
+	<include file="struts-org-org.xml"></include>
+	<include file="struts-org-resp.xml"></include>
+	<include file="struts-org-en.xml"></include>
+	<include file="struts-resp-org.xml"></include>
+	<include file="struts-task-assignation.xml"></include>
+</struts>    

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+ "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<bean id="baseDao" class="com.wr4.dao.impl.BaseDao">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<!-- 负责数据库连接层配置 -->
+	<bean id="menuDao" class="com.wr4.dao.impl.MenuDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<!-- 用户注册 -->
+	<bean id="regDao" class="com.wr4.dao.impl.RegDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="roleDao" class="com.wr4.dao.impl.RoleDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="loginDao" class="com.wr4.dao.impl.LoginDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="pnDao" class="com.wr4.dao.impl.PnDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="pnPageDao" class="com.wr4.dao.impl.PnPageDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="motDao" class="com.wr4.dao.impl.MotDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="enDao" class="com.wr4.dao.impl.EnDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iPnManagerDao" class="com.wr4.dao.impl.PnManagerDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="certificateDao" class="com.wr4.dao.impl.CertificateDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iPnTrainDao" class="com.wr4.dao.impl.PnTrainDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	
+	<bean id="regRespDao" class="com.wr4.dao.impl.RegRespDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="orgDao" class="com.wr4.dao.impl.OrgDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iCertrevocationDao" class="com.wr4.dao.impl.CertrevocationDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iStatisticsDao" class="com.wr4.dao.impl.StatisticsDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="orgManageDao" class="com.wr4.dao.impl.OrgManageDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iExchangeCertDao" class="com.wr4.dao.impl.IExchangeCertDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iEnFileManageDao" class="com.wr4.dao.impl.EnFileManageDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="respInfoDao" class="com.wr4.dao.impl.RespInfoDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="enManageDao" class="com.wr4.dao.impl.EnManageDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="iPnApplyAccepDao" class="com.wr4.dao.impl.PnApplyAccepDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="respOrgDao" class="com.wr4.dao.impl.RespOrgApplyManageDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	
+	<bean id="nameReportDao" class="com.wr4.dao.impl.NameReportDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	
+	<bean id="taskAssignationDao" class="com.wr4.dao.impl.TaskAssignationDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="taskCheckLoginIntervalDao" class="com.wr4.dao.impl.TaskCheckLoginIntervalDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+	<bean id="enPandectDao" class="com.wr4.dao.impl.EnPandectDaoImpl">
+		<property name="sqlSessionTemplate"> <ref bean="sqlSessionTemplate" /></property>
+	</bean>
+</beans>

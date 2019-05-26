@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.RespOrg">
+	
+	<resultMap type="com.wr4.domain.OrgApply" id="respOrgResult">
+        <!-- 日期                            -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 单位基本情况相关材料            -->
+        <result column="MET" jdbcType="VARCHAR" property="met" />
+        <!-- 发证时间                        -->
+        <result column="CDATE" jdbcType="VARCHAR" property="cdate" />
+        <!-- 邮编                            -->
+        <result column="PCODE" jdbcType="VARCHAR" property="pcode" />
+        <!-- 备注                            -->
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <!-- 处理意见                        -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 证件号                          -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 名称                            -->
+        <result column="ORGNAME" jdbcType="VARCHAR" property="orgname" />
+        <!-- 换证原因（仅换证申请）          -->
+        <result column="RENEW" jdbcType="VARCHAR" property="renew" />
+        <!-- 开始从事相应业务年份            -->
+        <result column="STARTDATE" jdbcType="VARCHAR" property="startdate" />
+        <!-- 专职考评员聘用证明与职称证明    -->
+        <result column="PNS" jdbcType="VARCHAR" property="pns" />
+        <!-- 所在省市                        -->
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <!-- 证书号                          -->
+        <result column="CID" jdbcType="VARCHAR" property="cid" />
+        <!-- 法人代表                        -->
+        <result column="LEGALP" jdbcType="VARCHAR" property="legalp" />
+        <!-- 等级                            -->
+        <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+        <!-- 联系人邮箱                      -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 用户ID                          -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 业务类型                        -->
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="bustype" />
+        <!-- 受理结果                        -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 传真号码                        -->
+        <result column="FAX" jdbcType="VARCHAR" property="fax" />
+        <!-- 专职考评员人数                  -->
+        <result column="PNUMBER" jdbcType="DOUBLE" property="pnumber" />
+        <!-- 联系人姓名                      -->
+        <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+        <!-- 通讯地址                        -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机                            -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 主管机关                        -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 联系电话                        -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 高级技术职称考评员人数          -->
+        <result column="PNUMBER2" jdbcType="DOUBLE" property="pnumber2" />
+        <!-- 受理日期                        -->
+        <result column="RESPDATE" jdbcType="VARCHAR" property="respdate" />
+        <!-- 申请标示(0表示初次申请,1标示证书申请) -->
+        <result column="APPLYTYPE" jdbcType="VARCHAR" property="applytype" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 考评管理制度 -->
+        <result column="MAN" jdbcType="VARCHAR" property="man" />
+        <!-- 其他材料 -->
+        <result column="ORHER" jdbcType="VARCHAR" property="orher" />
+        <!-- 删除标志 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <result column="RESPREVIEW" jdbcType="VARCHAR" property="respreview" />
+        <result column="RN" jdbcType="DOUBLE" property="rn" />
+        <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+         <result column="FILETEXT" jdbcType="VARCHAR" property="filetext" />
+        <result column="UPPERNAME" jdbcType="VARCHAR" property="uppername" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.RespOrgApplyDetail" id="respOrgApplyDetailResult">
+        <!-- 日期                            -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 单位基本情况相关材料            -->
+        <result column="MET" jdbcType="VARCHAR" property="met" />
+        <!-- 发证时间                        -->
+        <result column="CDATE" jdbcType="VARCHAR" property="cdate" />
+        <!-- 邮编                            -->
+        <result column="PCODE" jdbcType="VARCHAR" property="pcode" />
+        <!-- 备注                            -->
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <!-- 处理意见                        -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 证件号                          -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 名称                            -->
+        <result column="ORGNAME" jdbcType="VARCHAR" property="orgname" />
+        <!-- 换证原因（仅换证申请）          -->
+        <result column="RENEW" jdbcType="VARCHAR" property="renew" />
+        <!-- 开始从事相应业务年份            -->
+        <result column="STARTDATE" jdbcType="VARCHAR" property="startdate" />
+        <!-- 专职考评员聘用证明与职称证明    -->
+        <result column="PNS" jdbcType="VARCHAR" property="pns" />
+        <!-- 所在省市                        -->
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <!-- 证书号                          -->
+        <result column="CID" jdbcType="VARCHAR" property="cid" />
+        <!-- 法人代表                        -->
+        <result column="LEGALP" jdbcType="VARCHAR" property="legalp" />
+        <!-- 等级                            -->
+        <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+        <!-- 联系人邮箱                      -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 用户ID                          -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 业务类型                        -->
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="bustype" />
+        <!-- 受理结果                        -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 传真号码                        -->
+        <result column="FAX" jdbcType="VARCHAR" property="fax" />
+        <!-- 专职考评员人数                  -->
+        <result column="PNUMBER" jdbcType="DOUBLE" property="pnumber" />
+        <!-- 联系人姓名                      -->
+        <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+        <!-- 通讯地址                        -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机                            -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 主管机关                        -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 联系电话                        -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 高级技术职称考评员人数          -->
+        <result column="PNUMBER2" jdbcType="DOUBLE" property="pnumber2" />
+        <!-- 受理日期                        -->
+        <result column="RESPDATE" jdbcType="VARCHAR" property="respdate" />
+        <!-- 申请标示(0表示初次申请,1标示证书申请) -->
+        <result column="APPLYTYPE" jdbcType="VARCHAR" property="applytype" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 考评管理制度 -->
+        <result column="MAN" jdbcType="VARCHAR" property="man" />
+        <!-- 其他材料 -->
+        <result column="ORHER" jdbcType="VARCHAR" property="orher" />
+        <!-- 删除标志 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 审核结果 -->
+        <result column="RESPREVIEW" jdbcType="VARCHAR" property="respreview" />
+        
+         <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+         <result column="FILETEXT" jdbcType="VARCHAR" property="filetext" />
+         <result column="SLADVICE" jdbcType="VARCHAR" property="sladvice" />
+         <result column="CITY" jdbcType="VARCHAR" property="city" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.ExchangeInfo" id="exchangeResult">
+        <!-- 主键 -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 更改原因 -->
+        <result column="REASON" jdbcType="VARCHAR" property="reason" />
+        <!-- 更改内容 -->
+        <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+        <!-- 机构id -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 更改日期 -->
+        <result column="CDATE" jdbcType="VARCHAR" property="cdate" />
+        <!-- 主管机关 -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 用户id -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 受理结果 -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 受理状态 -->
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+        <!-- 受理意见 -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 机构名称 -->
+        <result column="MOTNAME" jdbcType="VARCHAR" property="motname" />
+        <result column="ROWNUM" jdbcType="DOUBLE" property="rn" />
+        <!-- 用户单位名称  可以企业 也可以 机构 -->
+         <result column="commonname" jdbcType="VARCHAR" property="name" />
+        
+	</resultMap>
+	
+<!-- 	主管机关考评机构申请受理 -->
+	<select id="getOrgApplyList" parameterType="java.util.HashMap" resultMap="respOrgResult">
+		 select z.* from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		               FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b,examine e,valuetext v
+		      where 1=1 
+		       <if test="adminmot1 != null">
+		       	and t.adminmot =#{adminmot1}
+		       </if>
+		       <if test="orgname != null">
+		       	and t.orgname like CONCAT('%',#{orgname},'%')
+		       </if>
+		       <if test="pid != null">
+		       	and t.pid like CONCAT('%',#{pid},'%')
+		       </if>
+			   <if test="grade != null">
+			   	and t.grade =#{grade} 
+			   </if>
+			   <if test="resp == 2 ">  
+			       and (t.resp is null or t.resp='尚未处理')
+			   </if>
+			   <if test="resp == 1  ">  
+			       and (t.resp='1' or t.resp='同意')
+			   </if>
+			   <if test="resp == 0  ">  
+			       and (t.resp='0' or t.resp='不同意')
+			   </if>
+			   <if test="orgtype != null ">
+			   	and t.bustype =#{orgtype}
+			   </if>  
+		          and  t.applytype = '1'
+		          and t.del = '0'
+		          and t.adminmot = b.motcode 
+		          and e.usertype='org'
+<!-- 		          and e.applyid=t.id -->
+		           and v.fileid=t.bustype
+		          )z
+		          order by z.createdate desc  limit #{start},#{pagesize}
+	</select>
+	
+<!-- 	主管机关考评机构申请受理总数 -->
+	<select id="getOrgApplyListCount" parameterType="java.util.HashMap" resultType="int">
+	select count(1) count from (
+		 select z.* from(
+		select distinct t.*,b.motname,v.filetext
+		      from org_apply t,
+		           (SELECT motcode, motname
+		               FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b,examine e,valuetext v
+		      where 1=1 
+		       <if test="adminmot1 != null">
+		       	and t.adminmot =#{adminmot1}
+		       </if>
+		       <if test="orgname != null">
+		       	and t.orgname like CONCAT('%',#{orgname},'%') 
+		       </if>
+		       <if test="pid != null">
+		       	and t.pid like CONCAT('%',#{pid},'%')
+		       </if>
+			   <if test="grade != null">
+			   	and t.grade =#{grade} 
+			   </if>
+			   <if test="resp == 2 ">  
+			       and (t.resp is null or t.resp='尚未处理')
+			   </if>
+			   <if test="resp == 1  ">  
+			       and (t.resp='1' or t.resp='同意')
+			   </if>
+			   <if test="resp == 0  ">  
+			       and (t.resp='0' or t.resp='不同意')
+			   </if> 
+			   <if test="orgtype != null ">
+			   	and t.bustype =#{orgtype}
+			   </if>  
+		          and  t.applytype = '1'
+		          and t.del = '0'
+		          and t.adminmot = b.motcode 
+		          and e.usertype='org'
+<!-- 		          and e.applyid=t.id -->
+		           and v.fileid=t.bustype
+		          )z ) tab
+	</select>
+	
+<!-- 	通过pid和bustype查询考评机构详细信息 -->
+	<select id="scanOrgDetail" parameterType="java.util.HashMap" resultMap="respOrgApplyDetailResult">
+		select distinct t.*, v.filetext, m.motname,t.advice as sladvice
+		  from org_apply t, valuetext v, mot m,examine e
+		 where t.id = #{id}
+		   and t.bustype = v.fileid
+		   and m.motcode = t.adminmot
+		   and e.applyid = t.id
+	</select>
+	
+<!-- 	逻辑删除 -->
+	<update id="delOrgApply" parameterType="java.util.HashMap" >
+		update org_apply t set t.del='1' where t.id=#{id}
+	</update>
+<!-- 	逻辑删除企业换证记录 -->
+	<update id="delEnApply" parameterType="java.util.HashMap" >
+		update en_apply t set t.del='1' where t.id=#{id}
+	</update>
+	
+<!-- 	变更查询 -->
+	<select id="getOrgExchangeList" parameterType="java.util.HashMap" resultMap="exchangeResult"> 
+		 select t.*, b.motname,u.commonname
+		  from exchange t 
+		  
+		  join      (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b on   t.adminmot = b.motcode
+		 join userregister u on u.user_id=t.userid and u.usertype=t.type
+		 where
+		   t.type = #{type}
+		   and t.del = '0'
+		   order by t.resp desc limit #{start},#{pagesize}
+	</select>
+	<!-- 	变更查询总数 -->
+	<select id="getOrgExchangeListCount" parameterType="java.util.HashMap" resultType="int"> 
+	select count(1) count from (
+		 select  t.*, b.motname,u.commonname
+		  from exchange t 
+		  
+		  join      (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b on   t.adminmot = b.motcode
+		 join userregister u on u.user_id=t.userid and u.usertype=t.type
+		 where
+		   t.type = #{type}
+		   and t.del = '0'
+		   ) ttab
+	</select>
+<!-- 	通过id查询变更 -->
+	<select id="selectExchangeById" parameterType="java.util.HashMap" resultMap="exchangeResult">
+		select distinct e.*, t.motname,u.commonname
+		  from exchange e 
+		  join mot t on e.adminmot = t.motcode
+		  join userregister u on u.user_id=e.userid and u.usertype=e.type
+		 where e.id = #{id}
+		 
+	</select>
+	
+<!-- 	通过id更新意见 -->
+	<update id="updateAdviceById"  parameterType="java.util.HashMap" >
+		update exchange t
+		   set t.advice     = #{advice},
+		       t.updatedate = #{updatedate},
+		       t.handleid   = #{handleid},
+		       t.status     = #{status},
+		       t.resp     = #{resp}
+		 where t.id = #{id}
+	</update>
+	
+<!-- 	换证申请列表查询 -->
+	<select id="getCertChangeList" parameterType="java.util.HashMap" resultMap="respOrgResult">
+		select t.*, b.motname, v.filetext uppername
+		  from org_apply t,
+		       (SELECT motcode, motname
+		           FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		   and t.del='0'
+		 order by t.resp desc limit #{start},#{pagesize}
+	</select>
+	<!-- 	换证申请列表查询总数 -->
+	<select id="getCertChangeListCount" parameterType="java.util.HashMap" resultType="int" >
+		select count(1) count from (
+		select t.*, b.motname, v.filetext uppername
+		  from org_apply t,
+		       (SELECT motcode, motname
+		            FROM mot WHERE motcode like CONCAT(#{adminmot},'%')) b,
+		       valuetext v
+		 where t.applytype = #{applytype}
+		   and t.adminmot = b.motcode
+		   and v.fileid = t.bustype
+		   and t.del='0'
+		 order by t.resp desc
+		 ) ttab
+	</select>
+<!-- 	通过id查询考评机构详细信息 -->
+	<select id="scanCertChangeDetail" parameterType="java.util.HashMap" resultMap="respOrgApplyDetailResult">
+		select t.* from org_apply t where t.id=#{id}
+	</select>
+	
+<!-- 	换证申请 逻辑删除 -->
+	<update id="delCertChangeById" parameterType="java.util.HashMap" >
+		update org_apply t set t.applytype='1' where t.id=#{id} 
+	</update>
+	
+	<update id="updateReg" parameterType="java.util.HashMap">
+	 UPDATE org_reg 
+    <set>   
+        <if test="legalp!=null and legalp!='' ">   
+            org_reg.LEGALP = #{legalp},    
+        </if>   
+        <if test="orgname!=null and orgname!='' ">   
+            org_reg.orgname = #{orgname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            org_reg.ADDRESS = #{address},    
+        </if>  
+        <if test="otherreason!=null and otherreason!='' ">   
+            org_reg.OTHERREASON = #{otherreason},    
+        </if>  
+    </set>   
+	where userid=#{userId}
+	</update>
+	<update id="updateApply" parameterType="java.util.HashMap">
+	 UPDATE org_apply    
+    <set>   
+        <if test="legalp!=null and legalp!='' ">   
+            org_apply.LEGALP = #{legalp},    
+        </if>   
+        <if test="orgname!=null and orgname!='' ">   
+            org_apply.orgname = #{orgname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            org_apply.ADDRESS = #{address},    
+        </if>  
+        <if test="otherreason!=null and otherreason!='' ">   
+            org_apply.OTHERREASON = #{otherreason},    
+        </if>  
+    </set>   
+	where userid=#{userId}
+	</update>
+	<update id="updateuser" parameterType="java.util.HashMap">
+	 UPDATE userregister    
+    <set>   
+        <if test="legalp!=null and legalp!='' ">   
+            userregister.LEGALP = #{legalp},    
+        </if>   
+        <if test="orgname!=null and orgname!='' ">   
+            userregister.COMMONNAME = #{orgname},    
+        </if>
+        <if test="address!=null and address!='' ">   
+            userregister.ADDRESS = #{address},    
+        </if>  
+    </set>   
+	where user_id=#{userId}
+	</update>
+	
+	<!--受理结果不同意-->
+	<update id="delChangeApply" parameterType="java.util.HashMap">
+		update org_apply set resp='不同意', advice = #{advice} ,respdate=#{respdate} where  id=#{id}
+	</update>
+	<update id="updatecert" parameterType="java.util.HashMap">
+		update cert set certstatus='1' where  userid=#{userid} and grade=#{grade} and certtype=#{bustype} and certnumber=#{cid}
+	</update>
+	<!-- 受理结果同意 -->
+	<update id="delApply" parameterType="java.util.HashMap">
+		update org_apply set del=#{del}, advice = #{advice},respdate=#{respdate} where userid=#{userid} and grade=#{grade} and bustype=#{bustype} 
+		and applytype='1'
+	</update>
+	<update id="updateorgapply" parameterType="java.util.HashMap">
+		update org_apply set resp='同意', advice = #{advice},respdate=#{respdate} where  id=#{id}
+	</update>
+	
+	<update id="delCert" parameterType="java.util.HashMap">
+		update cert set del=#{del} where userid=#{userid} and grade=#{grade} and certtype=#{bustype} and certnumber=#{cid}
+	</update>
+</mapper>
+

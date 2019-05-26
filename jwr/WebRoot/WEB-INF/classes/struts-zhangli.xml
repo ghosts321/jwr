@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+ 	<!-- 考评员操作页面跳转Action -->
+	<package name="mot" namespace="/mot" extends="struts-base">
+		<action name="*Action" class="regRespAction" method="{1}">
+			<!-- <result name="regResp" >/JSP/mot/motRespSum.jsp</result> -->
+			<result name="regResp" >/JSP/mot/motChart.jsp</result>
+			<result name="regApplication" >/JSP/mot/regApplication.jsp</result>
+			<result name="motRegResp" >/JSP/mot/motRegResp.jsp</result>
+			<result name="pnRegResp" >/JSP/mot/pnRegResp.jsp</result>
+			<result name="orgRegResp" >/JSP/mot/orgRegResp.jsp</result>
+			<result name="enRegResp" >/JSP/mot/enRegResp.jsp</result>
+			<result name="motRegRespDetail" >/JSP/motregRespDetail.jsp</result>
+			<result name="enRegRespDetail" >/JSP/enregRespDetail.jsp</result>
+			<result name="orgRegRespDetail" >/JSP/orgregRespDetail.jsp</result>
+			<result name="pnRegRespDetail" >/JSP/pnregRespDetail.jsp</result>
+			<result name="updateUserDetail" >/JSP/mot/motUserDetail.jsp</result>
+		</action>
+	</package>
+	 
+	<!-- 用户注册 -->
+	<package name="reg" namespace="/reg" extends="struts-default">
+		<action name="*Action" class="motRegAction" method="{1}">
+			<result name="motReg" >/JSP/motreg.jsp</result>
+			<result name="enReg" >/JSP/enreg.jsp</result>
+			<result name="orgReg" >/JSP/orgreg.jsp</result>
+			<result name="pnReg" >/JSP/pnreg.jsp</result>
+			<result name="updatemotreg" >/JSP/updatemotreg.jsp</result>
+			<result name="updateenReg" >/JSP/updateenreg.jsp</result>
+			<result name="updateorgreg" >/JSP/updateorgreg.jsp</result>
+			<result name="updatepnreg" >/JSP/updatepnreg.jsp</result>
+			
+		</action>
+	</package>
+		<!-- motControl -->
+	<package name="motControl" namespace="/motControl" extends="struts-default">
+		<action name="*Action" class="motAction" method="{1}">
+			<result name="motList" >/JSP/mot/motList.jsp</result>
+			<result name="getMotDetail" >/JSP/mot/motDetail.jsp</result>
+			<result name="indexMotEdit" >/JSP/mot/motIndexEdit.jsp</result>
+			<result name="updateUserDetail" >/JSP/mot/motUserDetail.jsp</result>
+			
+		</action>
+	</package>
+	<!-- nameReport -->
+	<package name="nameReport" namespace="/nameReport" extends ="struts-base">
+		<action name="*Action" class="nameReportAction" method="{1}">
+			<result name="nameReportList">/JSP/mot/nameReportList.jsp</result>
+			<result name="getNameReport">/JSP/mot/nameReportDetail.jsp</result>
+			<result name="addNameReport">/JSP/mot/nameReportAdd.jsp</result>
+		</action>
+	</package>
+</struts>    

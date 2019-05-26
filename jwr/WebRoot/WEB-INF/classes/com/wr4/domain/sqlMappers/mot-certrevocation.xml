@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="certrevocation">
+	<select id="getCertInfo" parameterType="com.wr4.domain.CertInfo" resultType="com.wr4.domain.QueryResule">
+		select a.pnName || ',' || '证书号:' || c.certnumber as text, a.*
+  from cert c, pn_apply a
+ where c.CERTNUMBER = a.cid
+   and ((c.certNumber like CONCAT('%',#{certnumber},'%')) or (a.pnname like CONCAT('%',#{certnumber},'%')))
+   and (a.del != '1' or a.del is null)
+   and (a.applytype != '2' or a.applytype is null)
+   and a.cid is not null
+   and a.adminmot in (SELECT motcode FROM mot WHERE motcode like CONCAT(#{logincode},'%'))
+   and a.cid in
+       (select certnumber from cert where (del != '1' or del is null))
+
+	</select>
+	<select id="getPnInfo" parameterType="com.wr4.domain.CertInfo" resultType="com.wr4.domain.PnInfo">
+		<!--  
+		select *
+		  from pn_apply p, examine e, pn_train tr,cert c 
+		 where p.userid = e.userid
+		   and p.userid = tr.userid
+		   and p.cid is not null
+		   and e.status = '已发证'
+		   and p.bussinestype = e.bustype 
+		   and p.cid = c.certnumber 
+		   and c.certstatus='1'  
+       and p.cid = #{certnumber}
+       -->
+       select  p.*,tr.train_start,tr.train_end,tr.train_hour,tr.exam_score,tr.exam_date,tr.train_id,c.fzdate,
+       (select filetext from valuetext where fileid=p.bussinestype) as typename
+		  from pn_apply p
+		  join cert c on c.certnumber=p.cid
+		  left join pn_train tr on tr.userid=p.userid 
+		  and p.bussinestype=tr.bustype
+			 where 
+			 (p.del !='1' or p.del is null)
+   			and (p.applytype !='2' or p.applytype is null) 
+   			and p.cid = #{certnumber}
+	</select>
+	<select id="getCertByUserId" parameterType="string" resultType="com.wr4.domain.PnApply">
+		
+				select  distinct a.cid f ,a.*,t.*
+		        from cert t, pn_apply a
+		       where t.userid = a.userid
+		         and a.userid = #{userid}
+		         and a.cid=t.certnumber
+		         and t.certstatus = '1'
+   				 and t.certtype=a.bussinestype
+   				 and (a.applytype!='2' or a.applytype is null)
+  				 and (a.del !='1'  or a.del is null)
+	</select>
+	<select id="applyedData" parameterType="string" resultType="java.util.HashMap">
+		select distinct a.*, b.*
+	      from pn_apply a, cert b
+	     where a.userid = b.userid
+	       and a.userid = #{userid}
+	       and a.renew is not null
+	       and a.applytype = '2'
+	       and a.bussinestype = b. certtype
+	       and a.cid=b.certnumber
+	</select>
+	<select id="getEnCertByUserId" parameterType="string" resultType="com.wr4.domain.EnExchangeCertInfo">
+ 
+ 	select   a.*,
+       t.*,
+       (select filetext from valuetext where fileid = a.type2) as type2name,
+       (select motname from mot where motcode = a.adminmot) as adminmotname
+	  from en_apply a, cert t
+	 where t.userid = a.userid
+	    and a.cid=t.certnumber
+	   and a.userid = #{userid}
+	   and (a.changeresault is null or a.changeresault='1' ) 
+	   and a.cid is not null 
+	   and (t.del!='1' or t.del is null)
+	   and (a.applytype != '2' or a.applytype is null)
+	   and a.createdate = (select max(createdate)
+	                         from en_apply
+	                        where userid = a.userid
+	                          and type2 = a.type2
+	                          and cid=a.cid
+	                          and (del!='1' or del is null)
+	                          and (applytype!='2' or applytype is null)
+	                          )
+ 	
+	</select>
+	<select id="enapplyedData" parameterType="string" resultType="com.wr4.domain.EnExchangeCertInfo">
+		select a.*,
+       (select filetext from valuetext where fileid = a.type2) as type2name,
+       (select motname from mot where motcode = a.adminmot) as adminmotname,
+       c.fzdate,c.stopdate
+		  from en_apply a
+		  join cert c on a.cid=c.certnumber
+		 where a.userid = #{userid}
+		   and (a.del != '1' or a.del is null)
+		   and a.applytype = '2'
+		   and(c.del is null or c.del !='1')
+		   and a.createdate = (select max(createdate)
+	                         from en_apply
+	                        where userid = a.userid
+	                          and type2 = a.type2
+	                          and cid=a.cid
+	                          and (del!='1' or del is null)
+	                          and applytype='2' 
+	                          )
+
+	</select>
+</mapper>

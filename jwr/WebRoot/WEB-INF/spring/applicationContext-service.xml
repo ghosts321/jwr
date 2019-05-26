@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+ "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<bean name="baseService" class="com.wr4.service.impl.BaseServiceImpl">
+		<property name="baseDao"><ref bean="baseDao" /></property>
+	</bean>
+	<!-- 负责具体逻辑层配置 -->
+	<bean name="menuService" class="com.wr4.service.impl.MenuServiceImpl">
+		<property name="menuDao"><ref bean="menuDao" /></property>
+	</bean>
+	<!-- 用户注册 -->
+	<bean name="regService" class="com.wr4.service.impl.RegServiceImpl">
+		<property name="regDao"><ref bean="regDao" /></property>
+	</bean>
+	
+	<bean name="roleService" class="com.wr4.service.impl.RoleServiceImpl">
+		<property name="roleDao"><ref bean="roleDao" /></property>
+	</bean>
+	<bean name="loginService" class="com.wr4.service.impl.LoginServiceImpl">
+		<property name="loginDao"><ref bean="loginDao" /></property>
+	</bean>
+	<bean name="pnService" class="com.wr4.service.impl.PnServiceImpl">
+		<property name="pnDao"><ref bean="pnDao" /></property>
+	</bean>
+		
+	<bean name="pnPageService" class="com.wr4.service.impl.PnPageServiceImpl">
+		<property name="pnPageDao"><ref bean="pnPageDao" /></property>
+	</bean>
+	<bean name="motService" class="com.wr4.service.impl.MotServiceImpl">
+		<property name="motDao"><ref bean="motDao" /></property>
+	</bean>
+	<bean name="enService" class="com.wr4.service.impl.EnServiceImpl">
+		<property name="enDao"><ref bean="enDao" /></property>
+		<property name="pnPageService"><ref bean="pnPageService" /></property>
+	</bean>
+	<bean name="iPnManagerService" class="com.wr4.service.impl.PnManagerServiceImpl">
+		<property name="iPnManagerDao"><ref bean="iPnManagerDao" /></property>
+	</bean>
+	<bean name="certificateService" class="com.wr4.service.impl.CertificateServiceImpl">
+		<property name="certificateDao"><ref bean="certificateDao" /></property>
+	</bean>
+	<bean name="iPnTrainService" class="com.wr4.service.impl.PnTrainServiceImpl">
+		<property name="iPnTrainDao"><ref bean="iPnTrainDao" /></property>
+	</bean>
+	<bean name="regRespService" class="com.wr4.service.impl.RegRespServiceImpl">
+		<property name="regRespDao"><ref bean="regRespDao" /></property>
+		<property name="loginDao"><ref bean="loginDao" /></property>
+	</bean>
+	<bean name="orgService" class="com.wr4.service.impl.OrgServiceImpl">
+		<property name="orgDao"><ref bean="orgDao" /></property>
+	</bean>
+	<bean name="iCertrevocationService" class="com.wr4.service.impl.CertrevocationServiceImpl">
+		<property name="iCertrevocationDao"><ref bean="iCertrevocationDao" /></property>
+	</bean>
+	<bean name="iStatisticsService" class="com.wr4.service.impl.StatisticsServiceImpl">
+		<property name="iStatisticsDao"><ref bean="iStatisticsDao" /></property>
+	</bean>
+	<bean name="orgManageService" class="com.wr4.service.impl.OrgManageServiceImpl">
+		<property name="orgManageDao"><ref bean="orgManageDao" /></property>
+	</bean>
+		<bean name="iExchangeCertService" class="com.wr4.service.impl.ExchangeCertServiceImpl">
+		<property name="iExchangeCertDao"><ref bean="iExchangeCertDao" /></property>
+		<property name="certificateService"><ref bean="certificateService"/></property>
+	</bean>
+	<bean name="iEnFileManageService" class="com.wr4.service.impl.EnFileManageServiceImpl">
+		<property name="iEnFileManageDao">
+			<ref bean="iEnFileManageDao" />
+		</property>
+	</bean>
+	<bean name="respInfoService" class="com.wr4.service.impl.RespInfoServiceImpl">
+		<property name="respInfoDao"><ref bean="respInfoDao" /></property>
+	</bean>
+	<bean name="enManageService" class="com.wr4.service.impl.EnManageServiceImpl">
+		<property name="enManageDao"><ref bean="enManageDao" /></property>
+	</bean>
+	<bean name="iPnApplyAccepService" class="com.wr4.service.impl.PnApplyAccepServiceImpl">
+		<property name="iPnApplyAccepDao"><ref bean="iPnApplyAccepDao" /></property>
+	</bean>
+	<bean name="respOrgService" class="com.wr4.service.impl.RespOrgApplyManageServiceImpl">
+		<property name="respOrgDao"><ref bean="respOrgDao" /></property>
+	</bean>
+	
+	
+	<bean name="nameReportService" class="com.wr4.service.impl.NameReportServiceImpl">
+		<property name="nameReportDao"><ref bean="nameReportDao"/></property>
+	</bean>
+	
+	<bean name="taskAssignationService" class="com.wr4.service.impl.TaskAssignationServiceImpl">
+		<property name="taskAssignationDao"><ref bean="taskAssignationDao"/></property>
+	</bean>
+	
+	<bean name="taskCheckLoginIntervalService" class="com.wr4.service.impl.TaskCheckLoginIntervalServiceImpl">
+		<property name="taskCheckLoginIntervalDao"><ref bean="taskCheckLoginIntervalDao"/></property>
+	</bean>
+	<bean name="enPandectService" class="com.wr4.service.impl.EnPandectServiceImpl">
+		<property name="enPandectDao"><ref bean="enPandectDao"/></property>
+	</bean>
+</beans>

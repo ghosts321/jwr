@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx
+     	   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean name="BaseAction" class="com.wr4.action.BaseAction">
+		 <property name="baseService">
+		    <ref bean="baseService"/>
+		 </property> 
+	</bean>
+	<!-- 负责action层配置 -->
+	<bean id="menuInfoAction" class="com.wr4.action.MenuInfoAction" parent="BaseAction">
+		<property name="menuService">
+			<ref bean="menuService" />
+		</property>
+	</bean>
+	
+	<bean id="loginAction" class="com.wr4.action.LoginAction" parent="BaseAction">
+		<property name="loginService">
+			<ref bean="loginService" />
+		</property>
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+	</bean>
+	<bean id="motAction" class="com.wr4.action.MotAction" parent="BaseAction">
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+		<property name="enService">
+			<ref bean="enService" />
+		</property>
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	
+	<bean id="roleInfoAction" class="com.wr4.action.RoleInfoAction" parent="BaseAction">
+		<property name="roleService">
+			<ref bean="roleService" />
+		</property>
+	</bean>
+	
+    <!-- 考评员操作页面跳转Action -->
+    <bean id="pnPageAction" class="com.wr4.action.PnPageAction" parent="BaseAction">
+	  <property name="pnPageService">
+		    <ref bean="pnPageService"/>
+		 </property> 
+	</bean>
+	
+	<!-- 考评员操作页面跳转Action -->
+    <bean id="pnHandAction" class="com.wr4.action.PnHandAction" parent="BaseAction">
+		<property name="pnService">
+			<ref bean="pnService" />
+		</property>
+	</bean>
+	
+	<!-- shangchuan -->
+	 <bean id="uploadAction" class="com.wr4.util.UploadAction" parent="BaseAction"  scope="prototype">
+		 
+	</bean>
+	<!-- 企业列表Action -->
+	<bean id="enInfoAction" class="com.wr4.action.EnInfoAction" parent="BaseAction">
+		<property name="enService">
+			<ref bean="enService" />
+		</property>
+		<property name="pnPageService">
+			<ref bean="pnPageService" />
+		</property>
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+		<property name="taskAssignationService">
+			<ref bean="taskAssignationService" />
+		</property>
+	</bean>
+	<!-- 企业列表年度报告Action -->
+	<bean id="enYearReportAction" class="com.wr4.action.EnYearReportAction" parent="BaseAction">
+		<property name="enService">
+			<ref bean="enService" />
+		</property>
+	</bean>
+	<!-- 考评员列表Action -->
+	<bean id="pnListAction" class="com.wr4.action.PnListAction" parent="BaseAction">
+		<property name="iPnManagerService">
+			<ref bean="iPnManagerService" />
+		</property>
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+	</bean>
+	<!-- 考评员资质证书制发Action -->
+	<bean id="certificateAction" class="com.wr4.action.CertificateAction" parent="BaseAction">
+		<property name="certificateService">
+			<ref bean="certificateService" />
+		</property>
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+	</bean>
+	<!-- 考评员培训考试Action -->
+	<bean id="pnTrainAction" class="com.wr4.action.PnTrainAction" parent="BaseAction">
+		<property name="iPnTrainService">
+			<ref bean="iPnTrainService" />
+		</property>
+	</bean>
+	<!-- 考评机构列表Action -->
+	<bean id="orgListAction" class="com.wr4.action.OrgListAction" parent="BaseAction">
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	<!-- 待办事宜 -->
+		<bean id="regRespAction" class="com.wr4.action.RegRespAction" parent="BaseAction">
+		<property name="regRespService">
+			<ref bean="regRespService" />
+ 	   </property>
+ 	   <property name="taskAssignationService">
+			<ref bean="taskAssignationService" />
+		</property>
+	</bean>
+	<!-- 资质证书制发列表Action -->
+	<bean id="orgListBookAction" class="com.wr4.action.OrgInfoAction" parent="BaseAction">
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	<!-- 问题整改Action -->
+	<bean id="problemRecAction" class="com.wr4.action.ProblemRecAction" parent="BaseAction">
+		<property name="enService">
+			<ref bean="enService" />
+		</property>
+	</bean>
+	
+		<!-- 考评机构问题整改Action -->
+	<bean id="problemModifyAction" class="com.wr4.action.OrgProblemModifyAction" parent="BaseAction">
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	
+	<!-- 证书撤销Action -->
+	<bean id="bookCancelAction" class="com.wr4.action.BookCancelAction" parent="BaseAction">
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	<!-- 考评员资质证书制发列表Action -->
+	<bean id="certrevocationAction" class="com.wr4.action.CertrevocationAction" parent="BaseAction">
+		<property name="iCertrevocationService">
+			<ref bean="iCertrevocationService" />
+		</property>
+	</bean>
+	<!-- 用户注册 -->
+	<bean id="motRegAction" class="com.wr4.action.UserRegAction" parent="BaseAction">
+		<property name="regService">
+			<ref bean="regService" />
+		</property>
+		<property name="respInfoService">
+			<ref bean="respInfoService" />
+		</property>
+	</bean>
+	<!-- 考试统计 -->
+	<bean id="statisticsAction" class="com.wr4.action.StatisticsAction" parent="BaseAction">
+		<property name="iStatisticsService">
+			<ref bean="iStatisticsService" />
+		</property>
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+		<property name="enPandectService">
+			<ref bean="enPandectService" />
+		</property>
+	</bean>
+	
+	<!-- 考评机构工作资质申请 -->
+	<bean id="bookApplyAction" class="com.wr4.action.BookApplyAction" parent="BaseAction">
+		<property name="orgManageService">
+			<ref bean="orgManageService" />
+		</property>
+	</bean>
+	
+	<!-- 考评机构工作资质申请 -->
+	<bean id="bookUpdateAction" class="com.wr4.action.BookUpdateAction" parent="BaseAction">
+		<property name="orgManageService">
+			<ref bean="orgManageService" />
+		</property>
+	</bean>
+	
+		<!-- 考评员换证申请 -->
+	<bean id="exchangeCertAction" class="com.wr4.action.ExchangeCertAction" parent="BaseAction">
+		<property name="iExchangeCertService">
+			<ref bean="iExchangeCertService" />
+		</property>
+		<property name="certificateService">
+			<ref bean="certificateService" />
+		</property>
+	</bean>
+	
+		<!-- 考评机构换证申请 -->
+	<bean id="bookChangeAction" class="com.wr4.action.BookChangeAction" parent="BaseAction">
+		<property name="orgManageService">
+			<ref bean="orgManageService" />
+		</property>
+	</bean>
+	
+<!-- 	考评机构工作 资质证书信息 -->
+	<bean id="bookInfoAction" class="com.wr4.action.BookInfoAction" parent="BaseAction">
+		<property name="orgManageService">
+			<ref bean="orgManageService" />
+		</property>
+		<property name="motService">
+			<ref bean="motService" />
+		</property>
+	</bean>
+		
+<!-- 	考评机构工作 年度工作报告 -->
+	<bean id="bookYearReportAction" class="com.wr4.action.BookYearReportAction" parent="BaseAction">
+		<property name="orgManageService">
+			<ref bean="orgManageService" />
+		</property>
+	</bean>
+	<!-- 考评机构考评员管理页面跳转Action -->
+    <bean id="orgPageAction" class="com.wr4.action.OrgPageAction" parent="BaseAction"> 
+	</bean>
+	<!-- 考评机构考评员档案管理Action -->
+    <bean id="enFileManageAction" class="com.wr4.action.EnFileManageAction" parent="BaseAction">
+    	<property name="iEnFileManageService">
+			<ref bean="iEnFileManageService" />
+		</property>
+	</bean>
+	
+	<!-- 	代办事宜 -->
+	<bean id="scanRespAction" class="com.wr4.action.RespInfoAction" parent="BaseAction">
+		<property name="respInfoService">
+			<ref bean="respInfoService" />
+		</property>
+		<property name="enService">
+			<ref bean="enService" />
+		</property>
+	</bean>
+	
+	<!-- 	企业达标等级证书制发 -->
+	<bean id="enProduceAction" class="com.wr4.action.EnManageAction" parent="BaseAction">
+		<property name="enManageService">
+			<ref bean="enManageService" />
+		</property>
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	
+	<!-- 	企业档案管理 -->
+	<bean id="enFilesManageAction" class="com.wr4.action.EnFilesManageAction" parent="BaseAction">
+		<property name="enManageService">
+			<ref bean="enManageService" />
+		</property>
+	</bean>
+	
+<!-- 	考评汇总 -->
+    <bean id="enScoreSumAction" class="com.wr4.action.EnScoreSumAction" parent="BaseAction"> 
+		<property name="enManageService">
+			<ref bean="enManageService" />
+		</property>
+	</bean>
+<!-- 	考评汇总 -->
+    <bean id="pnApplyAccepAction" class="com.wr4.action.PnApplyAccepAction" parent="BaseAction">
+		<property name="iPnApplyAccepService">
+			<ref bean="iPnApplyAccepService" />
+		</property>
+	</bean>
+	
+<!-- 	考评机构申请受理 -->
+    <bean id="respOrgApplyManageAction" class="com.wr4.action.RespOrgApplyManageAction" parent="BaseAction">
+		<property name="respOrgService">
+			<ref bean="respOrgService" />
+		</property>
+	</bean>
+	
+<!-- 	考评机构 变更备案受理 -->
+	<bean id="orgExchangeAction" class="com.wr4.action.OrgExchangeAction" parent="BaseAction">
+		<property name="respOrgService">
+			<ref bean="respOrgService" />
+		</property>
+	</bean>
+	
+<!-- 	考评机构 换证申请受理 -->
+<bean id="certChangeAction" class="com.wr4.action.CertChangeAction" parent="BaseAction">
+		<property name="respOrgService">
+			<ref bean="respOrgService" />
+		</property>
+	</bean>
+	
+<!-- 	年度报告 -->
+	<bean id="orgYearReportAction" class="com.wr4.action.OrgYearReportAction" parent="BaseAction">
+		<property name="orgService">
+			<ref bean="orgService" />
+		</property>
+	</bean>
+	<bean id="nameReportAction" class="com.wr4.action.NameReportAction" parent="BaseAction">
+		<property name="nameReportService">
+			<ref bean="nameReportService" />
+		</property>
+	</bean>
+	
+<!--    任务分配 -->
+	<bean id="taskAssignationAction" class="com.wr4.action.TaskAssignationAction" parent="BaseAction">
+		<property name="taskAssignationService">
+			<ref bean="taskAssignationService" />
+		</property>
+	</bean>
+</beans>

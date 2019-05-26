@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties>    
+            <property name="dialect" value="oracle"/>    
+    </properties>    
+            
+    <plugins>    
+            <plugin interceptor="com.wr4.interceptor.PaginationInterceptor"></plugin>    
+    </plugins>    
+	<mappers>
+		<mapper resource="com/wr4/domain/sqlMappers/user.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/role.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/pn.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-pn.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-certificate.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-en.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-year-report.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-org.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-problem-rec.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-train.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-certrevocation.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/mot-statistics.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/org-org.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/org-resp.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/org-en.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/resp-org.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/name-report.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/task-Assignation.xml" />
+		<mapper resource="com/wr4/domain/sqlMappers/task-checkLoginInterval.xml" />
+	</mappers>
+	
+</configuration>	

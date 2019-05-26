@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wr4.domain.enManage">
+
+<resultMap type="com.wr4.domain.EnManage" id="enResult">
+        <!-- 经营许可证             -->
+        <result column="LICENSE"   property="license" />
+        <!-- 传真                   -->
+        <result column="TAX"   property="tax" />
+        <!-- 日期                   -->
+        <result column="CREATEDATE"   property="createdate" />
+        <!-- 发证时间               -->
+        <result column="CDATE"   property="cdate" />
+        <!-- 备注                   -->
+        <result column="REMARKS"   property="remarks" />
+        <!-- 指定的考评机构         -->
+        <result column="ORGID1"   property="orgid1" />
+        <!-- 处理意见               -->
+        <result column="ADVICE"   property="advice" />
+        <!-- 证件号                 -->
+        <result column="PID"   property="pid" />
+        <!-- 删除标志               -->
+        <result column="DEL"   property="del" />
+        <!-- 名称                   -->
+        <result column="ENNAME"   property="enname" />
+        <!-- 安全生产组织架构       -->
+        <result column="SAFE"   property="safe" />
+        <!-- 换证原因（仅换证申请） -->
+        <result column="RENEW"   property="renew" />
+        <!-- 标准化达标自评报告     -->
+        <result column="ZPREPORT"   property="zpreport" />
+        <!-- 所在省市               -->
+        <result column="PROVINCE"   property="province" />
+        <!-- 证书号                 -->
+        <result column="CID"   property="cid" />
+        <!-- 法人代表               -->
+        <result column="LEGALP"   property="legalp" />
+        <!-- 等级                   -->
+        <result column="GRADE"   property="grade" />
+        <!-- 联系人邮箱             -->
+        <result column="EMAIL"   property="email" />
+        <!-- 业务类型               -->
+        <result column="BUSTYPE"   property="bustype" />
+        <!-- 受理结果               -->
+        <result column="RESP"   property="resp" />
+        <!-- 审核日期               -->
+        <result column="RESPDATE_REVIEW"   property="respdateReview" />
+        <!-- 业务类别               -->
+        <result column="TYPE2"   property="type2" />
+        <!-- 联系人姓名             -->
+        <result column="CONTACT"   property="contact" />
+        <!-- 审核意见               -->
+        <result column="ADVICE_REVIEW"   property="adviceReview" />
+        <!-- 通讯地址               -->
+        <result column="ADDRESS"   property="address" />
+        <!-- 手机                   -->
+        <result column="MOBILE"   property="mobile" />
+        <!-- 企业法人资格证件       -->
+        <result column="QUAL"   property="qual" />
+        <!-- 主管机关               -->
+        <result column="ADMINMOT"   property="adminmot" />
+        <!-- 审核结果               -->
+        <result column="RESP_REVIEW"   property="respReview" />
+        <!-- 联系电话               -->
+        <result column="TEL"   property="tel" />
+        <!-- 受理日期               -->
+        <result column="RESPDATE"   property="respdate" />
+        <!-- 所选考评机构 -->
+        <result column="ORGID"   property="orgid" />
+        <!-- 用户ID -->
+        <result column="USERID"   property="userid" />
+        <!-- 申请标示（0表示初次申请，1表示证书申请） -->
+        <result column="APPLYTYPE"   property="applytype" />
+        <!-- ID -->
+        <result column="ID" property="id" />
+        <!-- 企业自评分 -->
+        <result column="ZPSCORE"   property="zpscore" />
+        <result column="KPSCORE"   property="kpscore" />
+        <result property="provinceName" column="provinceName" />
+		<result property="adminMotName" column="adminMotName" />
+		<result property="filetext" column="filetext" />
+		<result property="uppername" column="uppername" />
+		<result property="results" column="results" />
+		<result property="auditdate" column="auditdate" />
+		<result property="kpadvice" column="KPADVICE" />
+		<result property="kpdate" column="KPDATE" />
+		<result property="kpresult" column="KPRESULT" />
+		<result property="auditAdvice" column="AUDITADVICE" />
+		<result property="respAdvice" column="RESPADVICE" />
+	<result property="rn" column="RN" />
+	</resultMap>
+	
+	<resultMap id="enInfoResult" type="com.wr4.domain.EnInfo">
+		<result property="id" jdbcType="INTEGER" column="ID" />
+		<result property="license" column="LICENSE" />
+		<result property="tax" column="TAX" />
+		<result property="date" column="CREATEDATE" />
+		<result property="cDate" column="CDATE" />
+		<result property="comment" column="REMARKS" />
+		<result property="orgId1" column="ORGID1" />
+		<result property="advice" column="ADVICE" />
+		<result property="pid" column="PID" />
+		<result property="del" column="DEL" />
+		<result property="name" column="ENNAME" />
+		<result property="safe" column="SAFE" />
+		<result property="reNew" column="RENEW" />
+		<result property="report" column="ZPREPORT" />
+		<result property="province" column="PROVINCE" />
+		<result property="cid" column="CID" />
+		<result property="legalp" column="LEGALP" />
+		<result property="grade" column="GRADE" />
+		<result property="email" column="EMAIL" />
+		<result property="type" column="BUSTYPE" />
+		<result property="resp" column="RESP" />
+		<result property="respDateReview" column="RESPDATE_REVIEW" />
+		<result property="type2" column="TYPE2" />
+		<result property="contact" column="CONTACT" />
+		<result property="adviceReview" column="ADVICE_REVIEW" />
+		<result property="address" column="ADDRESS" />
+		<result property="mobile" column="MOBILE" />
+		<result property="qual" column="QUAL" />
+		<result property="admin" column="ADMINMOT" />
+		<result property="respReview" column="RESP_REVIEW" />
+		<result property="tel" column="TEL" />
+		<result property="respDate" column="RESPDATE" />
+		<result property="auditDate" column="AUDITDATE" />
+		<result property="fzDate" column="FZDATE" />
+		<result property="auditAdvice" column="AUDITADVICE" />
+		<result property="results" column="RESULTS" />
+		<result property="userId" column="USERID" />
+		<result property="orgId" column="ORGID" />
+		<result property="applyType" column="APPLYTYPE" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.EnScoreSum" id="enScoreResult">
+	     <result property="id" column="id"/>
+	     <result property="cid" column="cid"/>
+	     <result property="pid" column="pid"/>
+		 <result column="enname"   property="enname" />
+		 <result column="createdate"   property="createdate" />
+		 <result column="busclass"   property="busclass" />
+		 <result column="grade"   property="grade" />
+		 <result column="selfScore"   property="selfScore" />
+		 <result column="kaoScore"   property="kaoScore" />
+	</resultMap>
+	
+	<resultMap type="com.wr4.domain.EnApplyDetail" id="enApplyDetailResult">
+        <!-- 经营许可证             -->
+        <result column="LICENSE" jdbcType="VARCHAR" property="license" />
+        <!-- 传真                   -->
+        <result column="TAX" jdbcType="VARCHAR" property="tax" />
+        <!-- 日期                   -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 发证时间               -->
+        <result column="CDATE" jdbcType="VARCHAR" property="cdate" />
+        <!-- 备注                   -->
+        <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+        <!-- 指定的考评机构         -->
+        <result column="ORGID1" jdbcType="VARCHAR" property="orgid1" />
+        <!-- 处理意见               -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 证件号                 -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 删除标志               -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 名称                   -->
+        <result column="ENNAME" jdbcType="VARCHAR" property="enname" />
+        <!-- 安全生产组织架构       -->
+        <result column="SAFE" jdbcType="VARCHAR" property="safe" />
+        <!-- 换证原因（仅换证申请） -->
+        <result column="RENEW" jdbcType="VARCHAR" property="renew" />
+        <!-- 标准化达标自评报告     -->
+        <result column="ZPREPORT" jdbcType="VARCHAR" property="zpreport" />
+        <!-- 所在省市               -->
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <!-- 证书号                 -->
+        <result column="CID" jdbcType="VARCHAR" property="cid" />
+        <!-- 法人代表               -->
+        <result column="LEGALP" jdbcType="VARCHAR" property="legalp" />
+        <!-- 等级                   -->
+        <result column="GRADE" jdbcType="VARCHAR" property="grade" />
+        <!-- 联系人邮箱             -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 业务类型               -->
+        <result column="BUSTYPE" jdbcType="VARCHAR" property="bustype" />
+        <!-- 受理结果               -->
+        <result column="RESP" jdbcType="VARCHAR" property="resp" />
+        <!-- 审核日期               -->
+        <result column="RESPDATE_REVIEW" jdbcType="VARCHAR" property="respdateReview" />
+        <!-- 业务类别               -->
+        <result column="TYPE2" jdbcType="VARCHAR" property="type2" />
+        <!-- 联系人姓名             -->
+        <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+        <!-- 审核意见               -->
+        <result column="ADVICE_REVIEW" jdbcType="VARCHAR" property="adviceReview" />
+        <!-- 通讯地址               -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机                   -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 企业法人资格证件       -->
+        <result column="QUAL" jdbcType="VARCHAR" property="qual" />
+        <!-- 主管机关               -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 审核结果               -->
+        <result column="RESP_REVIEW" jdbcType="VARCHAR" property="respReview" />
+        <!-- 联系电话               -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 受理日期               -->
+        <result column="RESPDATE" jdbcType="VARCHAR" property="respdate" />
+        <!-- 所选考评机构 -->
+        <result column="ORGID" jdbcType="VARCHAR" property="orgid" />
+        <!-- 用户ID -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 申请标示（0表示初次申请，1表示证书申请） -->
+        <result column="APPLYTYPE" jdbcType="VARCHAR" property="applytype" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <!-- 企业自评分 -->
+        <result column="ZPSCORE" jdbcType="VARCHAR" property="zpscore" />
+        <result property="selfScore" column="SELFSCORE" />
+        <result property="kaoScore" column="KAOSCORE" />
+        <result property="kpresult" column="KPRESULT" />
+        <result property="kpdate" column="KPDATE" />
+        <result property="kpadvice" column="KPADVICE" />
+        <result property="sladvice" column="SLADVICE" />
+		<result property="sldate" column="SLDATE" />
+		<result property="slresult" column="SLRESULT" />
+		<result property="shadvice" column="SHADVICE" />
+		<result property="shdate" column="SHDATE" />
+		<result property="shresult" column="SHRESULT" />
+		<result property="apporg" column="APPORG" />
+		<result property="city" column="CITY" />
+        
+	</resultMap>
+
+	<resultMap type="com.wr4.domain.PnList" id="pnResult">
+        <!-- 相关专业从业年份证明文件 -->
+        <result column="BEGINFILE" jdbcType="VARCHAR" property="beginfile" />
+        <!-- 直接颁发                 -->
+        <result column="PASS_DIRECT" jdbcType="VARCHAR" property="passDirect" />
+        <!-- 初审结果                 -->
+        <result column="RESP_REG" jdbcType="VARCHAR" property="respReg" />
+        <!-- 主要工作简历             -->
+        <result column="WORKDOC" jdbcType="VARCHAR" property="workdoc" />
+        <!-- 常住地                   -->
+        <result column="FROMADDRESS" jdbcType="VARCHAR" property="fromaddress" />
+        <!-- 日期                     -->
+        <result column="CREATEDATE" jdbcType="VARCHAR" property="createdate" />
+        <!-- 主管机关（地市）         -->
+        <result column="ADMINMOT2" jdbcType="VARCHAR" property="adminmot2" />
+        <!-- 邮编                     -->
+        <result column="PCODE" jdbcType="VARCHAR" property="pcode" />
+        <!-- 身份证明文件             -->
+        <result column="PROOF" jdbcType="VARCHAR" property="proof" />
+        <!-- 处理意见                 -->
+        <result column="ADVICE" jdbcType="VARCHAR" property="advice" />
+        <!-- 文化程度                 -->
+        <result column="EDU" jdbcType="VARCHAR" property="edu" />
+        <!-- 证件号                   -->
+        <result column="PID" jdbcType="VARCHAR" property="pid" />
+        <!-- 名称                     -->
+        <result column="PNNAME" jdbcType="VARCHAR" property="pnname" />
+        <!-- 主要学习（培训）经历     -->
+        <result column="TRAIN" jdbcType="VARCHAR" property="train" />
+        <!-- 证明人联系电话           -->
+        <result column="PROOFMOBILE" jdbcType="VARCHAR" property="proofmobile" />
+        <!-- 现从事专业               -->
+        <result column="PROF" jdbcType="VARCHAR" property="prof" />
+        <!-- 单位组织                 -->
+        <result column="ORG" jdbcType="VARCHAR" property="org" />
+        <!-- 照片                     -->
+        <result column="PHOTO" jdbcType="VARCHAR" property="photo" />
+        <!-- 职称                     -->
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <!-- 导入时间                 -->
+        <result column="IMPORT_DATE" jdbcType="VARCHAR" property="importDate" />
+        <!-- 相关专业从业年份         -->
+        <result column="BEGINDATE" jdbcType="VARCHAR" property="begindate" />
+        <!-- 专业工作业绩             -->
+        <result column="PERF" jdbcType="VARCHAR" property="perf" />
+        <!-- 职称证明文件             -->
+        <result column="TITLEFILE" jdbcType="VARCHAR" property="titlefile" />
+        <!-- 学历证明文件             -->
+        <result column="PROOF2" jdbcType="VARCHAR" property="proof2" />
+        <!-- 专业工作业绩附件         -->
+        <result column="PERF2" jdbcType="VARCHAR" property="perf2" />
+        <!-- 培训合格证明文件         -->
+        <result column="PROOF3" jdbcType="VARCHAR" property="proof3" />
+        <!-- 联系人邮箱               -->
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <!-- 业务类型                 -->
+        <result column="BUSSINESTYPE" jdbcType="VARCHAR" property="bussinestype" />
+        <!-- 传真号码                 -->
+        <result column="FAX" jdbcType="VARCHAR" property="fax" />
+        <!-- 所学专业                 -->
+        <result column="MAJOR" jdbcType="VARCHAR" property="major" />
+        <!-- 证明单位                 -->
+        <result column="PROOFORG" jdbcType="VARCHAR" property="prooforg" />
+        <!-- 通讯地址                 -->
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <!-- 手机                     -->
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+        <!-- 常住地（地市）           -->
+        <result column="FROM2" jdbcType="VARCHAR" property="from2" />
+        <!-- 证明人                   -->
+        <result column="PROOFNAME" jdbcType="VARCHAR" property="proofname" />
+        <!-- 证书号                   -->
+        <result column="CID" jdbcType="VARCHAR" property="cid" />
+        <!-- 主管机关                 -->
+        <result column="ADMINMOT" jdbcType="VARCHAR" property="adminmot" />
+        <!-- 联系电话                 -->
+        <result column="TEL" jdbcType="VARCHAR" property="tel" />
+        <!-- 是否删除：1，删除  0：未删除 -->
+        <result column="DEL" jdbcType="VARCHAR" property="del" />
+        <!-- 用户ID -->
+        <result column="USERID" jdbcType="VARCHAR" property="userid" />
+        <!-- 所属考评机构 -->
+        <result column="ATTRORG" jdbcType="VARCHAR" property="attrorg" />
+        <!-- 聘用日期 -->
+        <result column="EMPLOYDATE" jdbcType="VARCHAR" property="employdate" />
+        <!-- 解聘日期 -->
+        <result column="UNEMPLOYDATE" jdbcType="VARCHAR" property="unemploydate" />
+        <!-- 专兼职 -->
+        <result column="PARTTIME" jdbcType="VARCHAR" property="parttime" />
+        <!-- 申请标示（0表示初次申请，1标示证书申请） -->
+        <result column="APPLYTYPE" jdbcType="VARCHAR" property="applytype" />
+        <!-- 初审时间 -->
+        <result column="RESPDATE" jdbcType="VARCHAR" property="respdate" />
+        <!-- 备用字段 -->
+        <result column="BYZD1" jdbcType="VARCHAR" property="byzd1" />
+        <!-- 备用字段 -->
+        <result column="BYZD2" jdbcType="VARCHAR" property="byzd2" />
+        <!-- 备用字段 -->
+        <result column="BYZD3" jdbcType="VARCHAR" property="byzd3" />
+        <!-- ID -->
+        <result column="ID" jdbcType="DOUBLE" property="id" />
+        <result column="AUDITDATE" jdbcType="DOUBLE" property="auditdate" />
+        <result column="EXAM_DATE" jdbcType="VARCHAR" property="exam_date" />
+        <result column="EXAM_SCORE" jdbcType="VARCHAR" property="exam_score" />
+        <result column="TRAIN_HOUR" jdbcType="VARCHAR" property="train_hour" />
+        <result column="TRAIN_END" jdbcType="VARCHAR" property="train_end" />
+        <result column="TRAIN_START" jdbcType="VARCHAR" property="train_start" />
+        <result column="TRAIN_ID" jdbcType="VARCHAR" property="train_id" />
+        <result column="FZDATE" jdbcType="VARCHAR" property="fzdate" />
+        <result column="PASS_DIRECT" jdbcType="VARCHAR" property="pass_direct" />
+        <result column="CITY" jdbcType="VARCHAR" property="city" />
+	</resultMap>
+
+<!-- 企业达标等级证书制发列表查询 -->
+	<select id="getEnProduceList" parameterType="java.util.HashMap" resultMap="enResult">
+		<!-- 哪位加的只能导出一条的 垃圾条件
+		 -->
+		  <!--  
+		select distinct b.id s,
+                
+                b.*,
+                ex.results as respResult,
+                ex.advice as respAdvice,
+                ex.auditdate as respdate1,
+                ey.results as orgresult,
+                ey.advice as orgadvice,
+                ey.auditdate as orgdate,
+                ez.results as auditResult,
+                ez.advice as auditAdvice,
+                ez.auditdate as auditdate,
+                zp.scoresum selfScore,
+                kp.scoresum kaoScore,
+                kp.kpadvice kpadvice,
+                kp.kpresult kpresult,
+                kp.createdate kpdate
+  from (select en.license,
+               en.tax,
+               en.createdate,
+               en.cdate,
+               en.remarks,
+               en.orgid1,
+               en.advice,
+               en.pid,
+               en.del,
+               en.enname,
+               en.safe,
+               en.renew,
+               en.zpreport,
+               en.province,
+               en.cid,
+               en.legalp,
+               en.grade,
+               en.email,
+               en.bustype,
+               (select filetext from valuetext where fileid = en.bustype) as uppername,
+               en.resp,
+               en.respdate_review as respdateReview,
+               en.type2,
+               (select filetext from valuetext where fileid = en.type2) as filetext,
+               en.contact,
+               en.advice_review,
+               en.address,
+               en.mobile,
+               en.qual,
+               en.adminmot,
+               (select motname from mot where motcode = en.adminmot) as adminMotName,
+               en.resp_review as respReview,
+               en.tel,
+               en.respdate,
+               en.userid,
+               en.applytype,
+               en.id,
+               en.zpscore,
+               en.type2 busclass,
+               en.pncidlist,
+               en.advice_review as adviceReview
+              
+          from en_apply en, examine aa
+         where en.id = aa.applyid
+           and en.id = #{id}
+           and aa.pid = #{pid}
+           and en.resp = #{resp}
+           and aa.status = '待发证'
+           and aa.handletype = 'en') b
+  join qypf_table kp on kp.applyid = b.id
+  left join examine ex on b.id = ex.applyid
+                      and ex.status = '已处理'
+                      and ex.usertype = 'en'
+  left join examine ey on b.id = ey.applyid
+                      and ey.status = '已考评'
+                      and ey.handletype = 'en'
+  left join examine ez on b.id = ez.applyid
+                      and ez.status = '已审核'
+                      and ez.handletype = 'en'
+  left join qypf_table zp on zp.createuser = b.userid
+                         and zp.busclass = b.type2
+ where zp.createdate = (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.createuser = b.userid
+                           and qy.busclass = b.type2)
+-->
+		 select distinct b.id          s,
+                                b.*,
+                                ex.results    as respResult,
+                                ex.advice     as respAdvice,
+                                ex.auditdate  as respdate1,
+                                ey.results    as orgresult,
+                                ey.advice     as orgadvice,
+                                ey.auditdate  as orgdate,
+                                ez.results    as auditResult,
+                                ez.advice     as auditAdvice,
+                                ez.auditdate  as auditdate,
+                                zp.scoresum   selfScore,
+                                kp.scoresum   kaoScore,
+                                kp.kpadvice   kpadvice,
+                                kp.kpresult   kpresult,
+                                kp.createdate kpdate
+                  from (select en.license,
+                               en.tax,
+                               en.createdate,
+                               en.cdate,
+                               en.remarks,
+                               en.orgid1,
+                               en.advice,
+                               en.pid,
+                               en.del,
+                               en.enname,
+                               en.safe,
+                               en.renew,
+                               en.zpreport,
+                               en.province,
+                               en.cid,
+                               en.legalp,
+                               en.grade,
+                               en.email,
+                               en.bustype,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.bustype) as uppername,
+                               en.resp,
+                               en.respdate_review as respdateReview,
+                               en.type2,
+                               (select filetext
+                                  from valuetext
+                                 where fileid = en.type2) as filetext,
+                               en.contact,
+                               en.advice_review,
+                               en.address,
+                               en.mobile,
+                               en.qual,
+                               en.adminmot,
+                               (select motname
+                                  from mot
+                                 where motcode = en.adminmot) as adminMotName,
+                               en.resp_review as respReview,
+                               en.tel,
+                               en.respdate,
+                               en.userid,
+                               en.applytype,
+                               en.id,
+                               en.zpscore,
+                               en.type2 busclass,
+                               en.pncidlist,
+                               en.city,
+                               en.advice_review as adviceReview
+                          from en_apply en, examine aa
+                         where en.id = aa.applyid
+                           and (en.del !='1' or en.del is null)
+                           and (en.applytype !='2' or en.applytype is null)
+                           and aa.auditer = #{adminmot}
+                           and aa.status = '待发证'
+                           and aa.handletype = 'en') b
+                  join qypf_table kp
+                    on kp.applyid = b.id
+                    and 
+                    kp.createdate =
+                       (select max(qyw.createdate)
+                          from qypf_table qyw
+                         where qyw.applyid = kp.applyid
+                           and qyw.busclass =  kp.busclass)
+                  and kp.kpresult='同意'
+                  left join examine ex
+                    on b.id = ex.applyid
+                   and ex.status = '已处理'
+                   and ex.usertype = 'en'
+                  left join examine ey
+                    on b.id = ey.applyid
+                   and ey.status = '已考评'
+                   and ey.handletype = 'en'
+                  left join examine ez
+                    on b.id = ez.applyid
+                   and ez.status = '已审核'
+                   and ez.handletype = 'en'
+                  left join qypf_table zp
+                    on zp.createuser = b.userid
+                   and zp.busclass = b.type2
+                  where   zp.createdate =
+                       (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.createuser = b.userid
+                           and qy.busclass = b.type2)
+		
+	</select>
+	
+<!-- 	更新申请表证书号 -->
+	<update id="updateApplyCertNo" parameterType="java.util.HashMap" >
+		update org_apply t set t.cid=CONCAT(#{curDate},#{NoNum}) where t.pid=#{pid} and t.bustype=#{busType}
+	</update>
+	
+<!-- 	本考评机构考评过的企业档案 -->
+	<select id="getEnFileManageList" parameterType="java.util.HashMap" resultMap="enResult">
+  		select  distinct s.id as fs,s.*,ss.scoresum as kpscore,ss1.scoresum as zpscore ,ss.kpresult as kpresult, 
+ss.kpadvice as kpadvice, ss.createdate as kpdate,ey.advice as respAdvice
+ from (
+    select en.license,
+       en.tax,
+       en.createdate,
+       en.cdate,
+       en.remarks,
+       en.orgid1,
+       en.advice,
+       en.pid,
+       en.del,
+       en.enname,
+       en.safe,
+       en.renew,
+       en.zpreport,
+       en.province,
+       en.cid,
+       en.legalp,
+       en.grade,
+       en.email,
+       en.bustype,
+       (select filetext from valuetext where fileid = en.bustype) as uppername,
+       en.resp,
+       en.respdate_review as respdateReview,
+       en.type2,
+       (select filetext from valuetext where fileid = en.type2) as filetext,
+       en.contact,
+       en.advice_review as adviceReview,
+       en.address,
+       en.mobile,
+       en.qual,
+       en.adminmot,
+       (select motname from mot where motcode = en.adminmot) as adminMotName,
+       en.resp_review as respReview,
+       en.tel,
+       en.respdate,
+       en.userid,
+       en.applytype,
+       en.id,
+       en.type2 as busclass,
+       en.pncidlist,
+
+       ex.results,
+       ex.auditdate as exad ,
+       ex.auditer as exa
+      
+  from en_apply en
+  join   examine ex  on en.id = ex.applyid  and ex.auditer =#{pid}
+  
+ where 
+    ex.status = '已考评'
+     and (en.del !='1' or en.del is null)
+     and (en.applytype !='2' or en.applytype is null)
+     
+ ) s
+   join qypf_table ss on s.id =ss.applyid and ss.createpid=s.exa
+   join qypf_table ss1 on s.userid=ss1.createuser and s.type2 =ss1.busclass
+   join examine ey on s.id = ey.applyid  and ey.status = '已处理' and ey.usertype = 'en'
+   limit #{start},#{pagesize}
+    <!-- where 
+   
+     ss1.createdate =
+                       (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.createuser = s.userid
+                           and qy.busclass = s.type2) 
+     and  ss.createdate =
+                       (select max(qy.createdate)
+                          from qypf_table qy
+                         where qy.applyid = s.id
+                           and qy.busclass = s.type2) -->   	
+
+    
+    
+  		
+
+    
+	</select>
+	<select id="getEnFileManageListCount" parameterType="java.util.HashMap" resultType="int">
+  		select count(*) count from (select  distinct s.id as fs,s.*,ss.scoresum as kpscore,ss1.scoresum as zpscore ,ss.kpresult as kpresult, 
+ss.kpadvice as kpadvice, ss.createdate as kpdate,ey.advice as respAdvice
+ from (
+    select en.license,
+       en.tax,
+       en.createdate,
+       en.cdate,
+       en.remarks,
+       en.orgid1,
+       en.advice,
+       en.pid,
+       en.del,
+       en.enname,
+       en.safe,
+       en.renew,
+       en.zpreport,
+       en.province,
+       en.cid,
+       en.legalp,
+       en.grade,
+       en.email,
+       en.bustype,
+       (select filetext from valuetext where fileid = en.bustype) as uppername,
+       en.resp,
+       en.respdate_review as respdateReview,
+       en.type2,
+       (select filetext from valuetext where fileid = en.type2) as filetext,
+       en.contact,
+       en.advice_review as adviceReview,
+       en.address,
+       en.mobile,
+       en.qual,
+       en.adminmot,
+       (select motname from mot where motcode = en.adminmot) as adminMotName,
+       en.resp_review as respReview,
+       en.tel,
+       en.respdate,
+       en.userid,
+       en.applytype,
+       en.id,
+       en.type2 as busclass,
+       en.pncidlist,
+
+       ex.results,
+       ex.auditdate as exad ,
+       ex.auditer as exa
+      
+  from en_apply en
+  join   examine ex  on en.id = ex.applyid  and ex.auditer =#{pid}
+  
+ where 
+    ex.status = '已考评'
+     and (en.del !='1' or en.del is null)
+     and (en.applytype !='2' or en.applytype is null)
+     
+ ) s
+   join qypf_table ss on s.id =ss.applyid and ss.createpid=s.exa
+   join qypf_table ss1 on s.userid=ss1.createuser and s.type2 =ss1.busclass
+   join examine ey on s.id = ey.applyid  and ey.status = '已处理' and ey.usertype = 'en'
+    ) ttab
+	</select>
+	
+<!-- 考评情况汇总 -->
+		<select id="getEnScoreSumList" parameterType="java.util.HashMap" resultMap="enScoreResult">
+		 
+		select distinct en.cid,
+	                en.pid,
+	                en.id,
+	                en.enname,
+	                en.createdate,
+	                en.type2 busclass,
+	                en.grade,
+	                pf.scoresum   selfScore,
+	                orgf.scoresum kaoScore
+	  from en_apply en
+	  join qypf_table pf
+	    on en.pid = pf.createpid
+	   and pf.busclass = en.type2
+	  join qypf_table orgf
+	    on pf.busclass = orgf.busclass
+	   and orgf.createpid = #{pid}
+	   and en.id = orgf.applyid
+	   
+	</select>
+	
+<!-- 	详情查看 -->
+	<select id="getEnDetail" parameterType="java.util.HashMap" resultMap="enInfoResult">
+		select * from en_apply t where t.pid=#{pid} and t.cid=#{cid}
+	</select>
+	
+	
+	<!-- 	详情查看 -->
+	<select id="getEnApplyDetail" parameterType="java.util.HashMap" resultMap="enApplyDetailResult">
+		select distinct en.*,
+                   m.scoresum selfScore,
+                   n.scoresum kaoScore,
+                   n.createdate,
+                   n.kpresult,
+                   n.kpadvice
+	     from en_apply en
+	     join (select *
+	             from (select pf.*
+	                     from qypf_table pf
+	                    where pf.createuser = #{enUserid}
+	                    order by pf.createdate desc) p limit 1) m on m.createuser = en.userid
+	                                 and en.type2 = m.busclass 
+	     join (select *
+	             from (select pf.*
+	                     from qypf_table pf
+	                    where pf.createuser = #{kpjgUserid}
+	                    order by pf.createdate desc) p limit 1) n on n.applyid = en.id
+	</select>
+	
+	<select id="getEnApplyDetail2" parameterType="java.util.HashMap" resultMap="enApplyDetailResult">
+       select t.* from (select distinct en.*,
+                   m.scoresum selfScore,
+                   ex.results    as slresult,
+                   ex.advice     as sladvice,
+                   ex.auditdate  as sldate,
+                   ey.results    as kpresult,
+                   ey.advice     as kpadvice,
+                   ey.auditdate  as kpdate,
+                   ez.results    as shesult,
+                   ez.advice     as shadvice,
+                   ez.auditdate  as shdate
+       from en_apply en
+       join (select *
+               from (select pf.*
+                       from qypf_table pf
+                      where pf.createuser = #{enUserid}  and pf.busclass=#{enBusType}
+                      order by pf.createdate desc) p limit 1) m on m.createuser = en.userid
+                                 and en.type2 = m.busclass 
+                                  <!-- 此处添加查询考评分 以便不同意时 详情中可以看到考评分 -->
+       left join (select * from (select kp.* from qypf_table kp where kp.applyid=#{applyId} order by kp.createdate desc)  tab limit 1) kp
+       on kp.applyid =en.id
+       left join examine ex on en.id = ex.applyid and ex.status = '已处理'  and ex.usertype = 'en'
+       left join examine ey on en.id = ey.applyid and ey.status = '已考评'  and ey.handletype = 'en'
+       left join examine ez on en.id = ez.applyid and ez.status = '已审核'  and ez.handletype = 'en'        
+       where 1=1 
+       			   and( en.applytype!='2' or en.applytype is null)
+       			   and( en.del !='1' or en.del is null)
+                   and en.id=#{applyId}                
+       order by en.createdate desc) t limit 1
+	  
+	</select>
+	
+<!-- 	查看本考评机构下的考评员 -->
+	<select id="getPnListByPid" parameterType="java.util.HashMap" resultMap="pnResult">
+		<!-- select t.*,p.* ,c.fzdate from pn_apply t
+		left join pn_train p on p.pn_id = t.id
+		left join cert c on c.certnumber = t.cid
+		where t.ATTRORG=#{pid} and (t.del !='1' or t.del is null)
+               and (t.applytype !='2' or t.applytype is null) -->
+    select t.*,p.* ,c.fzdate from pn_apply t
+		left join pn_train p on p.pn_id = t.id
+		left join cert c on c.certnumber = t.cid
+		where t.attrorg = (select org.pid from org_reg org where org.userid=#{userId} and (org.del !='1' or org.del is null)) 
+				and (t.del !='1' or t.del is null)
+               and (t.applytype !='2' or t.applytype is null)
+	</select>
+	
+<!-- 	保存修改意见、考评员及评分 -->
+	<update id="saveAdvice" parameterType="java.util.HashMap" >
+		update en_apply t set t.pncidlist=#{cardNo},t.advice=#{adviceText},t.RESP_REVIEW=#{respReview} where t.id=#{applyId}
+	</update>
+	
+	<update id="updateOldExamine" parameterType="java.util.HashMap">
+		    update examine w set w.status='已考评',w.advice=#{advice} 
+		    <if test="auditername!=null  ">
+			 ,auditername=#{auditername}
+			</if>				
+			<if test="auditerdate!=null  ">
+			 ,auditerdate=#{auditerdate}
+			</if>
+			<if test="kpresult!=null  ">
+			 ,RESULTS=#{kpresult}
+			</if>
+			
+		    where w.status='待考评' and w.applyid=#{applyId}
+	</update>
+	<update id="updateEnApply" parameterType="java.util.HashMap">
+		      update En_Apply e set e.resp=#{resp} ,e.respdate_review=#{advice},e.respdate=#{respdate},e.pncidlist=#{cardNo} where e.id=#{applyId}
+	</update>
+	
+	<insert id="insertNewExamine" parameterType="java.util.HashMap">
+		  insert into examine
+        (userid, usertype, auditer_mot, status,applyid,bustype,handletype,pid,auditer)
+        select #{kpjg} as userid, 'org' as usertype, t.auditer_mot, '待审核' as status,t.applyid,t.bustype,'en' as handletype,t.pid,t.auditer
+          from examine t
+         where t.status = '已考评'
+           and t.applyid = #{applyId}
+	</insert>
+</mapper>
+
+
